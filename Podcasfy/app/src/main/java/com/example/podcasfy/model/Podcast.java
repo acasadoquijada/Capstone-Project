@@ -6,6 +6,7 @@ public class Podcast {
     private String description;
     private String url;
     private String mediaURL;
+    private String provider;
 
     public String getName() {
         return name;
@@ -23,6 +24,10 @@ public class Podcast {
         return mediaURL;
     }
 
+    public String getProvider() {
+        return provider;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -37,5 +42,9 @@ public class Podcast {
 
     public void setMediaURL(String mediaURL) {
         this.mediaURL = mediaURL;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 }

@@ -17,6 +17,9 @@ public class PodcastEpisode {
     // Podcast Episode media (audio)
     private String mediaURL;
 
+    // Date when the Podcast Episode was listened to
+    private String date;
+
     public void setPath(String path) {
         this.path = path;
     }
@@ -37,6 +40,10 @@ public class PodcastEpisode {
         this.imageURL = imageURL;
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public String getPath() {
         return path;
     }
@@ -55,5 +62,9 @@ public class PodcastEpisode {
 
     public String getImageURL() {
         return imageURL;
+    }
+
+    public String getDate() {
+        return date;
     }
 }

@@ -7,13 +7,14 @@ import org.junit.Test;
 
 public class PodcastModelTest {
 
-    private String name = "name";
-    private String description = "description";
-    private String url = "url";
-    private String mediaURL = "mediaURL";
-
     @Test
     public void PodcastModelWorkAsExpected(){
+
+        String name = "name";
+        String description = "description";
+        String url = "url";
+        String mediaURL = "mediaURL";
+        String provider = "ivoox";
 
         Podcast podcast = new Podcast();
 
@@ -21,11 +22,13 @@ public class PodcastModelTest {
         podcast.setDescription(description);
         podcast.setUrl(url);
         podcast.setMediaURL(mediaURL);
+        podcast.setProvider(provider);
 
         assertEquals(name,podcast.getName());
         assertEquals(description,podcast.getDescription());
         assertEquals(url, podcast.getUrl());
         assertEquals(mediaURL,podcast.getMediaURL());
+        assertEquals(provider,podcast.getProvider());
         
     }
 }
