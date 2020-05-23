@@ -8,7 +8,7 @@ import org.junit.Test;
 public class PodcastModelTest {
 
     @Test
-    public void PodcastModelWorkAsExpected(){
+    public void workAsExpected(){
 
         String name = "name";
         String description = "description";

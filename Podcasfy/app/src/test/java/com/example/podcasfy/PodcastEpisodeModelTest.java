@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 
 public class PodcastEpisodeModelTest {
 
-    @Test public void PodcastEpisodeModelWorkAsExpected(){
+    @Test public void workAsExpected(){
 
         String url = "folder/episode.mp3";
         String name = "planos and tests";
