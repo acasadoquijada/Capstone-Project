@@ -1,12 +1,29 @@
 package com.example.podcasfy.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "podcast")
 public class Podcast {
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
     private String name;
     private String description;
     private String url;
     private String mediaURL;
     private String provider;
+
+    public Podcast(){};
+
+    public Podcast(String name, String description, String url, String mediaURl, String provider){
+        this.name = name;
+        this.description = description;
+        this.url = url;
+        this.mediaURL = mediaURl;
+        this.provider = provider;
+    }
 
     public String getName() {
         return name;
@@ -46,5 +63,13 @@ public class Podcast {
 
     public void setProvider(String provider) {
         this.provider = provider;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
