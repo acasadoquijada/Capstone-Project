@@ -56,7 +56,7 @@ public class PodcastDataBaseTest {
         addPodcasts();
     }
 
-    public void addPodcasts(){
+    private void addPodcasts(){
 
         Podcast p1 = new Podcast(
                 name,

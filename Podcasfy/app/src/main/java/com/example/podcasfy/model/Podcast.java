@@ -25,7 +25,8 @@ public class Podcast {
         this.mediaURL = mediaURl;
         this.provider = provider;
 
-        this.id = name.toLowerCase() + "_" + provider.toLowerCase();
+        this.id = name.toLowerCase().replaceAll("\\s","_")
+                + "-" + provider.toLowerCase().replaceAll("\\s","_");
     }
 
     public String getName() {
@@ -68,7 +69,7 @@ public class Podcast {
         this.provider = provider;
     }
 
-    String getId() {
+    public String getId() {
         return id;
     }
 

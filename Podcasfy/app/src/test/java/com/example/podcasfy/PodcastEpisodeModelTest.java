@@ -13,27 +13,30 @@ public class PodcastEpisodeModelTest {
 
     @Test public void workAsExpected(){
 
-        String url = "folder/episode.mp3";
+        String storePathDevice = "folder/episode.mp3";
         String name = "planos and tests";
         String description = "description";
         String imageURL = "image.jpg";
         String mediaURL = "mediaURL";
+        String podcastId = "podcastId";
 
-        PodcastEpisode podcastEpisode = new PodcastEpisode();
+        PodcastEpisode podcastEpisode = new PodcastEpisode(
+                name,
+                description,
+                imageURL,
+                mediaURL,
+                podcastId
+        );
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
         String date = formatter.format(calendar.getTime());
 
-        podcastEpisode.setPath(url);
-        podcastEpisode.setName(name);
-        podcastEpisode.setDescription(description);
-        podcastEpisode.setImageURL(imageURL);
-        podcastEpisode.setMediaURL(mediaURL);
         podcastEpisode.setDate(date);
+        podcastEpisode.setStorePathDevice(storePathDevice);
 
-        assertEquals(url,podcastEpisode.getPath());
+        assertEquals(storePathDevice,podcastEpisode.getStorePathDevice());
         assertEquals(name,podcastEpisode.getName());
         assertEquals(description,podcastEpisode.getDescription());
         assertEquals(mediaURL,podcastEpisode.getMediaURL());

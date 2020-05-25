@@ -1,9 +1,27 @@
 package com.example.podcasfy.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "podcast_episode",
+        indices =  {@Index("podcastId")},
+        foreignKeys = @ForeignKey(entity = Podcast.class,
+                parentColumns = "id",
+                childColumns = "podcastId",
+                onDelete = CASCADE))
 public class PodcastEpisode {
 
+    @PrimaryKey
+    @NonNull
+    private String id;
+
     // This is the path where the mp3 file is stored in the device
-    private String path;
+    private String storePathDevice;
 
     // Podcast Episode name
     private String name;
@@ -20,8 +38,26 @@ public class PodcastEpisode {
     // Date when the Podcast Episode was listened to
     private String date;
 
-    public void setPath(String path) {
-        this.path = path;
+    // Foreign key to identify the podcast where the episode belongs
+    private String podcastId;
+
+    public PodcastEpisode(
+            String name,
+            String description,
+            String imageURL,
+            String mediaURL,
+            String podcastId){
+
+        this.name = name;
+        this.description = description;
+        this.imageURL = imageURL;
+        this.mediaURL = mediaURL;
+        this.podcastId = podcastId;
+        this.id = name.toLowerCase().replaceAll("\\s","_") + "-" + podcastId;
+    }
+
+    public void setStorePathDevice(String storePathDevice) {
+        this.storePathDevice = storePathDevice;
     }
 
     public void setName(String name) {
@@ -44,8 +80,8 @@ public class PodcastEpisode {
         this.date = date;
     }
 
-    public String getPath() {
-        return path;
+    public String getStorePathDevice() {
+        return storePathDevice;
     }
 
     public String getName() {
@@ -66,5 +102,22 @@ public class PodcastEpisode {
 
     public String getDate() {
         return date;
+    }
+
+    String getPodcastId() {
+        return podcastId;
+    }
+
+    void setPodcastId(String podcastId) {
+        this.podcastId = podcastId;
+    }
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
     }
 }

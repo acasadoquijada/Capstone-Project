@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Podcast.class}, version = 1, exportSchema = false)
+@Database(entities = {Podcast.class, PodcastEpisode.class}, version = 1, exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
 
     private static final Object LOCK = new Object();
@@ -27,4 +27,6 @@ public abstract class AppDataBase extends RoomDatabase {
     }
 
     public abstract PodcastDAO podcastDAO();
+    public abstract PodcastEpisodeDAO podcastEpisodeDAO();
+
 }
