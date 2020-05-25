@@ -1,14 +1,15 @@
 package com.example.podcasfy.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "podcast")
 public class Podcast {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-
+    @PrimaryKey
+    @NonNull
+    private String id;
     private String name;
     private String description;
     private String url;
@@ -23,6 +24,8 @@ public class Podcast {
         this.url = url;
         this.mediaURL = mediaURl;
         this.provider = provider;
+
+        this.id = name.toLowerCase() + "_" + provider.toLowerCase();
     }
 
     public String getName() {
@@ -65,11 +68,11 @@ public class Podcast {
         this.provider = provider;
     }
 
-    public int getId() {
+    String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    void setId(String id) {
         this.id = id;
     }
 }

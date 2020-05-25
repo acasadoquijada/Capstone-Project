@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface PodcastDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert()
     void insertPodcast(Podcast podcast);
 
     @Query("SELECT * FROM podcast")

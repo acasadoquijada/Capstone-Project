@@ -126,13 +126,6 @@ public class PodcastDataBaseTest {
                 provider2
         );
 
-
-        // The primary key (id) needs to be set in order to be able to delete the Podcast object
-        // from the database. For this test we set it manually
-        // This is done once the Podcast object is inserted in the DB.
-
-        p3.setId(999);
-
         podcastDAO.insertPodcast(p3);
         podcastDAO.delete(p3);
 
