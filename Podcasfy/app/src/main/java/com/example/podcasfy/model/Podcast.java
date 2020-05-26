@@ -15,6 +15,7 @@ public class Podcast {
     private String url;
     private String mediaURL;
     private String provider;
+    private Boolean subscribed = false;
 
     public Podcast(){};
 
@@ -75,5 +76,13 @@ public class Podcast {
 
     void setId(String id) {
         this.id = id;
+    }
+
+    public Boolean getSubscribed() {
+        return subscribed;
+    }
+
+    public void setSubscribed(Boolean subscribed) {
+        this.subscribed = subscribed;
     }
 }
