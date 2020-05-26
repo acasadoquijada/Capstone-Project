@@ -20,6 +20,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
+
     testOptions {
         unitTests.returnDefaultValues = true
     }
@@ -40,6 +45,8 @@ dependencies {
     implementation 'com.github.kaaes:spotify-web-api-android:0.4.1'
     implementation 'org.jsoup:jsoup:1.13.1'
     implementation 'com.google.dagger:dagger:2.27'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.27'
     implementation 'com.google.android.exoplayer:exoplayer:2.10.8'
     implementation 'androidx.room:room-runtime:2.2.5'

@@ -1,6 +1,7 @@
 package com.example.podcasfy;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
@@ -10,5 +11,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        PodcastFragment podcastFragment = new PodcastFragment();
+
+        fragmentManager.beginTransaction().add(R.id.main_activity_fragment,podcastFragment).commit();
     }
 }
