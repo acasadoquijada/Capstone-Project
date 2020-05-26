@@ -19,14 +19,14 @@
         <include
             android:layout_margin="8dp"
             android:id="@+id/podcast_layout"
-            layout="@layout/podcast"
+            layout="@layout/podcast_in_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <include
             android:layout_margin="8dp"
             android:id="@+id/podcast_layout2"
-            layout="@layout/podcast"
+            layout="@layout/podcast_in_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

@@ -14,8 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import com.example.podcasfy.databinding.PodcastFragmentBinding;
+import com.example.podcasfy.databinding.PodcastListFragmentBinding;
 import com.example.podcasfy.model.Podcast;
 import com.squareup.picasso.Picasso;
 
@@ -23,13 +22,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class PodcastFragment extends Fragment {
+public class PodcastListFragment extends Fragment {
 
-    private PodcastViewModel mViewModel;
-    private PodcastFragmentBinding binding;
+    private PodcastListViewModel mViewModel;
+    private PodcastListFragmentBinding binding;
 
-    public static PodcastFragment newInstance() {
-        return new PodcastFragment();
+    public static PodcastListFragment newInstance() {
+        return new PodcastListFragment();
     }
 
     @Override
@@ -37,7 +36,7 @@ public class PodcastFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(
-                inflater, R.layout.podcast_fragment, container, false);
+                inflater, R.layout.podcast_list_fragment, container, false);
 
         return binding.getRoot();
 
@@ -48,7 +47,7 @@ public class PodcastFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(getActivity()).get(PodcastViewModel.class);
+        mViewModel = new ViewModelProvider(getActivity()).get(PodcastListViewModel.class);
 
         // TODO: Use the ViewModel
         mViewModel.getPodcasts().observe(getViewLifecycleOwner(), new Observer<List<Podcast>>() {

@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        PodcastFragment podcastFragment = new PodcastFragment();
+        PodcastListFragment podcastFragment = new PodcastListFragment();
 
         fragmentManager.beginTransaction().add(R.id.main_activity_fragment,podcastFragment).commit();
     }

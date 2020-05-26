@@ -9,15 +9,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class PodcastViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
+public class PodcastListViewModel extends ViewModel {
 
     private LiveData<List<Podcast>> podcasts;
-    private PodcastRepository podcastRepository;
+    private PodcastListRepository podcastRepository;
 
     @Inject
-    public PodcastViewModel (){
-        podcastRepository = new PodcastRepository();
+    public PodcastListViewModel (){
+        podcastRepository = new PodcastListRepository();
         podcasts = podcastRepository.getPodcasts();
     }
 

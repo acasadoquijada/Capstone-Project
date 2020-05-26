@@ -15,11 +15,11 @@ import javax.inject.Singleton;
 import okhttp3.Cache;
 
 @Singleton
-public class PodcastRepository {
+public class PodcastListRepository {
 
     private  MutableLiveData<List<Podcast>> podcasts;
 
-    PodcastRepository(){}
+    PodcastListRepository(){}
 
     public LiveData<List<Podcast>> getPodcasts(){
 
