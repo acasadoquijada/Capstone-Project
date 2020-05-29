@@ -5,6 +5,8 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
+import com.example.podcasfy.UI.PodcastListFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

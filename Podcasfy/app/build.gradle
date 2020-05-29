@@ -63,4 +63,5 @@ dependencies {
 
     testImplementation "org.mockito:mockito-core:2.19.0"
     androidTestImplementation "org.mockito:mockito-android:2.11.0"
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 }
