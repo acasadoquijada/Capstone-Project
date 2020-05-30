@@ -19,7 +19,7 @@ public class PodcastListViewModel extends ViewModel {
     @Inject
     public PodcastListViewModel (){
         podcastRepository = new PodcastListRepository();
-        //podcasts = podcastRepository.getPodcasts();
+        podcasts = podcastRepository.getPodcasts();
         podcastNames = podcastRepository.getPodcastsName();
         podcastImages = podcastRepository.getPodcastsImage();
     }

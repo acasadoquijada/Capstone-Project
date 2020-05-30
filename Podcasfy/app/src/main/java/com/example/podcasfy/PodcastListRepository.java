@@ -29,8 +29,8 @@ public class PodcastListRepository {
 
         List<Podcast> podcastList = new ArrayList<>();
 
-        Podcast p1 = new Podcast("NOMBRE LARGO QUE TE CAGAS LAS PATAS ABAJO","description","url",
-                "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg","provider");
+        Podcast p1 = new Podcast("Planos y Centellas","description","url",
+                "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg","Ivoox");
 
         Podcast p2 = new Podcast("name2","description2","url",
                 "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg","provider2");
@@ -60,6 +60,9 @@ public class PodcastListRepository {
 
         names.add("Planos y Centellas");
         names.add("Amigos del Mapa");
+        names.add("Amigos del Mapa");
+        names.add("Amigos del Mapa");
+        names.add("Amigos del Mapa");
 
         podcastsName.setValue(names);
 
@@ -75,6 +78,9 @@ public class PodcastListRepository {
         List<String> images = new ArrayList<>();
 
         images.add("https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg");
+        images.add("https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg");
+        images.add("https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg");
+        images.add("https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg");
         images.add("https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg");
 
         podcastImage.setValue(images);

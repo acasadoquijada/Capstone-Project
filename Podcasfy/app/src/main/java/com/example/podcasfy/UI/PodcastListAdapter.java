@@ -20,14 +20,23 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
 
     private List<String> mPodcastNames;
     private List<String> mPodcastImages;
+    private final ItemClickListener mItemClickListener;
 
-    public PodcastListAdapter(List<String> podcastNames, List<String> podcastImages) throws Exception {
+
+    public PodcastListAdapter(List<String> podcastNames, List<String> podcastImages, ItemClickListener itemClickListener) throws Exception {
         if(podcastNames.size() != podcastImages.size()){
             throw new Exception("PodcastNames and PodcastImages MUST have same size");
         }
 
         this.mPodcastNames = podcastNames;
         this.mPodcastImages = podcastImages;
+        this.mItemClickListener = itemClickListener;
+
+
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(int clickedItem);
     }
 
     public void setPodcastNames(List<String> podcastNames){
@@ -68,7 +77,7 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
     }
 
 
-    static class PodcastHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class PodcastHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView itemName;
         private final ImageView itemImage;
@@ -91,7 +100,7 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
         @Override
         public void onClick(View v) {
             int pos = getAdapterPosition();
-           // mItemClickListener.onItemClick(pos);
+            mItemClickListener.onItemClick(pos);
         }
     }
 
