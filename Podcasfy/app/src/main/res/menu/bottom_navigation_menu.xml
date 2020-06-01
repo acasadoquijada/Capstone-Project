@@ -7,6 +7,7 @@
         android:title="title2"/>
 
     <item
+        android:id="@+id/page_32"
         android:enabled="true"
         android:icon="@drawable/exo_controls_pause"
         android:title="title1" />

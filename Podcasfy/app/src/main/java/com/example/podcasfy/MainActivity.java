@@ -14,21 +14,19 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.example.podcasfy.UI.PodcastListAdapter;
-import com.example.podcasfy.databinding.ActivityMainBinding;
+
 
 import com.example.podcasfy.UI.PodcastListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements PodcastListFragment.onGridElementClick{
 
-    private ActivityMainBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+      //  getSupportActionBar().hide();
 
         setContentView(R.layout.activity_main);
-
 
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);

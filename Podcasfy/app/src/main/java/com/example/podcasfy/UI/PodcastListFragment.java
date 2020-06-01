@@ -31,7 +31,6 @@ import java.util.List;
 public class PodcastListFragment extends Fragment implements PodcastListAdapter.ItemClickListener  {
 
     private PodcastListViewModel mViewModel;
-    private PodcastListFragmentBinding binding;
     private List<Podcast> mPodcasts;
     private List<String> mPodcastNames;
     private List<String> mPodcastImages;

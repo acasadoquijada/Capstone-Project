@@ -1,24 +1,30 @@
 package com.example.podcasfy.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.TextView;
 import  androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
+import com.example.podcasfy.model.PodcastEpisode;
 
 import org.w3c.dom.Text;
 
 
-public class PodcastFragment extends Fragment {
+public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapter.ItemClickListener {
 
 
 
@@ -30,29 +36,55 @@ public class PodcastFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.podcast_fragment, container, false);
+        PodcastFragmentArgs b = PodcastFragmentArgs.fromBundle(requireArguments());
+        getActivity().setTitle(b.getPodcastName());
+        final View rootView = inflater.inflate(R.layout.podcast_fragment, container, false);
+        setHasOptionsMenu(true);
 
       // setHasOptionsMenu(true);
 
-        TextView v = root.findViewById(R.id.podcastNamePodcastFragment);
+       // TextView v = rootView.findViewById(R.id.podcastNamePodcastFragment);
 
-        Toolbar toolbar = root.findViewById(R.id.fragment_toolbar);
+        RecyclerView r1 = rootView.findViewById(R.id.episodeRecyclerView);
 
-        toolbar.inflateMenu(R.menu.app_bar_menu);
-        PodcastFragmentArgs b = PodcastFragmentArgs.fromBundle(requireArguments());
+        GridLayoutManager g = new GridLayoutManager(getContext(),1);
 
-        v.setText(b.getPodcastName());
-      //  v.setText(podca);
+        g.setOrientation(RecyclerView.VERTICAL);
+        PodcastEpisodeListAdapter podcastEpisodeListAdapter = new PodcastEpisodeListAdapter(this);
 
-        return root;
+        r1.setLayoutManager(g);
+
+        r1.setAdapter(podcastEpisodeListAdapter);
+
+
+
+
+ //       v.setText(b.getPodcastName());
+
+        return rootView;
     }
-
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.app_bar_menu, menu);
         super.onCreateOptionsMenu(menu,inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.share_podcast){
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            String shareBody = "Your body here";
+            String shareSub = "Your subject here";
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareSub);
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, "Share using"));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -66,4 +98,8 @@ public class PodcastFragment extends Fragment {
     }
 
 
+    @Override
+    public void onItemClick(int clickedItem) {
+
+    }
 }
