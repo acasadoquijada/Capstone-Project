@@ -52,13 +52,13 @@ public class PodcastListRepository {
         podcastsName = new MutableLiveData<>();
         List<String> names = new ArrayList<>();
 
-        Podcast p1 = new Podcast("Planos y Centellas","description","url",
+        Podcast p1 = new Podcast("Planos y Centellas ","description","url",
                 "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg","ivoox");
 
         Podcast p2 = new Podcast("Amigos del Mapa","description2","url",
                 "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","ivoox");
 
-        names.add("Planos y Centellas");
+        names.add("Planos y Centellas Planos y Centellas Planos y Centellas Planos y Centellas");
         names.add("Amigos del Mapa");
         names.add("Amigos del Mapa");
         names.add("Amigos del Mapa");

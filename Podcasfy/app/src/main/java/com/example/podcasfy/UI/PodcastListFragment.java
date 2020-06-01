@@ -9,6 +9,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.podcasfy.MainActivity;
 import com.example.podcasfy.PodcastListViewModel;
 import com.example.podcasfy.R;
 import com.example.podcasfy.databinding.PodcastListFragmentBinding;
@@ -40,7 +44,12 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     @Override
     public void onItemClick(int clickedItemIndex) {
         int a = 2;
-        mCallback.onItemSelected(mPodcasts.get(clickedItemIndex).getId());
+
+        NavDirections action =
+                PodcastListFragmentDirections
+                        .actionPodcastListFragmentToPodcastFragment(mPodcastNames.get(clickedItemIndex));
+        Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(action);
+
     }
 
     public interface onGridElementClick{

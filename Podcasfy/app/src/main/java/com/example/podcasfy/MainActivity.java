@@ -4,9 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.example.podcasfy.UI.PodcastListAdapter;
@@ -21,36 +25,20 @@ public class MainActivity extends AppCompatActivity implements PodcastListFragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_main);
 
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
-        setUpBottonNavigation();
 
-        if(savedInstanceState == null){
-            FragmentManager fragmentManager = getSupportFragmentManager();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-            PodcastListFragment podcastFragment = new PodcastListFragment();
+        NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
 
-            fragmentManager.beginTransaction().add(R.id.main_activity_fragment,podcastFragment).commit();
-        }
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
     }
 
-    private void setUpBottonNavigation(){
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(item.getItemId() == R.id.page_1){
-                    Toast.makeText(getApplicationContext(),"PAGE 1",Toast.LENGTH_SHORT).show();
-                    return true;
-                } else if(item.getItemId() == R.id.page_2){
-                    Toast.makeText(getApplicationContext(),"PAGE 2",Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
 
     @Override
     public void onItemSelected(String pos) {
