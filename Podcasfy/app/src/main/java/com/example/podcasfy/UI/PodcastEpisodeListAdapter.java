@@ -46,7 +46,7 @@ public class PodcastEpisodeListAdapter extends  RecyclerView.Adapter<PodcastEpis
 
     @Override
     public int getItemCount() {
-        return 10;
+        return 20;
     }
 
     public interface ItemClickListener{
@@ -65,6 +65,8 @@ public class PodcastEpisodeListAdapter extends  RecyclerView.Adapter<PodcastEpis
 
             podcastEpisodeName = itemView.findViewById(R.id.podcastEpisodeName);
             podcastEpisodeImage = itemView.findViewById(R.id.podcastEpisodeImage);
+
+            itemView.setOnClickListener(this);
         }
 
         public void bind(String name, String image){

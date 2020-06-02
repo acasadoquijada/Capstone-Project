@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import  androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -101,5 +103,6 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
     @Override
     public void onItemClick(int clickedItem) {
 
+        Toast.makeText(getContext(),"" + clickedItem,Toast.LENGTH_SHORT).show();
     }
 }

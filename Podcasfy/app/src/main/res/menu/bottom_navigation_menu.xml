@@ -3,8 +3,8 @@
     <item
         android:id="@+id/podcastListFragment"
         android:enabled="true"
-        android:icon="@drawable/exo_controls_shuffle_on"
-        android:title="title2"/>
+        android:icon="@drawable/ic_home"
+        android:title="home"/>
 
     <item
         android:id="@+id/page_32"
