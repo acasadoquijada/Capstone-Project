@@ -40,11 +40,9 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
 
     @Override
     public void onItemClick(int clickedItemIndex) {
-        int a = 2;
-
         NavDirections action =
                 PodcastListFragmentDirections
-                        .actionPodcastListFragmentToPodcastFragment(mPodcastNames.get(clickedItemIndex));
+                        .actionPodcastListFragmentToPodcastFragment(mPodcasts.get(clickedItemIndex).getId());
         Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(action);
 
     }
@@ -93,7 +91,6 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         recyclerView2.setAdapter(podcastListAdapter2);
         return rootView;
 
-        //return inflater.inflate(R.layout.podcast_fragment, container, false);
     }
 
     @Override
@@ -142,9 +139,5 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
                 podcastListAdapter2.setPodcastNames(names);
             }
         });
-    }
-
-    private void populateUI(){
-
     }
 }

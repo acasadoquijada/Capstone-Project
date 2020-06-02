@@ -12,16 +12,29 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
 import com.example.podcasfy.adapter.PodcastEpisodeListAdapter;
+import com.example.podcasfy.databinding.PodcastFragmentBinding;
+import com.example.podcasfy.model.Podcast;
+import com.example.podcasfy.model.PodcastEpisode;
+import com.example.podcasfy.viewmodel.PodcastViewModel;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 
 public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapter.ItemClickListener {
 
+    private PodcastViewModel mViewModel;
+    private PodcastFragmentBinding mBinding;
+    private String podcastID;
 
 
     public static PodcastFragment newInstance() {
@@ -32,16 +45,22 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        PodcastFragmentArgs b = PodcastFragmentArgs.fromBundle(requireArguments());
-        getActivity().setTitle(b.getPodcastName());
-        final View rootView = inflater.inflate(R.layout.podcast_fragment, container, false);
+        PodcastFragmentArgs podcastFragmentArgs = PodcastFragmentArgs.fromBundle(requireArguments());
+
+        podcastID = podcastFragmentArgs.getPodcastName();
+
+        mBinding = DataBindingUtil.inflate(
+                inflater, R.layout.podcast_fragment, container, false);
+
+     //   mBinding = DataBindingUtil.setContentView(getActivity(),R.layout.podcast_fragment);
+
         setHasOptionsMenu(true);
 
       // setHasOptionsMenu(true);
 
        // TextView v = rootView.findViewById(R.id.podcastNamePodcastFragment);
 
-        RecyclerView r1 = rootView.findViewById(R.id.episodeRecyclerView);
+        RecyclerView r1 = mBinding.getRoot().findViewById(R.id.episodeRecyclerView);
 
         GridLayoutManager g = new GridLayoutManager(getContext(),1);
 
@@ -52,10 +71,7 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
 
         r1.setAdapter(podcastEpisodeListAdapter);
 
-
- //       v.setText(b.getPodcastName());
-
-        return rootView;
+        return mBinding.getRoot();
     }
 
     @Override
@@ -85,12 +101,33 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        //MyViewModel myViewModel = ViewModelProvider(this, new MyViewModelFactory(this.getApplication(), "my awesome param")).get(MyViewModel.class);
+
+        /*
+                CryptoTrackerViewModelFactory factory = new CryptoTrackerViewModelFactory(this.getApplication(), 5);
+        cryptoViewModel = ViewModelProviders.of(this, factory).get(CryptoTrackerViewModel.class);
+         */
+
+        mViewModel = new ViewModelProvider(getActivity()).get(PodcastViewModel.class);
+        mViewModel.setPodcastId(podcastID);
+
+        mViewModel.getPodcast().observe(getViewLifecycleOwner(), new Observer<Podcast>() {
+            @Override
+            public void onChanged(Podcast podcast) {
+                getActivity().setTitle(podcast.getName());
+                mBinding.podcastDescription.setText(podcast.getDescription());
+                Picasso.get().load(podcast.getMediaURL()).into(mBinding.podcastLogo);
+            }
+        });
+
+        mViewModel.getPodcastEpisode().observe(getViewLifecycleOwner(), new Observer<List<PodcastEpisode>>() {
+            @Override
+            public void onChanged(List<PodcastEpisode> podcastEpisodes) {
+                // Here I update the podcastepisodes in PodcastEpisodeListAdapter
+            }
+        });
+
     }
-
-    private void populateUI(){
-
-    }
-
 
     @Override
     public void onItemClick(int clickedItem) {

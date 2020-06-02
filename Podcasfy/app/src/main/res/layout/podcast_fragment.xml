@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<androidx.coordinatorlayout.widget.CoordinatorLayout
 
 
     android:layout_width="match_parent"
@@ -10,7 +12,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="179dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -32,9 +34,9 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/podcastLogo"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -42,18 +44,18 @@
                     app:srcCompat="@drawable/planos_centellas" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/podcastDescription"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:text="Desde Asturias y Murcia, con amor, tu podcast semanal de cine y series."
                     android:textColor="@android:color/white"
-                    app:layout_constraintBottom_toTopOf="@+id/imageView"
+                    app:layout_constraintBottom_toTopOf="@+id/podcastLogo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView"
+                    app:layout_constraintStart_toEndOf="@+id/podcastLogo"
+                    app:layout_constraintTop_toBottomOf="@+id/podcastLogo"
                     tools:text="Desde Asturias y Murcia, con amor, tu podcast semanal de cine y series." />
 
                 <Button
@@ -61,9 +63,9 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:text="Button"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                    app:layout_constraintEnd_toStartOf="@+id/podcastLogo"
+                    app:layout_constraintStart_toEndOf="@+id/podcastLogo"
+                    app:layout_constraintTop_toBottomOf="@+id/podcastLogo" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -89,3 +91,4 @@
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
