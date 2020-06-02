@@ -8,11 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import  androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,9 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
-import com.example.podcasfy.model.PodcastEpisode;
-
-import org.w3c.dom.Text;
+import com.example.podcasfy.adapter.PodcastEpisodeListAdapter;
 
 
 public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapter.ItemClickListener {
@@ -57,8 +51,6 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
         r1.setLayoutManager(g);
 
         r1.setAdapter(podcastEpisodeListAdapter);
-
-
 
 
  //       v.setText(b.getPodcastName());

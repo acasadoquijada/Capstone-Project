@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,10 +18,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.podcasfy.MainActivity;
-import com.example.podcasfy.PodcastListViewModel;
+import com.example.podcasfy.adapter.PodcastListAdapter;
+import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.example.podcasfy.R;
-import com.example.podcasfy.databinding.PodcastListFragmentBinding;
 import com.example.podcasfy.model.Podcast;
 
 import java.util.ArrayList;

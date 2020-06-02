@@ -1,4 +1,4 @@
-package com.example.podcasfy.UI;
+package com.example.podcasfy.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
