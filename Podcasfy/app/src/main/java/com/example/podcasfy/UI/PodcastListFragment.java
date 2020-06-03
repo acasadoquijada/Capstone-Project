@@ -81,8 +81,10 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
             mPodcasts = new ArrayList<>();
             mPodcastImages = new ArrayList<>();
             mPodcastNames = new ArrayList<>();
-            podcastListAdapter = new PodcastListAdapter(mPodcastNames,mPodcastImages,this);
-            podcastListAdapter2 = new PodcastListAdapter(mPodcastNames,mPodcastImages,this);
+            podcastListAdapter = new PodcastListAdapter(mPodcasts,this);
+            podcastListAdapter2 = new PodcastListAdapter(mPodcasts,this);
+     //       podcastListAdapter = new PodcastListAdapter(mPodcastNames,mPodcastImages,this);
+        //    podcastListAdapter2 = new PodcastListAdapter(mPodcastNames,mPodcastImages,this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -116,16 +118,18 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
             public void onChanged(List<Podcast> podcasts) {
                 mPodcasts.clear();
                 mPodcasts = podcasts;
+                podcastListAdapter.setPodcasts(podcasts);
+                podcastListAdapter2.setPodcasts(podcasts);
             }
         });
-
+/*
         mViewModel.getPodcastImages().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> images) {
                 mPodcastImages.clear();
                 mPodcastImages = images;
-                podcastListAdapter.setPodcastsImages(images);
-                podcastListAdapter2.setPodcastsImages(images);
+             //   podcastListAdapter.setPodcastsImages(images);
+   //             podcastListAdapter2.setPodcastsImages(images);
 
             }
         });
@@ -138,6 +142,6 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
                 podcastListAdapter.setPodcastNames(names);
                 podcastListAdapter2.setPodcastNames(names);
             }
-        });
+        });*/
     }
 }

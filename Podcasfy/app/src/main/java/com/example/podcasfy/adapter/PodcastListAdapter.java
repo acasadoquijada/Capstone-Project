@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.podcasfy.R;
+import com.example.podcasfy.model.Podcast;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
 
     private List<String> mPodcastNames;
     private List<String> mPodcastImages;
+    private List<Podcast> mPodcasts;
     private final ItemClickListener mItemClickListener;
 
 
@@ -32,6 +34,12 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
         this.mPodcastImages = podcastImages;
         this.mItemClickListener = itemClickListener;
 
+    }
+
+    public PodcastListAdapter(List<Podcast> podcast, ItemClickListener itemClickListener){
+
+        this.mPodcasts = podcast;
+        this.mItemClickListener = itemClickListener;
 
     }
 
@@ -47,6 +55,11 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
     public void setPodcastsImages(List<String> podcastImages){
 
         this.mPodcastImages = podcastImages;
+    }
+
+    public void setPodcasts(List<Podcast> podcasts){
+
+        this.mPodcasts = podcasts;
     }
 
     @NonNull
@@ -65,15 +78,12 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
     @Override
     public void onBindViewHolder(@NonNull PodcastHolder holder, int position) {
 
-        holder.bind (mPodcastNames.get(position), mPodcastImages.get(position));
+        holder.bind (mPodcasts.get(position).getName(), mPodcasts.get(position).getMediaURL());
     }
 
     @Override
     public int getItemCount() {
-        if(mPodcastImages != null && mPodcastNames != null){
-            return (mPodcastImages.size()+ mPodcastNames.size())/2;
-        }
-        return 0;
+        return mPodcasts.size();
     }
 
 

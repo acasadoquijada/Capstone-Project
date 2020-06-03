@@ -32,11 +32,24 @@ public class PodcastListRepository {
         Podcast p1 = new Podcast("Planos y Centellas","description","url",
                 "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg","Ivoox");
 
-        Podcast p2 = new Podcast("name2","description2","url",
-                "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg","provider2");
+        Podcast p2 = new Podcast("Amigos del Mapa","description2","url",
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+        Podcast p3 = new Podcast("Amigos del Mapa","description2","url",
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+        Podcast p4 = new Podcast("Amigos del Mapa","description2","url",
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+        Podcast p5 = new Podcast("Amigos del Mapa","description2","url",
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+        Podcast p6 = new Podcast("Amigos del Mapa","description2","url",
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+
 
         podcastList.add(p1);
         podcastList.add(p2);
+        podcastList.add(p3);
+        podcastList.add(p4);
+        podcastList.add(p5);
+        podcastList.add(p6);
 
         podcasts.setValue(podcastList);
 

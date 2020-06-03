@@ -44,9 +44,6 @@ public class MainActivity extends AppCompatActivity implements PodcastListFragme
 
                 } else {
                     bottomNavigationView.setVisibility(View.VISIBLE);
-
-
-
                 }
             }
         };
