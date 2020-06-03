@@ -27,4 +27,8 @@
         android:id="@+id/subscribedPodcastFragment"
         android:name="com.example.podcasfy.UI.SubscribedPodcastFragment"
         android:label="SubscribedPodcastFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.podcasfy.UI.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

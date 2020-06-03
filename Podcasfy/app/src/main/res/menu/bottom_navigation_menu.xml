@@ -18,10 +18,10 @@
         android:title="Subscribed"/>
 
     <item
-        android:id="@+id/page_4"
+        android:id="@+id/settingsFragment"
         android:enabled="true"
-        android:icon="@drawable/exo_controls_previous"
-        android:title="title4"/>
+        android:icon="@drawable/ic_settings_white"
+        android:title="Settings"/>
 
 
 </menu>
