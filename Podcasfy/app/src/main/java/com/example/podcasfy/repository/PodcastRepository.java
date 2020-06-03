@@ -62,6 +62,7 @@ public class PodcastRepository {
         epis.add(podcastEpisode);
         epis.add(podcastEpisode);
 
+        podcastEpisodes = new MutableLiveData<>();
         podcastEpisodes.setValue(epis);
 
         return podcastEpisodes;
