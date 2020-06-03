@@ -7,15 +7,15 @@
         android:title="home"/>
 
     <item
-        android:id="@+id/page_32"
+        android:id="@+id/searchFragment"
         android:enabled="true"
-        android:icon="@drawable/exo_controls_pause"
-        android:title="title1" />
+        android:icon="@drawable/ic_search_white"
+        android:title="Search" />
     <item
-        android:id="@+id/page_3"
+        android:id="@+id/subscribedPodcastFragment"
         android:enabled="true"
-        android:icon="@drawable/exo_controls_fastforward"
-        android:title="title3"/>
+        android:icon="@drawable/ic_bookmark_whited"
+        android:title="Subscribed"/>
 
     <item
         android:id="@+id/page_4"
