@@ -11,11 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
+import com.example.podcasfy.model.PodcastEpisode;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class PodcastEpisodeListAdapter extends  RecyclerView.Adapter<PodcastEpisodeListAdapter.PodcastEpisodeHolder> {
 
     private final ItemClickListener mItemClickListener;
+    private List<PodcastEpisode> podcastEpisodes;
 
     public PodcastEpisodeListAdapter(ItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
@@ -36,16 +40,22 @@ public class PodcastEpisodeListAdapter extends  RecyclerView.Adapter<PodcastEpis
         return new PodcastEpisodeHolder(view);
     }
 
+    public void setPodcastEpisodes(List<PodcastEpisode> episodes){
+        podcastEpisodes = episodes;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull PodcastEpisodeHolder holder, int position) {
 
-        holder.bind( "Planos y Centellas 3x19 - El Silencio de los Corderos (1991)",
-                "https://static-1.ivoox.com/audios/2/3/9/1/261590341932_MD.jpg");
+        holder.bind(
+                podcastEpisodes.get(position).getName(),
+                podcastEpisodes.get(position).getImageURL());
+
     }
 
     @Override
     public int getItemCount() {
-        return 20;
+        return podcastEpisodes.size();
     }
 
     public interface ItemClickListener{

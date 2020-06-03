@@ -35,6 +35,7 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
     private PodcastViewModel mViewModel;
     private PodcastFragmentBinding mBinding;
     private String podcastID;
+    private PodcastEpisodeListAdapter podcastEpisodeListAdapter;
 
 
     public static PodcastFragment newInstance() {
@@ -65,7 +66,7 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
         GridLayoutManager g = new GridLayoutManager(getContext(),1);
 
         g.setOrientation(RecyclerView.VERTICAL);
-        PodcastEpisodeListAdapter podcastEpisodeListAdapter = new PodcastEpisodeListAdapter(this);
+        podcastEpisodeListAdapter = new PodcastEpisodeListAdapter(this);
 
         r1.setLayoutManager(g);
 
@@ -101,12 +102,6 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //MyViewModel myViewModel = ViewModelProvider(this, new MyViewModelFactory(this.getApplication(), "my awesome param")).get(MyViewModel.class);
-
-        /*
-                CryptoTrackerViewModelFactory factory = new CryptoTrackerViewModelFactory(this.getApplication(), 5);
-        cryptoViewModel = ViewModelProviders.of(this, factory).get(CryptoTrackerViewModel.class);
-         */
 
         mViewModel = new ViewModelProvider(getActivity()).get(PodcastViewModel.class);
         mViewModel.setPodcastId(podcastID);
@@ -123,7 +118,8 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
         mViewModel.getPodcastEpisode().observe(getViewLifecycleOwner(), new Observer<List<PodcastEpisode>>() {
             @Override
             public void onChanged(List<PodcastEpisode> podcastEpisodes) {
-                // Here I update the podcastepisodes in PodcastEpisodeListAdapter
+                // Here I update the podcastepisodes in
+                podcastEpisodeListAdapter.setPodcastEpisodes(podcastEpisodes);
             }
         });
 

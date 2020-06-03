@@ -37,17 +37,13 @@ public class PodcastRepository {
 
     public MutableLiveData<List<PodcastEpisode>> getPodcastEpisode(String id){
 
-        // Here I will get the episodes according to the ID
-        /*
-                    String name,
-            String description,
-            String imageURL,
-            String mediaURL,
-            String podcastId){
-         */
         PodcastEpisode podcastEpisode = new PodcastEpisode(
-                "Episode 1",
-                "description1",
+                "Planos y Centellas 3x20 - Snowpiercer (Serie Netflix)",
+                "Subid con nosotros al tren y evitad que la glaciación os alcance. " +
+                        "Esta semana hablamos del estreno de Netflix inspirado en la película" +
+                        " homónima \"Snowpiercer\". Un misterioso asesinato amenaza con desestabilizar " +
+                        "el delicado equilibrio del tren-arca, la última esperanza de la humanidad.",
+
                 "https://static-1.ivoox.com/audios/0/7/8/7/1531591027870_MD.jpg",
                 "mediaURL",
                 id);
