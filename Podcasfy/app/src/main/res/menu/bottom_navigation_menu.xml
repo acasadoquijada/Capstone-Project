@@ -14,8 +14,14 @@
     <item
         android:id="@+id/subscribedPodcastFragment"
         android:enabled="true"
-        android:icon="@drawable/ic_bookmark_whited"
+        android:icon="@drawable/ic_bookmarks_white"
         android:title="Subscribed"/>
+
+    <item
+        android:id="@+id/donwloadsFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_get_app_white"
+        android:title="Downloads"/>
 
     <item
         android:id="@+id/settingsFragment"

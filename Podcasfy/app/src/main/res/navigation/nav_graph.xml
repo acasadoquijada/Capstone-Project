@@ -26,9 +26,17 @@
     <fragment
         android:id="@+id/subscribedPodcastFragment"
         android:name="com.example.podcasfy.UI.SubscribedPodcastFragment"
-        android:label="SubscribedPodcastFragment" />
+        android:label="SubscribedPodcastFragment" >
+        <action
+            android:id="@+id/action_subscribedPodcastFragment_to_podcastFragment"
+            app:destination="@id/podcastFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.podcasfy.UI.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/donwloadsFragment"
+        android:name="com.example.podcasfy.UI.DonwloadsFragment"
+        android:label="DonwloadsFragment" />
 </navigation>
