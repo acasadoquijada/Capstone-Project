@@ -1,5 +1,7 @@
 package com.example.podcasfy.repository;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.podcasfy.model.Podcast;
@@ -12,6 +14,7 @@ public class PodcastRepository {
 
     private MutableLiveData<Podcast> podcast;
     private MutableLiveData<List<PodcastEpisode>> podcastEpisodes;
+    private MutableLiveData<List<Podcast>> podcasts;
 
     public PodcastRepository(){}
 
@@ -63,4 +66,30 @@ public class PodcastRepository {
 
         return podcastEpisodes;
     }
+
+    public List<Podcast> searchPodcasts(String query){
+
+        Podcast value = new Podcast("Planos y pepinillos",
+                "Sandwiches y cine",
+                "https://www.ivoox.com/podcast-planos-centellas_sq_f1609149_1.html",
+                "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg",
+                "ivoox");
+
+        Podcast value2 = new Podcast("Planos y pepinillos",
+                "Sandwiches y cine",
+                "https://www.ivoox.com/podcast-planos-centellas_sq_f1609149_1.html",
+                "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg",
+                "spotify");
+
+        List<Podcast> p = new ArrayList<>();
+
+        p.add(value);
+        p.add(value2);
+
+        return p;
+    }
+
+
+
+
 }

@@ -17,11 +17,15 @@ import java.util.List;
 public class PodcastViewModel extends ViewModel {
 
     private LiveData<Podcast> podcast;
+    private LiveData<List<Podcast>> podcasts;
     private LiveData<List<PodcastEpisode>> podcastEpisode;
     private String id;
+    private MutableLiveData<String> queryId;
     private PodcastRepository podcastRepository;
+    private List<Podcast> subs;
 
     public PodcastViewModel (){
+        queryId = new MutableLiveData<>();
         podcastRepository = new PodcastRepository();
     }
 
@@ -45,5 +49,17 @@ public class PodcastViewModel extends ViewModel {
 
         podcastEpisode = podcastRepository.getPodcastEpisode(id);
         return podcastEpisode;
+    }
+
+    public List<Podcast> searchPodcasts(String query) {
+
+        subs = podcastRepository.searchPodcasts(query);
+
+        return subs;
+    }
+
+
+    public MutableLiveData<String> getQueryId() {
+        return queryId;
     }
 }

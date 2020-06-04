@@ -36,6 +36,9 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
 
     }
 
+    public PodcastListAdapter(ItemClickListener itemClickListener){
+        this.mItemClickListener = itemClickListener;
+    }
     public PodcastListAdapter(List<Podcast> podcast, ItemClickListener itemClickListener){
 
         this.mPodcasts = podcast;
@@ -83,7 +86,9 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
 
     @Override
     public int getItemCount() {
-        return mPodcasts.size();
+        if(mPodcasts != null)
+            return mPodcasts.size();
+        return 0;
     }
 
 
