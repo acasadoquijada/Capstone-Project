@@ -1,6 +1,5 @@
-package com.example.podcasfy.UI;
+package com.example.podcasfy.ui;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
@@ -25,6 +24,7 @@ import com.example.podcasfy.model.Podcast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PodcastListFragment extends Fragment implements PodcastListAdapter.ItemClickListener  {
 
@@ -43,7 +43,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         NavDirections action =
                 PodcastListFragmentDirections
                         .actionPodcastListFragmentToPodcastFragment(mPodcasts.get(clickedItemIndex).getId());
-        Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(action);
+        Navigation.findNavController(requireActivity(),R.id.nav_host_fragment).navigate(action);
 
     }
 
@@ -111,16 +111,13 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(getActivity()).get(PodcastListViewModel.class);
+        mViewModel = new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
 
-        mViewModel.getPodcasts().observe(getViewLifecycleOwner(), new Observer<List<Podcast>>() {
-            @Override
-            public void onChanged(List<Podcast> podcasts) {
-                mPodcasts.clear();
-                mPodcasts = podcasts;
-                podcastListAdapter.setPodcasts(podcasts);
-                podcastListAdapter2.setPodcasts(podcasts);
-            }
+        mViewModel.getPodcasts().observe(getViewLifecycleOwner(), podcasts -> {
+            mPodcasts.clear();
+            mPodcasts = podcasts;
+            podcastListAdapter.setPodcasts(podcasts);
+            podcastListAdapter2.setPodcasts(podcasts);
         });
 /*
         mViewModel.getPodcastImages().observe(getViewLifecycleOwner(), new Observer<List<String>>() {

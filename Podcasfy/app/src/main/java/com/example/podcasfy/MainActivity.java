@@ -1,10 +1,7 @@
 package com.example.podcasfy;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
@@ -12,10 +9,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.podcasfy.UI.PodcastFragment;
+import com.example.podcasfy.ui.PodcastFragment;
 
 
-import com.example.podcasfy.UI.PodcastListFragment;
+import com.example.podcasfy.ui.PodcastListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements PodcastListFragment.onGridElementClick{
@@ -32,19 +29,15 @@ public class MainActivity extends AppCompatActivity implements PodcastListFragme
         NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
 
 
-        NavController.OnDestinationChangedListener listener = new NavController.OnDestinationChangedListener(){
+        NavController.OnDestinationChangedListener listener = (controller, destination, arguments) -> {
 
-            @Override
-            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+            assert destination.getLabel() != null;
+            if(destination.getLabel().equals(PodcastFragment.class.getSimpleName())){
 
-                assert destination.getLabel() != null;
-                if(destination.getLabel().equals(PodcastFragment.class.getSimpleName())){
+     //           bottomNavigationView.setVisibility(View.INVISIBLE);
 
-                    bottomNavigationView.setVisibility(View.INVISIBLE);
-
-                } else {
-                    bottomNavigationView.setVisibility(View.VISIBLE);
-                }
+            } else {
+        //        bottomNavigationView.setVisibility(View.VISIBLE);
             }
         };
 

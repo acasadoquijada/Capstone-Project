@@ -1,4 +1,4 @@
-package com.example.podcasfy.UI;
+package com.example.podcasfy.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,16 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
 import com.example.podcasfy.adapter.PodcastEpisodeListAdapter;
-import com.example.podcasfy.model.PodcastEpisode;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
-
-import java.util.List;
 
 public class DonwloadsFragment extends Fragment implements PodcastEpisodeListAdapter.ItemClickListener {
 
@@ -55,11 +51,6 @@ public class DonwloadsFragment extends Fragment implements PodcastEpisodeListAda
 
         mViewModel = new PodcastViewModel();
 
-        mViewModel.getDonwloadedEpisodes().observe(getViewLifecycleOwner(), new Observer<List<PodcastEpisode>>() {
-            @Override
-            public void onChanged(List<PodcastEpisode> podcastEpisodes) {
-                adapter.setPodcastEpisodes(podcastEpisodes);
-            }
-        });
+        mViewModel.getDonwloadedEpisodes().observe(getViewLifecycleOwner(), podcastEpisodes -> adapter.setPodcastEpisodes(podcastEpisodes));
     }
 }

@@ -17,7 +17,7 @@ public class Podcast {
     private String provider;
     private Boolean subscribed = false;
 
-    public Podcast(){};
+    public Podcast(){}
 
     public Podcast(String name, String description, String url, String mediaURl, String provider){
         this.name = name;

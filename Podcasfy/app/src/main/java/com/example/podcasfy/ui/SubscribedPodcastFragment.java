@@ -1,10 +1,9 @@
-package com.example.podcasfy.UI;
+package com.example.podcasfy.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +19,7 @@ import com.example.podcasfy.model.Podcast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SubscribedPodcastFragment extends Fragment implements SubscribedPodcastsListAdapter.ItemClickListener{
 
@@ -72,6 +72,6 @@ public class SubscribedPodcastFragment extends Fragment implements SubscribedPod
         NavDirections action =
                 SubscribedPodcastFragmentDirections
                         .actionSubscribedPodcastFragmentToPodcastFragment("id");
-        Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(action);
+        Navigation.findNavController(requireActivity(),R.id.nav_host_fragment).navigate(action);
     }
 }

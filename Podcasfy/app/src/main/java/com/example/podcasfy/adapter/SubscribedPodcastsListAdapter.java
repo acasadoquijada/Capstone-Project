@@ -16,7 +16,6 @@ import com.example.podcasfy.model.Podcast;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class SubscribedPodcastsListAdapter extends RecyclerView.Adapter<SubscribedPodcastsListAdapter.SubscribedHolder> {
 

@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/podcastListFragment"
-        android:name="com.example.podcasfy.UI.PodcastListFragment"
+        android:name="com.example.podcasfy.ui.PodcastListFragment"
         android:label="PodcastListFragment" >
         <action
             android:id="@+id/action_podcastListFragment_to_podcastFragment"
@@ -13,7 +13,7 @@
     </fragment>
     <fragment
         android:id="@+id/podcastFragment"
-        android:name="com.example.podcasfy.UI.PodcastFragment"
+        android:name="com.example.podcasfy.ui.PodcastFragment"
         android:label="PodcastFragment" >
         <argument
             android:name="podcastName"
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.podcasfy.UI.SearchFragment"
+        android:name="com.example.podcasfy.ui.SearchFragment"
         android:label="SearchFragment" >
         <action
             android:id="@+id/action_searchFragment_to_podcastFragment"
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/subscribedPodcastFragment"
-        android:name="com.example.podcasfy.UI.SubscribedPodcastFragment"
+        android:name="com.example.podcasfy.ui.SubscribedPodcastFragment"
         android:label="SubscribedPodcastFragment" >
         <action
             android:id="@+id/action_subscribedPodcastFragment_to_podcastFragment"
@@ -37,10 +37,10 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.podcasfy.UI.SettingsFragment"
+        android:name="com.example.podcasfy.ui.SettingsFragment"
         android:label="SettingsFragment" />
     <fragment
         android:id="@+id/donwloadsFragment"
-        android:name="com.example.podcasfy.UI.DonwloadsFragment"
+        android:name="com.example.podcasfy.ui.DonwloadsFragment"
         android:label="DonwloadsFragment" />
 </navigation>

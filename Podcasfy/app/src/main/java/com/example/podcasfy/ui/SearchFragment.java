@@ -1,20 +1,14 @@
-package com.example.podcasfy.UI;
+package com.example.podcasfy.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -25,6 +19,7 @@ import com.example.podcasfy.R;
 import com.example.podcasfy.adapter.PodcastListAdapter;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
 
+import java.util.Objects;
 
 
 public class SearchFragment extends Fragment implements PodcastListAdapter.ItemClickListener {
@@ -52,12 +47,9 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
         SearchView searchView = rootView.findViewById(R.id.searchView);
 
         // Click anywhere will open the keyboard
-        searchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.searchView) {
-                    searchView.onActionViewExpanded();
-                }
+        searchView.setOnClickListener(v -> {
+            if (v.getId() == R.id.searchView) {
+                searchView.onActionViewExpanded();
             }
         });
 
@@ -84,14 +76,9 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mViewModel = new ViewModelProvider(getActivity()).get(PodcastViewModel.class);
+        mViewModel = new ViewModelProvider(requireActivity()).get(PodcastViewModel.class);
 
-        mViewModel.getQueryId().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                adapter.setPodcasts(mViewModel.searchPodcasts(s));
-            }
-        });
+        mViewModel.getQueryId().observe(getViewLifecycleOwner(), s -> adapter.setPodcasts(mViewModel.searchPodcasts(s)));
     }
 
     // Open a PodcastFragment
@@ -100,7 +87,7 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
         NavDirections action =
                 SearchFragmentDirections
                         .actionSearchFragmentToPodcastFragment("id");
-        Navigation.findNavController(getActivity(),R.id.nav_host_fragment).navigate(action);
+        Navigation.findNavController(requireActivity(),R.id.nav_host_fragment).navigate(action);
 
     }
 }

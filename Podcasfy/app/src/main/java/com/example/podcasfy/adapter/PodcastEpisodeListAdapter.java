@@ -6,12 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
 import com.example.podcasfy.model.PodcastEpisode;
+import com.example.podcasfy.utils.OnSwipeTouchListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -76,6 +78,22 @@ public class PodcastEpisodeListAdapter extends  RecyclerView.Adapter<PodcastEpis
             podcastEpisodeImage = itemView.findViewById(R.id.podcastEpisodeImage);
 
             itemView.setOnClickListener(this);
+
+            itemView.setOnTouchListener(new OnSwipeTouchListener(itemView.getContext()) {
+                public void onSwipeTop() {
+                    Toast.makeText(itemView.getContext(), "top", Toast.LENGTH_SHORT).show();
+                }
+                public void onSwipeRight() {
+                    Toast.makeText(itemView.getContext(), "right", Toast.LENGTH_SHORT).show();
+                }
+                public void onSwipeLeft() {
+                    Toast.makeText(itemView.getContext(), "left", Toast.LENGTH_SHORT).show();
+                }
+                public void onSwipeBottom() {
+                    Toast.makeText(itemView.getContext(), "bottom", Toast.LENGTH_SHORT).show();
+                }
+
+            });
         }
 
         public void bind(String name, String image){

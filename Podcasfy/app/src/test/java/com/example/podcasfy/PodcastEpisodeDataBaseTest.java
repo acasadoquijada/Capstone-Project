@@ -2,7 +2,6 @@ package com.example.podcasfy;
 
 import android.content.Context;
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.room.Room;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -13,17 +12,12 @@ import com.example.podcasfy.model.PodcastDAO;
 import com.example.podcasfy.model.PodcastEpisode;
 import com.example.podcasfy.model.PodcastEpisodeDAO;
 
-import org.apache.tools.ant.taskdefs.Sleep;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;

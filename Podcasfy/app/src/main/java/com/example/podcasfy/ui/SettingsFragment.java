@@ -1,4 +1,4 @@
-package com.example.podcasfy.UI;
+package com.example.podcasfy.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +17,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.settings_fragment,container,false);
-        return root;
+        return inflater.inflate(R.layout.settings_fragment,container,false);
     }
 }

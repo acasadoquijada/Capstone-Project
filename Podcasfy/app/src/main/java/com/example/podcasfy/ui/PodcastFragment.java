@@ -1,4 +1,4 @@
-package com.example.podcasfy.UI;
+package com.example.podcasfy.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,12 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.podcasfy.R;
 import com.example.podcasfy.adapter.PodcastEpisodeListAdapter;
 import com.example.podcasfy.databinding.PodcastFragmentBinding;
-import com.example.podcasfy.model.Podcast;
-import com.example.podcasfy.model.PodcastEpisode;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import java.util.Objects;
 
 
 public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapter.ItemClickListener {
@@ -103,24 +100,18 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
         super.onActivityCreated(savedInstanceState);
 
 
-        mViewModel = new ViewModelProvider(getActivity()).get(PodcastViewModel.class);
+        mViewModel = new ViewModelProvider(requireActivity()).get(PodcastViewModel.class);
         mViewModel.setPodcastId(podcastID);
 
-        mViewModel.getPodcast().observe(getViewLifecycleOwner(), new Observer<Podcast>() {
-            @Override
-            public void onChanged(Podcast podcast) {
-                getActivity().setTitle(podcast.getName());
-                mBinding.podcastDescription.setText(podcast.getDescription());
-                Picasso.get().load(podcast.getMediaURL()).into(mBinding.podcastLogo);
-            }
+        mViewModel.getPodcast().observe(getViewLifecycleOwner(), podcast -> {
+            getActivity().setTitle(podcast.getName());
+            mBinding.podcastDescription.setText(podcast.getDescription());
+            Picasso.get().load(podcast.getMediaURL()).into(mBinding.podcastLogo);
         });
 
-        mViewModel.getPodcastEpisode().observe(getViewLifecycleOwner(), new Observer<List<PodcastEpisode>>() {
-            @Override
-            public void onChanged(List<PodcastEpisode> podcastEpisodes) {
-                // Here I update the podcastepisodes in
-                podcastEpisodeListAdapter.setPodcastEpisodes(podcastEpisodes);
-            }
+        mViewModel.getPodcastEpisode().observe(getViewLifecycleOwner(), podcastEpisodes -> {
+            // Here I update the podcastepisodes in
+            podcastEpisodeListAdapter.setPodcastEpisodes(podcastEpisodes);
         });
 
     }

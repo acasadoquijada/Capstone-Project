@@ -1,11 +1,7 @@
 package com.example.podcasfy.viewmodel;
 
-import android.app.Application;
-import android.os.Bundle;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
 import com.example.podcasfy.model.Podcast;
