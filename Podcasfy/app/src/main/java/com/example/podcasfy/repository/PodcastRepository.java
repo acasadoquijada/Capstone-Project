@@ -89,7 +89,32 @@ public class PodcastRepository {
         return p;
     }
 
+    public MutableLiveData<List<PodcastEpisode>> getDownloadedEspisodes(){
+        PodcastEpisode podcastEpisode = new PodcastEpisode(
+                "Planos y Centellas 3x20 - Snowpiercer (Serie Netflix)",
+                "Subid con nosotros al tren y evitad que la glaciación os alcance. " +
+                        "Esta semana hablamos del estreno de Netflix inspirado en la película" +
+                        " homónima \"Snowpiercer\". Un misterioso asesinato amenaza con desestabilizar " +
+                        "el delicado equilibrio del tren-arca, la última esperanza de la humanidad.",
+
+                "https://static-1.ivoox.com/audios/0/7/8/7/1531591027870_MD.jpg",
+                "mediaURL",
+                "id");
+
+        List<PodcastEpisode> epis = new ArrayList<>();
+
+        epis.add(podcastEpisode);
+        epis.add(podcastEpisode);
+        epis.add(podcastEpisode);
+        epis.add(podcastEpisode);
+        epis.add(podcastEpisode);
+        epis.add(podcastEpisode);
+        epis.add(podcastEpisode);
 
 
+        podcastEpisodes = new MutableLiveData<>();
+        podcastEpisodes.setValue(epis);
 
+        return podcastEpisodes;
+    }
 }

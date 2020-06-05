@@ -8,10 +8,21 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
+import com.example.podcasfy.adapter.PodcastEpisodeListAdapter;
+import com.example.podcasfy.model.PodcastEpisode;
+import com.example.podcasfy.viewmodel.PodcastViewModel;
 
-public class DonwloadsFragment extends Fragment {
+import java.util.List;
+
+public class DonwloadsFragment extends Fragment implements PodcastEpisodeListAdapter.ItemClickListener {
+
+    private PodcastEpisodeListAdapter adapter;
+    private PodcastViewModel mViewModel;
 
     @Nullable
     @Override
@@ -20,7 +31,35 @@ public class DonwloadsFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.download_fragment,container,false);
 
+        // Setting Adapter, RecyclerView and LayoutManager
+        adapter = new PodcastEpisodeListAdapter(this);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(),1);
+        RecyclerView view = root.findViewById(R.id.downloadRecyclerView);
+
+        view.setAdapter(adapter);
+        view.setLayoutManager(layoutManager);
+
+
         return root;
 
+    }
+
+    @Override
+    public void onItemClick(int clickedItem) {
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        mViewModel = new PodcastViewModel();
+
+        mViewModel.getDonwloadedEpisodes().observe(getViewLifecycleOwner(), new Observer<List<PodcastEpisode>>() {
+            @Override
+            public void onChanged(List<PodcastEpisode> podcastEpisodes) {
+                adapter.setPodcastEpisodes(podcastEpisodes);
+            }
+        });
     }
 }

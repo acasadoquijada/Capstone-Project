@@ -62,4 +62,15 @@ public class PodcastViewModel extends ViewModel {
     public MutableLiveData<String> getQueryId() {
         return queryId;
     }
+
+
+    public LiveData<List<PodcastEpisode>> getDonwloadedEpisodes(){
+
+        if(podcastEpisode != null){
+            return podcastEpisode;
+        }
+
+        podcastEpisode = podcastRepository.getDownloadedEspisodes();
+        return podcastEpisode;
+    }
 }
