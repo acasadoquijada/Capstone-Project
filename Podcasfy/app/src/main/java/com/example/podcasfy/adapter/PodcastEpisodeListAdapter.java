@@ -22,9 +22,11 @@ public class PodcastEpisodeListAdapter extends  RecyclerView.Adapter<PodcastEpis
 
     private final ItemClickListener mItemClickListener;
     private List<PodcastEpisode> podcastEpisodes;
+    private boolean mSwipeListener = false;
 
-    public PodcastEpisodeListAdapter(ItemClickListener mItemClickListener) {
+    public PodcastEpisodeListAdapter(ItemClickListener mItemClickListener, boolean swipeListener) {
         this.mItemClickListener = mItemClickListener;
+        this.mSwipeListener = swipeListener;
     }
 
     @NonNull
@@ -79,24 +81,25 @@ public class PodcastEpisodeListAdapter extends  RecyclerView.Adapter<PodcastEpis
 
             itemView.setOnClickListener(this);
 
-            itemView.setOnTouchListener(new OnSwipeTouchListener(itemView.getContext()) {
-                public void onSwipeTop() {
-                    Toast.makeText(itemView.getContext(), "top", Toast.LENGTH_SHORT).show();
-                }
-                public void onSwipeRight() {
-                    Toast.makeText(itemView.getContext(), "right", Toast.LENGTH_SHORT).show();
-                }
-                public void onSwipeLeft() {
-                    Toast.makeText(itemView.getContext(), "left", Toast.LENGTH_SHORT).show();
-                }
-                public void onSwipeBottom() {
-                    Toast.makeText(itemView.getContext(), "bottom", Toast.LENGTH_SHORT).show();
-                }
-
-            });
+            if(mSwipeListener){
+                itemView.setOnTouchListener(new OnSwipeTouchListener(itemView.getContext()) {
+                    public void onSwipeTop() {
+                        Toast.makeText(itemView.getContext(), "top", Toast.LENGTH_SHORT).show();
+                    }
+                    public void onSwipeRight() {
+                        Toast.makeText(itemView.getContext(), "right", Toast.LENGTH_SHORT).show();
+                    }
+                    public void onSwipeLeft() {
+                        Toast.makeText(itemView.getContext(), "left", Toast.LENGTH_SHORT).show();
+                    }
+                    public void onSwipeBottom() {
+                        Toast.makeText(itemView.getContext(), "bottom", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
 
-        public void bind(String name, String image){
+        void bind(String name, String image){
             podcastEpisodeName.setText(name);
             Picasso.get().load(image).into(podcastEpisodeImage);
         }

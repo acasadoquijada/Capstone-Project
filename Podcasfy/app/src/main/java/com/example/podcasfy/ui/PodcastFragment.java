@@ -63,7 +63,7 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
         GridLayoutManager g = new GridLayoutManager(getContext(),1);
 
         g.setOrientation(RecyclerView.VERTICAL);
-        podcastEpisodeListAdapter = new PodcastEpisodeListAdapter(this);
+        podcastEpisodeListAdapter = new PodcastEpisodeListAdapter(this,false);
 
         r1.setLayoutManager(g);
 

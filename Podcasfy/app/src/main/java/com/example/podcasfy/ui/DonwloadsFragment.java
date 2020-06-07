@@ -28,7 +28,7 @@ public class DonwloadsFragment extends Fragment implements PodcastEpisodeListAda
         View root = inflater.inflate(R.layout.download_fragment,container,false);
 
         // Setting Adapter, RecyclerView and LayoutManager
-        adapter = new PodcastEpisodeListAdapter(this);
+        adapter = new PodcastEpisodeListAdapter(this,true);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(),1);
         RecyclerView view = root.findViewById(R.id.downloadRecyclerView);
 
