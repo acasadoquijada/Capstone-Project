@@ -49,7 +49,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="Desde Asturias y Murcia, con amor, tu podcast semanal de cine y series."
                     android:textColor="@android:color/white"
                     app:layout_constraintBottom_toTopOf="@+id/podcastLogo"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +61,7 @@
                     android:id="@+id/button"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="Button"
+                    android:text="@string/subscribe_button_text"
                     app:layout_constraintEnd_toStartOf="@+id/podcastLogo"
                     app:layout_constraintStart_toEndOf="@+id/podcastLogo"
                     app:layout_constraintTop_toBottomOf="@+id/podcastLogo" />
