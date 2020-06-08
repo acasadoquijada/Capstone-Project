@@ -1,5 +1,7 @@
 package com.example.podcasfy.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -23,9 +25,13 @@ public class PodcastListViewModel extends ViewModel {
         podcasts = podcastRepository.getPodcasts();
         podcastNames = podcastRepository.getPodcastsName();
         podcastImages = podcastRepository.getPodcastsImage();
+
     }
 
     public LiveData<List<Podcast>> getPodcasts() {
+
+
+
         return podcasts;
     }
     public LiveData<List<String>> getPodcastNames(){return podcastNames;}

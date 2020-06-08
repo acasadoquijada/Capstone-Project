@@ -15,12 +15,15 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
 import com.example.podcasfy.adapter.PodcastEpisodeListAdapter;
 import com.example.podcasfy.databinding.PodcastFragmentBinding;
+import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
 import com.squareup.picasso.Picasso;
 
@@ -35,6 +38,9 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
     private PodcastEpisodeListAdapter podcastEpisodeListAdapter;
 
 
+    public PodcastFragment(){
+
+    }
     public static PodcastFragment newInstance() {
         return new PodcastFragment();
     }
@@ -119,6 +125,6 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
     @Override
     public void onItemClick(int clickedItem) {
 
-        Toast.makeText(getContext(),"" + clickedItem,Toast.LENGTH_SHORT).show();
+
     }
 }

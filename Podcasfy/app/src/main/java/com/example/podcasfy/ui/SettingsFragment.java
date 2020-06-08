@@ -12,7 +12,9 @@ import androidx.fragment.app.Fragment;
 import com.example.podcasfy.R;
 
 public class SettingsFragment extends Fragment {
-
+    public static SettingsFragment newInstance() {
+        return new SettingsFragment();
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

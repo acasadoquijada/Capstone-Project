@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,11 +17,14 @@ import com.example.podcasfy.R;
 import com.example.podcasfy.adapter.PodcastEpisodeListAdapter;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
 
-public class DonwloadsFragment extends Fragment implements PodcastEpisodeListAdapter.ItemClickListener {
+public class DownloadsFragment extends Fragment implements PodcastEpisodeListAdapter.ItemClickListener {
 
     private PodcastEpisodeListAdapter adapter;
     private PodcastViewModel mViewModel;
 
+    public static DownloadsFragment newInstance() {
+        return new DownloadsFragment();
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -28,7 +33,7 @@ public class DonwloadsFragment extends Fragment implements PodcastEpisodeListAda
         View root = inflater.inflate(R.layout.download_fragment,container,false);
 
         // Setting Adapter, RecyclerView and LayoutManager
-        adapter = new PodcastEpisodeListAdapter(this,true);
+        adapter = new PodcastEpisodeListAdapter(this,false);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(),1);
         RecyclerView view = root.findViewById(R.id.downloadRecyclerView);
 
@@ -42,6 +47,7 @@ public class DonwloadsFragment extends Fragment implements PodcastEpisodeListAda
 
     @Override
     public void onItemClick(int clickedItem) {
+
 
     }
 

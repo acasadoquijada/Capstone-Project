@@ -28,6 +28,10 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
 
     private PodcastListAdapter adapter;
 
+    public static SearchFragment newInstance() {
+        return new SearchFragment();
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -84,10 +88,7 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
     // Open a PodcastFragment
     @Override
     public void onItemClick(int clickedItem) {
-        NavDirections action =
-                SearchFragmentDirections
-                        .actionSearchFragmentToPodcastFragment("id");
-        Navigation.findNavController(requireActivity(),R.id.nav_host_fragment).navigate(action);
+
 
     }
 }

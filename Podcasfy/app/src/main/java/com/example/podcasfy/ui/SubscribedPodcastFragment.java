@@ -23,6 +23,9 @@ import java.util.Objects;
 
 public class SubscribedPodcastFragment extends Fragment implements SubscribedPodcastsListAdapter.ItemClickListener{
 
+    public static SubscribedPodcastFragment newInstance() {
+        return new SubscribedPodcastFragment();
+    }
 
     @Nullable
     @Override
@@ -69,9 +72,5 @@ public class SubscribedPodcastFragment extends Fragment implements SubscribedPod
     @Override
     public void onItemClick(int clickedItem) {
 
-        NavDirections action =
-                SubscribedPodcastFragmentDirections
-                        .actionSubscribedPodcastFragmentToPodcastFragment("id");
-        Navigation.findNavController(requireActivity(),R.id.nav_host_fragment).navigate(action);
     }
 }

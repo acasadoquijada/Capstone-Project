@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,10 +41,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
 
     @Override
     public void onItemClick(int clickedItemIndex) {
-        NavDirections action =
-                PodcastListFragmentDirections
-                        .actionPodcastListFragmentToPodcastFragment(mPodcasts.get(clickedItemIndex).getId());
-        Navigation.findNavController(requireActivity(),R.id.nav_host_fragment).navigate(action);
+
 
     }
 
@@ -55,9 +53,12 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         return new PodcastListFragment();
     }
 
+    public PodcastListFragment(){}
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
 
 
         final View rootView = inflater.inflate(R.layout.podcast_list_fragment, container, false);
@@ -95,25 +96,16 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
 
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        try {
-            mCallback = (onGridElementClick) context;
-        }catch (ClassCastException e){
-            throw new ClassCastException(
-                    context.toString() + "must implement onGridElementClick interface");
-        }
-    }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         mViewModel = new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
 
         mViewModel.getPodcasts().observe(getViewLifecycleOwner(), podcasts -> {
+
+
             mPodcasts.clear();
             mPodcasts = podcasts;
             podcastListAdapter.setPodcasts(podcasts);

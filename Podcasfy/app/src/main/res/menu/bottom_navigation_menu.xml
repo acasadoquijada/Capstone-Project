@@ -4,30 +4,30 @@
         android:id="@+id/podcastListFragment"
         android:enabled="true"
         android:icon="@drawable/ic_home"
-        android:title="home"/>
+        android:title="@string/bot_nav_home_text"/>
 
     <item
         android:id="@+id/searchFragment"
         android:enabled="true"
         android:icon="@drawable/ic_search_white"
-        android:title="Search" />
+        android:title="@string/bot_nav_search_text" />
     <item
         android:id="@+id/subscribedPodcastFragment"
         android:enabled="true"
         android:icon="@drawable/ic_bookmarks_white"
-        android:title="Subscribed"/>
+        android:title="@string/bot_nav_subscribed_text"/>
 
     <item
         android:id="@+id/donwloadsFragment"
         android:enabled="true"
         android:icon="@drawable/ic_get_app_white"
-        android:title="Downloads"/>
+        android:title="@string/bot_nav_downloads_text"/>
 
     <item
         android:id="@+id/settingsFragment"
         android:enabled="true"
         android:icon="@drawable/ic_settings_white"
-        android:title="Settings"/>
+        android:title="@string/bot_nav_bot_nav_settings_text"/>
 
 
 </menu>

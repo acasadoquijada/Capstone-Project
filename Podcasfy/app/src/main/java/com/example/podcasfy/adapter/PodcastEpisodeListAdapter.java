@@ -79,7 +79,6 @@ public class PodcastEpisodeListAdapter extends  RecyclerView.Adapter<PodcastEpis
             podcastEpisodeName = itemView.findViewById(R.id.podcastEpisodeName);
             podcastEpisodeImage = itemView.findViewById(R.id.podcastEpisodeImage);
 
-            itemView.setOnClickListener(this);
 
             if(mSwipeListener){
                 itemView.setOnTouchListener(new OnSwipeTouchListener(itemView.getContext()) {
@@ -97,6 +96,8 @@ public class PodcastEpisodeListAdapter extends  RecyclerView.Adapter<PodcastEpis
                     }
                 });
             }
+
+            itemView.setOnClickListener(this);
         }
 
         void bind(String name, String image){
