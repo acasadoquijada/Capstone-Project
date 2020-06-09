@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -58,11 +59,8 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     }
     @Override
     public void onItemClick(int clickedItemIndex) {
-
         NavDirections action =
-                     PodcastListFragmentDirections
-                        .actionPodcastListFragment2ToPodcastFragment2();
-
+                PodcastListFragmentDirections.actionPodcastListFragmentToPodcastFragment("id");
         NavHostFragment.findNavController(this).navigate(action);
     }
 
@@ -110,6 +108,8 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
 
         recyclerView1.setAdapter(podcastListAdapter);
         recyclerView2.setAdapter(podcastListAdapter2);
+
+
         return binding.getRoot();
 
     }

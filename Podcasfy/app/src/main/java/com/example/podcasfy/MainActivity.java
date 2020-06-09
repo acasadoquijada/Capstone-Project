@@ -8,6 +8,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+import android.util.Log;
 
 
 import com.example.podcasfy.ui.PodcastEpsiodeFragment;
@@ -32,23 +33,9 @@ public class MainActivity extends AppCompatActivity implements onGridElementClic
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        // get navcontroller
         NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
 
-        //get fragment
-        Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-
-        // setup custom navigator
-        KeepStateNavigator navigator =
-                new KeepStateNavigator(this,navHostFragment.getChildFragmentManager(),R.id.nav_host_fragment);
-
-        navController.getNavigatorProvider().addNavigator(navigator);
-
-        // set navigation graph
-        navController.setGraph(R.navigation.nav_graph_aa);
-
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
     }
 
     @Override

@@ -122,9 +122,9 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
 
     @Override
     public void onItemClick(int clickedItem) {
-        NavDirections action =
-                PodcastFragmentDirections.actionPodcastFragment2ToPodcastEpsiodeFragment2();
 
+        NavDirections action =
+                PodcastFragmentDirections.actionPodcastFragmentToPodcastEpsiodeFragment("id");
         NavHostFragment.findNavController(this).navigate(action);
     }
 }

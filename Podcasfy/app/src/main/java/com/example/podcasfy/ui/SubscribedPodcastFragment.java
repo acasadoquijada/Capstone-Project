@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,12 +66,17 @@ public class SubscribedPodcastFragment extends Fragment implements SubscribedPod
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
-        // HERE I USE MY VIEW MODEL
         super.onActivityCreated(savedInstanceState);
     }
 
     @Override
     public void onItemClick(int clickedItem) {
+
+        NavDirections action =
+        SubscribedPodcastFragmentDirections.actionSubscribedPodcastFragmentToPodcastFragment("id");
+
+        NavHostFragment.findNavController(this).navigate(action);
+
 
     }
 }
