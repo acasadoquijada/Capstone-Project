@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,9 +50,6 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        PodcastFragmentArgs podcastFragmentArgs = PodcastFragmentArgs.fromBundle(requireArguments());
-
-        podcastID = podcastFragmentArgs.getPodcastName();
 
         mBinding = DataBindingUtil.inflate(
                 inflater, R.layout.podcast_fragment, container, false);
@@ -124,7 +122,9 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
 
     @Override
     public void onItemClick(int clickedItem) {
+        NavDirections action =
+                PodcastFragmentDirections.actionPodcastFragment2ToPodcastEpsiodeFragment2();
 
-
+        NavHostFragment.findNavController(this).navigate(action);
     }
 }

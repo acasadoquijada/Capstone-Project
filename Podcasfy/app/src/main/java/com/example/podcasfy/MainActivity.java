@@ -1,35 +1,28 @@
 package com.example.podcasfy;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 
-import com.example.podcasfy.adapter.SubscribedPodcastsListAdapter;
-import com.example.podcasfy.ui.DownloadsFragment;
+import com.example.podcasfy.ui.PodcastEpsiodeFragment;
 import com.example.podcasfy.ui.PodcastListFragment;
-import com.example.podcasfy.ui.SearchFragment;
-import com.example.podcasfy.ui.SettingsFragment;
-import com.example.podcasfy.ui.SubscribedPodcastFragment;
+import com.example.podcasfy.utils.KeepStateNavigator;
+import com.example.podcasfy.utils.onGridElementClick;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements onGridElementClick {
 
     PodcastListFragment podcastListFragment;
 
     private  FragmentManager fragmentManager;
+    private PodcastEpsiodeFragment nextFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,50 +32,27 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        if (savedInstanceState == null) {
-            fragmentManager = getSupportFragmentManager();
+        // get navcontroller
+        NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
 
-            PodcastListFragment podcastListFragment = new PodcastListFragment();
+        //get fragment
+        Fragment navHostFragment = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
-            fragmentManager.beginTransaction().add(R.id.nav_host_fragment, podcastListFragment).commit();
+        // setup custom navigator
+        KeepStateNavigator navigator =
+                new KeepStateNavigator(this,navHostFragment.getChildFragmentManager(),R.id.nav_host_fragment);
 
-            fragmentManager = getSupportFragmentManager();
+        navController.getNavigatorProvider().addNavigator(navigator);
 
-            bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.podcastListFragment:
-                            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment,podcastListFragment);
-                            return true;
-/*
-                    case R.id.searchFragment:
-                        fm.beginTransaction().hide(active).show(searchFragment).commit();
-                        active = searchFragment;
-                        return true;
+        // set navigation graph
+        navController.setGraph(R.navigation.nav_graph_aa);
 
-                    case R.id.subscribedPodcastFragment:
-                        fm.beginTransaction().hide(active).show(subscribedPodcastFragment).commit();
-                        active = subscribedPodcastFragment;
-                        return true;
-
-                    case R.id.donwloadsFragment:
-                        fm.beginTransaction().hide(active).show(downloadsFragment).commit();
-                        active = downloadsFragment;
-                        return true;
-
-                    case R.id.settingsFragment:
-                        fm.beginTransaction().hide(active).show(settingsFragment).commit();
-                        active = settingsFragment;
-                        return true;*/
-                    }
-                    return false;
-                }
-            });
-        }
-
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
     }
 
+    @Override
+    public void onItemSelected(String posdcastName) {
 
+    }
 }

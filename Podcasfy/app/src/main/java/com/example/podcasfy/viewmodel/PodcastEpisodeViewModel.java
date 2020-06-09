@@ -29,6 +29,7 @@ public class PodcastEpisodeViewModel extends AndroidViewModel {
     public PodcastEpisodeViewModel(@NonNull Application application) {
         super(application);
 
+        Log.d("BIXO__","CREATE");
         context = application.getApplicationContext();
         exoPlayer = new MutableLiveData<>();
         ExoPlayer player = ExoPlayerFactory.newSimpleInstance(context);

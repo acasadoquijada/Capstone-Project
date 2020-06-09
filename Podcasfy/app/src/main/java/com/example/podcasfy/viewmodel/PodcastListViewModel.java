@@ -21,11 +21,12 @@ public class PodcastListViewModel extends ViewModel {
 
     @Inject
     public PodcastListViewModel (){
+
+        Log.d("FORSEN_","I CREATE");
         podcastRepository = new PodcastListRepository();
         podcasts = podcastRepository.getPodcasts();
         podcastNames = podcastRepository.getPodcastsName();
         podcastImages = podcastRepository.getPodcastsImage();
-
     }
 
     public LiveData<List<Podcast>> getPodcasts() {
