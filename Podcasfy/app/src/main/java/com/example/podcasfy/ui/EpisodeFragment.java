@@ -1,6 +1,7 @@
 package com.example.podcasfy.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,6 +41,13 @@ public class EpisodeFragment extends Fragment {
 
     private EpisodeViewModel mViewModel;
 
+    private ItemClickListener mCallback;
+
+
+    public interface ItemClickListener {
+        void onItemClick(int clickedItem);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,14 +59,8 @@ public class EpisodeFragment extends Fragment {
         SlidingUpPanelLayout layout = root.findViewById(R.id.sliding_layout);
 
 
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                t.setVisibility(View.INVISIBLE);
-                layout.setEnabled(false);
-                layout.setShadowHeight(0);
-            }
-        });
+
+        b.setOnClickListener(v -> mCallback.onItemClick(2));
     //    playerView = root.findViewById(R.id.video_view);
 
       //  initializePlayer();
@@ -68,6 +70,19 @@ public class EpisodeFragment extends Fragment {
 
         return root;
     }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        try {
+            mCallback = (ItemClickListener) context;
+        }catch (ClassCastException e){
+            throw new ClassCastException(
+                    context.toString() + "must implement onGridElementClick interface");
+        }
+    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

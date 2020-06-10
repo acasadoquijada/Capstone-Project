@@ -10,7 +10,7 @@
 <com.google.android.exoplayer2.ui.PlayerView
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/video_view"
+    android:id="@+id/mainMediaReproducer"
     android:layout_width="300dp"
     android:layout_height="300dp"
     app:controller_layout_id="@layout/custom_playback_control"

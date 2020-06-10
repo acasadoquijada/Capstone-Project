@@ -1,14 +1,11 @@
 package com.example.podcasfy;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +35,7 @@ public class PodcastEpisodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_podcast_episode);
 
-        playerView = findViewById(R.id.video_view);
+        playerView = findViewById(R.id.mainMediaReproducer);
         ll = findViewById(R.id.my_test);
         text = findViewById(R.id.button_test);
         playerView.setOnTouchListener(new OnSwipeTouchListener(this) {

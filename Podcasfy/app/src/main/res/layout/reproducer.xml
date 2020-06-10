@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/slingindEpisodeImage"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/episode" />
+
+    <TextView
+        android:id="@+id/slidingName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Entre planos y cucharillas"
+        app:layout_constraintBottom_toTopOf="@+id/slingindEpisodeImage"
+        app:layout_constraintEnd_toStartOf="@+id/slidingMediaReproducer"
+        app:layout_constraintStart_toEndOf="@+id/slingindEpisodeImage"
+        app:layout_constraintTop_toBottomOf="@+id/slingindEpisodeImage"
+        app:layout_constraintVertical_bias="0.494" />
+
+    <ImageView
+        android:id="@+id/slidingMediaReproducer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/slingindEpisodeImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/slingindEpisodeImage"
+        app:srcCompat="@drawable/ic_play_arrow_black" />
+
+    <ImageView
+        android:id="@+id/mainEpisodeImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="172dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.451"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/episode" />
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/mainMediaReproducer"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingDefaultResource" />
+
+    <TextView
+        android:id="@+id/mainEpsiodeDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/mainMediaReproducer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainEpisodeImage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

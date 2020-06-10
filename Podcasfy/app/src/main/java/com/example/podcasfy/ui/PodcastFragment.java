@@ -38,6 +38,12 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
     private String podcastID;
     private PodcastEpisodeListAdapter podcastEpisodeListAdapter;
 
+    private EpisodeFragment.ItemClickListener mCallback;
+
+
+    public interface ItemClickListener {
+        void onItemClick(int clickedItem);
+    }
 
     public PodcastFragment(){
 
