@@ -25,6 +25,8 @@ public class MainFragment extends Fragment implements PodcastFragment.ItemClickL
 
         binding = DataBindingUtil.inflate(inflater,R.layout.main_fragment,container,false);
 
+
+        binding.reproducer.slidingMediaReproducer.setOnClickListener( v -> Log.d("TAG","I'm clicked"));
         SlidingUpPanelLayout slidingUpPanelLayout = binding.slidingLayout;
 
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
