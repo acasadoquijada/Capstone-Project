@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/podcastListFragmentContainer"
+        android:id="@+id/podcastListFragment"
         android:enabled="true"
         android:icon="@drawable/ic_home"
         android:title="@string/bot_nav_home_text"/>
@@ -28,6 +28,5 @@
         android:enabled="true"
         android:icon="@drawable/ic_settings_white"
         android:title="@string/bot_nav_bot_nav_settings_text"/>
-
 
 </menu>

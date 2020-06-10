@@ -17,7 +17,7 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
-public class PodcastEpisodeViewModel extends AndroidViewModel {
+public class EpisodeViewModel extends AndroidViewModel {
 
     private MutableLiveData<ExoPlayer> exoPlayer;
     private String uri;
@@ -26,14 +26,22 @@ public class PodcastEpisodeViewModel extends AndroidViewModel {
     private long playbackPosition = 0;
     private Context context;
 
-    public PodcastEpisodeViewModel(@NonNull Application application) {
+    public EpisodeViewModel(@NonNull Application application) {
         super(application);
 
-        Log.d("BIXO__","CREATE");
+        // Create MutableLiveData
         context = application.getApplicationContext();
         exoPlayer = new MutableLiveData<>();
+
+        // Create ExoPlayer
         ExoPlayer player = ExoPlayerFactory.newSimpleInstance(context);
+        player.seekTo(Math.max(0,playbackPosition));
+        player.setPlayWhenReady(playWhenReady);
+        player.seekTo(currentWindow, playbackPosition);
+
+        // Set ExoPlayer value to MutableLiveData
         exoPlayer.setValue(player);
+
     }
 
     private MediaSource buildMediaSource(Uri uri) {
@@ -49,15 +57,13 @@ public class PodcastEpisodeViewModel extends AndroidViewModel {
 
     public LiveData<ExoPlayer> getExoPlayer(String media) {
 
-            ExoPlayer player = ExoPlayerFactory.newSimpleInstance(context);
-            exoPlayer.setValue(player);
+        // Get MediaSource
+        Uri uri = Uri.parse(media);
+        MediaSource mediaSource = buildMediaSource(uri);
 
-            Uri uri = Uri.parse(media);
-            MediaSource mediaSource = buildMediaSource(uri);
-            player.setPlayWhenReady(playWhenReady);
-            player.seekTo(currentWindow, playbackPosition);
-            player.prepare(mediaSource, false, false);
+        // Prepare ExoPlayer
+        exoPlayer.getValue().prepare(mediaSource,false,false);
 
-            return exoPlayer;
+        return exoPlayer;
     }
 }

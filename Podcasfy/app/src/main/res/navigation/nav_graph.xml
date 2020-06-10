@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/podcastEpsiodeFragment"
-        android:name="com.example.podcasfy.ui.PodcastEpsiodeFragment"
+        android:name="com.example.podcasfy.ui.EpisodeFragment"
         android:label="PodcastEpsiodeFragment" >
         <argument
             android:name="podcastEpsiodeId"

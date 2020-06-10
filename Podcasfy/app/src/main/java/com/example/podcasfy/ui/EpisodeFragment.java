@@ -1,26 +1,21 @@
 package com.example.podcasfy.ui;
 
 import android.annotation.SuppressLint;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 
 import com.example.podcasfy.R;
-import com.example.podcasfy.viewmodel.PodcastEpisodeViewModel;
-import com.example.podcasfy.viewmodel.PodcastViewModel;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.example.podcasfy.viewmodel.EpisodeViewModel;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
@@ -28,8 +23,9 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-public class PodcastEpsiodeFragment extends Fragment {
+public class EpisodeFragment extends Fragment {
 
     private static final String PLAYER_CURRENT_POS_KEY = "player_position";
     private static final String PLAYER_IS_READY_KEY = "player_ready";
@@ -42,28 +38,45 @@ public class PodcastEpsiodeFragment extends Fragment {
     private int currentWindow = 0;
     private long playbackPosition = 0;
 
-    private PodcastEpisodeViewModel mViewModel;
+    private EpisodeViewModel mViewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.podcast_episode_fragment,container,false);
+        View root = inflater.inflate(R.layout.episode_fragment,container,false);
 
-        playerView = root.findViewById(R.id.video_view);
+        TextView t = root.findViewById(R.id.test);
+        Button b = root.findViewById(R.id.test_button);
+        SlidingUpPanelLayout layout = root.findViewById(R.id.sliding_layout);
 
-        initializePlayer();
+
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                t.setVisibility(View.INVISIBLE);
+                layout.setEnabled(false);
+                layout.setShadowHeight(0);
+            }
+        });
+    //    playerView = root.findViewById(R.id.video_view);
+
+      //  initializePlayer();
+
+
+
+
         return root;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mViewModel = new PodcastEpisodeViewModel(requireActivity().getApplication());
+/*
+        mViewModel = new EpisodeViewModel(requireActivity().getApplication());
 
         mViewModel.getExoPlayer("https://storage.googleapis.com/exoplayer-test-media-0/Jazz_In_Paris.mp3").
-                observe(getViewLifecycleOwner(), exoPlayer -> playerView.setPlayer(exoPlayer));
+                observe(getViewLifecycleOwner(), exoPlayer -> playerView.setPlayer(exoPlayer));*/
     }
 
     private void initializePlayer() {

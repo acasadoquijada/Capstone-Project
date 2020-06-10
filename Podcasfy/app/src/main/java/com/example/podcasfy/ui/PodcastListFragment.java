@@ -3,36 +3,28 @@ package com.example.podcasfy.ui;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.podcasfy.MainActivity;
 import com.example.podcasfy.adapter.PodcastListAdapter;
 import com.example.podcasfy.databinding.PodcastListFragmentBinding;
-import com.example.podcasfy.model.PodcastEpisode;
-import com.example.podcasfy.utils.onGridElementClick;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.example.podcasfy.R;
 import com.example.podcasfy.model.Podcast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class PodcastListFragment extends Fragment implements PodcastListAdapter.ItemClickListener  {
 
@@ -44,19 +36,8 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     private PodcastListAdapter podcastListAdapter;
     private PodcastListAdapter podcastListAdapter2;
 
-    private onGridElementClick mCallback;
     private PodcastListFragmentBinding binding;
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
 
-        try {
-            mCallback = (onGridElementClick) context;
-        }catch (ClassCastException e){
-            throw new ClassCastException(
-                    context.toString() + "must implement onGridElementClick interface");
-        }
-    }
     @Override
     public void onItemClick(int clickedItemIndex) {
         NavDirections action =
