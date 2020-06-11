@@ -19,13 +19,6 @@
         app:navGraph="@navigation/nav_graph" />
 
     <include layout="@layout/reproducer" android:id="@+id/reproducer"/>
- <!--   <TextView
-        android:visibility="visible"
-        android:id="@+id/test"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center|top"
-        android:text="The Awesome Sliding Up Panel"
-        android:textSize="16sp" />-->
+
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 </layout>

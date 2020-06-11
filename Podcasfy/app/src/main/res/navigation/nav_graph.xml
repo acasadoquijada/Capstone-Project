@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/subscribedPodcastFragment"
-        android:name="com.example.podcasfy.ui.SubscribedPodcastFragment"
+        android:name="com.example.podcasfy.ui.SubscribedFragment"
         android:label="SubscribedPodcastFragment" >
         <action
             android:id="@+id/action_subscribedPodcastFragment_to_podcastFragment"

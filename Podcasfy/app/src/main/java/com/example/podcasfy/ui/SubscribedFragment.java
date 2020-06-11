@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,12 +19,11 @@ import com.example.podcasfy.model.Podcast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class SubscribedPodcastFragment extends Fragment implements SubscribedPodcastsListAdapter.ItemClickListener{
+public class SubscribedFragment extends Fragment implements SubscribedPodcastsListAdapter.ItemClickListener{
 
-    public static SubscribedPodcastFragment newInstance() {
-        return new SubscribedPodcastFragment();
+    public static SubscribedFragment newInstance() {
+        return new SubscribedFragment();
     }
 
     @Nullable
