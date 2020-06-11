@@ -87,7 +87,7 @@ public class SubscribedPodcastsListAdapter extends RecyclerView.Adapter<Subscrib
             if(provider.toLowerCase().equals("ivoox")){
                 Picasso.get().load(R.drawable.ivoox_logo).into(this.provider);
             } else if(provider.toLowerCase().equals("spotify")){
-                Picasso.get().load(R.drawable.spotify_logo).into(this.provider);
+                Picasso.get().load(R.drawable.ic_spotify_sketch).into(this.provider);
             }
             Log.d("HOLA_", name);
             this.name.setText(name);

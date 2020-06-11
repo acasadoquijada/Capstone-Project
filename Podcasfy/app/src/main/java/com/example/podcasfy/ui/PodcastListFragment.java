@@ -70,7 +70,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     private void setupSubscriptions(){
         RecyclerView recyclerViewSubscriptions = binding.podcastListSubscription;
         recyclerViewSubscriptions.setLayoutManager(createGridLayoutManager());
-        mAdapterSubscriptions = createPodcastListAdapter();
+        mAdapterSubscriptions = createPodcastListAdapter(PodcastListAdapter.SUBSCRIBED);
         recyclerViewSubscriptions.setAdapter(mAdapterSubscriptions);
     }
 
@@ -80,7 +80,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     private void setupIvoox(){
         RecyclerView recyclerViewIvoox =  binding.podcastListIvoox;
         recyclerViewIvoox.setLayoutManager(createGridLayoutManager());
-        mAdapterIvoox = createPodcastListAdapter();
+        mAdapterIvoox = createPodcastListAdapter(PodcastListAdapter.IVOOX);
         recyclerViewIvoox.setAdapter(mAdapterIvoox);
     }
 
@@ -90,7 +90,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     private void setupSpotify(){
         RecyclerView recyclerViewSpotify =  binding.podcastListSpotify;
         recyclerViewSpotify.setLayoutManager(createGridLayoutManager());
-        mAdapterSpotify = createPodcastListAdapter();
+        mAdapterSpotify = createPodcastListAdapter(PodcastListAdapter.SPOTIFY);
         recyclerViewSpotify.setAdapter(mAdapterSpotify);
     }
 
@@ -109,8 +109,8 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         return manager;
     }
 
-    private PodcastListAdapter createPodcastListAdapter(){
-        return new PodcastListAdapter(this);
+    private PodcastListAdapter createPodcastListAdapter(int provider){
+        return new PodcastListAdapter(this, provider);
     }
 
 

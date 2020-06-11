@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements EpisodeFragment.I
 
     /**
      * To setup the BottomNavigationView navigation, we get a reference of the fragment that
-     * contains the navGraph we want to use, then we get the NavController with it. Finally
+     * contains the navGraph we want to use, then we get the NavController within it. Finally
      * we setup the BottonNavigationView with the NavController
      */
     private void setUpBottonNavigation(){

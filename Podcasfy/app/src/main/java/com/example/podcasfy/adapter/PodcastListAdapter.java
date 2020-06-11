@@ -22,9 +22,16 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
 
     private List<Podcast> mPodcastList;
     private final ItemClickListener mItemClickListener;
+    public final static int SUBSCRIBED = 0;
+    public final static int IVOOX = 1;
+    public final static int SPOTIFY = 2;
 
-    public PodcastListAdapter(ItemClickListener itemClickListener){
+    private int provider;
+
+
+    public PodcastListAdapter(ItemClickListener itemClickListener, int provider){
         this.mItemClickListener = itemClickListener;
+        this.provider = provider;
     }
 
     public interface ItemClickListener {
@@ -68,6 +75,14 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
 
         PodcastHolder(@NonNull PodcastInListBinding binding) {
             super(binding.getRoot());
+
+            if(provider == SUBSCRIBED){
+                binding.providerLogo.setImageResource(R.drawable.ic_bookmark_black);
+            } else if(provider == IVOOX){
+                binding.providerLogo.setImageResource(R.drawable.ivoox_logo);
+            } else {
+                binding.providerLogo.setImageResource(R.drawable.ic_spotify_sketch);
+            }
 
             this.binding = binding;
             itemView.setOnClickListener(this);

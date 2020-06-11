@@ -71,7 +71,7 @@ public class SubscribedFragment extends Fragment implements SubscribedPodcastsLi
     public void onItemClick(int clickedItem) {
 
         NavDirections action =
-        SubscribedPodcastFragmentDirections.actionSubscribedPodcastFragmentToPodcastFragment("id");
+        SubscribedFragmentDirections.actionSubscribedPodcastFragmentToPodcastFragment("id");
 
         NavHostFragment.findNavController(this).navigate(action);
 

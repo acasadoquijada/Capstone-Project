@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
 import com.example.podcasfy.adapter.PodcastListAdapter;
+import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
 
 import java.util.Objects;
@@ -40,7 +41,7 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
 
         // Adapter, RecyclerView and LayoutManager
 
-        adapter = new PodcastListAdapter(this);
+        adapter = new PodcastListAdapter(this, PodcastListAdapter.SUBSCRIBED);
         RecyclerView recyclerView = rootView.findViewById(R.id.searchRecyclerView);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(),1);
 
