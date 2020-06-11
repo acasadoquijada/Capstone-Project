@@ -6,13 +6,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constrainLayout"
-        android:layout_width="125dp"
-        android:layout_height="125dp"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
         android:layout_margin="8dp">
 
         <ImageView
             android:id="@+id/podcastImage"
-            android:layout_width="125dp"
+            android:layout_width="100dp"
             android:layout_height="100dp"
             app:layout_constraintBottom_toTopOf="@+id/podcastName"
             app:layout_constraintEnd_toEndOf="parent"
