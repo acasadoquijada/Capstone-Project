@@ -13,4 +13,5 @@
 
     <string name="ivoox_provider">ivoox</string>
     <string name="spotify_provider">spotify</string>
+    <string name="subscriptions_label_text">Subscriptions</string>
 </resources>
