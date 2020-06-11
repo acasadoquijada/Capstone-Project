@@ -1,17 +1,14 @@
 package com.example.podcasfy.adapter;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
+import com.example.podcasfy.databinding.SubscribedPodcastBinding;
 import com.example.podcasfy.model.Podcast;
 import com.squareup.picasso.Picasso;
 
@@ -22,12 +19,9 @@ public class SubscribedPodcastsListAdapter extends RecyclerView.Adapter<Subscrib
     private List<Podcast> subscriptions;
     private final ItemClickListener mItemClickListener;
 
-
-
     public interface ItemClickListener {
         void onItemClick(int clickedItem);
     }
-
 
     public SubscribedPodcastsListAdapter(ItemClickListener mItemClickListener){
         this.mItemClickListener = mItemClickListener;
@@ -40,13 +34,14 @@ public class SubscribedPodcastsListAdapter extends RecyclerView.Adapter<Subscrib
     @NonNull
     @Override
     public SubscribedHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
 
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        View root = layoutInflater.inflate(R.layout.subscribed_podcast,parent,false);
+        SubscribedPodcastBinding binding =
+                SubscribedPodcastBinding.inflate(inflater, parent, false);
 
-        return new SubscribedHolder(root);
+
+        return new SubscribedHolder(binding);
     }
 
     @Override
@@ -56,7 +51,6 @@ public class SubscribedPodcastsListAdapter extends RecyclerView.Adapter<Subscrib
                 subscriptions.get(position).getName(),
                 subscriptions.get(position).getMediaURL(),
                 subscriptions.get(position).getProvider());
-
     }
 
     @Override
@@ -66,37 +60,69 @@ public class SubscribedPodcastsListAdapter extends RecyclerView.Adapter<Subscrib
 
     public class SubscribedHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ImageView logo;
-        private ImageView provider;
-        private TextView name;
-        public SubscribedHolder(@NonNull View itemView) {
-            super(itemView);
+        private SubscribedPodcastBinding binding;
+        private final String spotify;
+        private final String ivoox;
 
-            logo = itemView.findViewById(R.id.podcastLogo);
-            provider = itemView.findViewById(R.id.provider);
-            name = itemView.findViewById(R.id.podcastName);
+        SubscribedHolder(@NonNull SubscribedPodcastBinding binding) {
+            super(binding.getRoot());
 
+            ivoox = binding.getRoot().getContext().getString(R.string.ivoox_provider);
+            spotify=  binding.getRoot().getContext().getString(R.string.spotify_provider);
+
+            this.binding = binding;
             itemView.setOnClickListener(this);
-
         }
+
+        /**
+         * To bind the SubscribedPodcast information to the ViewHolder
+         * @param name of the podcast
+         * @param image of the podcast
+         * @param provider of the podcast
+         */
 
         void bind(String name, String image, String provider){
 
-            Picasso.get().load(image).into(logo);
-            // Check if ivoox or spotify
-            if(provider.toLowerCase().equals("ivoox")){
-                Picasso.get().load(R.drawable.ivoox_logo).into(this.provider);
-            } else if(provider.toLowerCase().equals("spotify")){
-                Picasso.get().load(R.drawable.ic_spotify_sketch).into(this.provider);
+            binding.podcastName.setText(name);
+
+            Picasso.get().load(image).into(binding.podcastLogo);
+
+            setupProviderLogo(provider);
+        }
+
+        /**
+         * To setup the corresponding logo image to identify the Podcast's provider
+         * @param provider String identifier
+         */
+
+        private void setupProviderLogo(String provider){
+            if(provider.toLowerCase().equals(ivoox)){
+                setIvooxLogo();
+            } else if(provider.toLowerCase().equals(spotify)){
+                setSpotifyLogo();
             }
-            Log.d("HOLA_", name);
-            this.name.setText(name);
+        }
+
+        /**
+         * To setup the Ivoox logo
+         */
+        private void setIvooxLogo(){
+            Picasso.get().load(R.drawable.ivoox_logo).into(binding.provider);
+        }
+
+        /**
+         * To setup the Spotify logo
+         */
+
+        private void setSpotifyLogo(){
+            // Picasso doesn't support SVG
+            // https://github.com/square/picasso/issues/1109
+            binding.provider.setImageResource(R.drawable.ic_spotify_sketch);
         }
 
         @Override
         public void onClick(View v) {
             int pos = getAdapterPosition();
-
             mItemClickListener.onItemClick(pos);
         }
     }

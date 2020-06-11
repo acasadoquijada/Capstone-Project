@@ -14,10 +14,36 @@ import javax.inject.Singleton;
 public class PodcastListRepository {
 
     private  MutableLiveData<List<Podcast>> podcasts;
+    private  MutableLiveData<List<Podcast>> subscriptionList;
     private  MutableLiveData<List<String>> podcastsName;
     private  MutableLiveData<List<String>> podcastImage;
 
+
     public PodcastListRepository(){}
+
+    public MutableLiveData<List<Podcast>> getSubscriptionList() {
+
+        if(subscriptionList != null){
+            return subscriptionList;
+        }
+
+        subscriptionList = new MutableLiveData<>();
+        List<Podcast> podcastList = new ArrayList<>();
+
+        Podcast p1 = new Podcast("Planos y Centellas","description","url",
+                "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg","Ivoox");
+
+        Podcast p2 = new Podcast("Amigos del Mapa","description2","url",
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","spotify");
+
+        podcastList.add(p1);
+        podcastList.add(p2);
+        podcastList.add(p2);
+
+        subscriptionList.setValue(podcastList);
+
+        return subscriptionList;
+    }
 
     public LiveData<List<Podcast>> getPodcasts(){
 
@@ -42,7 +68,6 @@ public class PodcastListRepository {
                 "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
         Podcast p6 = new Podcast("Amigos del Mapa","description2","url",
                 "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
-
 
         podcastList.add(p1);
         podcastList.add(p2);
