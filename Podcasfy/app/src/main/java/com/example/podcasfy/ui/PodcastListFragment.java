@@ -21,36 +21,27 @@ import com.example.podcasfy.adapter.PodcastListAdapter;
 import com.example.podcasfy.databinding.PodcastListFragmentBinding;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.example.podcasfy.R;
-import com.example.podcasfy.model.Podcast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PodcastListFragment extends Fragment implements PodcastListAdapter.ItemClickListener  {
 
     private PodcastListViewModel mViewModel;
-    private List<Podcast> mPodcasts;
-    private List<String> mPodcastNames;
-    private List<String> mPodcastImages;
 
-    private PodcastListAdapter podcastListAdapter;
-    private PodcastListAdapter podcastListAdapter2;
+    private PodcastListAdapter mAdapterSubscriptions;
+    private PodcastListAdapter mAdapterIvoox;
+    private PodcastListAdapter mAdapterSpotify;
 
     private PodcastListFragmentBinding binding;
 
-    @Override
-    public void onItemClick(int clickedItemIndex) {
-        NavDirections action =
-                PodcastListFragmentDirections.actionPodcastListFragmentToPodcastFragment("id");
-        NavHostFragment.findNavController(this).navigate(action);
-    }
-
-    public static PodcastListFragment newInstance() {
-        return new PodcastListFragment();
-    }
-
     public PodcastListFragment(){}
 
+    /**
+     * To inflate the view, we inflate the view using DataBinding, then we setup the different
+     * RecyclerViews with its Adapters and LayoutManagers
+     * @param inflater Layout inflater object
+     * @param container ViewGroup
+     * @param savedInstanceState bundle
+     * @return the inflated view
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -58,44 +49,76 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         binding =
                 DataBindingUtil.inflate(inflater,R.layout.podcast_list_fragment, container, false);
 
-        RecyclerView recyclerView1 = binding.podcastList1;
-        RecyclerView recyclerView2 =  binding.podcastList2;
-
-        binding.setHandler(this);
-
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1);
-        GridLayoutManager gridLayoutManager2 = new GridLayoutManager(getContext(), 1);
-
-        gridLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        gridLayoutManager2.setOrientation(RecyclerView.HORIZONTAL);
-
-        recyclerView1.setLayoutManager(gridLayoutManager);
-        recyclerView2.setLayoutManager(gridLayoutManager2);
-
-        podcastListAdapter = null;
-        podcastListAdapter2 = null;
-
-        try {
-            mPodcasts = new ArrayList<>();
-            mPodcastImages = new ArrayList<>();
-            mPodcastNames = new ArrayList<>();
-            podcastListAdapter = new PodcastListAdapter(mPodcasts,this);
-            podcastListAdapter2 = new PodcastListAdapter(mPodcasts,this);
-     //       podcastListAdapter = new PodcastListAdapter(mPodcastNames,mPodcastImages,this);
-        //    podcastListAdapter2 = new PodcastListAdapter(mPodcastNames,mPodcastImages,this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        recyclerView1.setAdapter(podcastListAdapter);
-        recyclerView2.setAdapter(podcastListAdapter2);
-
+        setupRecyclerViews();
 
         return binding.getRoot();
 
     }
 
+    /**
+     * To setup the RecyclerViews we create the necessary LayoutManager and PodcastListAdapter
+     */
+    private void setupRecyclerViews(){
+        setupSubscriptions();
+        setupIvoox();
+        setupSpotify();
+    }
 
+    /**
+     * To setup the RecyclerView, LayoutManager and Adapter for the Subscriptions RecyclerView
+     */
+    private void setupSubscriptions(){
+        RecyclerView recyclerViewSubscriptions = binding.podcastListSubscription;
+        recyclerViewSubscriptions.setLayoutManager(createGridLayoutManager());
+        mAdapterSubscriptions = createPodcastListAdapter();
+        recyclerViewSubscriptions.setAdapter(mAdapterSubscriptions);
+    }
+
+    /**
+     * To setup the RecyclerView, LayoutManager and Adapter for the Ivoox RecyclerView
+     */
+    private void setupIvoox(){
+        RecyclerView recyclerViewIvoox =  binding.podcastListIvoox;
+        recyclerViewIvoox.setLayoutManager(createGridLayoutManager());
+        mAdapterIvoox = createPodcastListAdapter();
+        recyclerViewIvoox.setAdapter(mAdapterIvoox);
+    }
+
+    /**
+     * To setup the RecyclerView, LayoutManager and Adapter for the Spotify RecyclerView
+     */
+    private void setupSpotify(){
+        RecyclerView recyclerViewSpotify =  binding.podcastListSpotify;
+        recyclerViewSpotify.setLayoutManager(createGridLayoutManager());
+        mAdapterSpotify = createPodcastListAdapter();
+        recyclerViewSpotify.setAdapter(mAdapterSpotify);
+    }
+
+    /**
+     * To create a GridLayoutManager with spanCount = 1 and horizontal orientation
+     * @return a GridLayoutManager object with spanCount = 1 and horizontal orientation
+     */
+    private GridLayoutManager createGridLayoutManager(){
+
+        int spanCount = 1;
+
+        GridLayoutManager manager = new GridLayoutManager(getContext(), spanCount);
+
+        manager.setOrientation(RecyclerView.HORIZONTAL);
+
+        return manager;
+    }
+
+    private PodcastListAdapter createPodcastListAdapter(){
+        return new PodcastListAdapter(this);
+    }
+
+
+    /**
+     * To create the ViewModel and setup the observer, we observe the changes in the Podcasts field
+     * and update the podcastListAdapter with the new list of podcasts
+     * @param savedInstanceState bundle
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -103,33 +126,22 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         mViewModel = new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
 
         mViewModel.getPodcasts().observe(getViewLifecycleOwner(), podcasts -> {
-
-
-            mPodcasts.clear();
-            mPodcasts = podcasts;
-            podcastListAdapter.setPodcasts(podcasts);
-            podcastListAdapter2.setPodcasts(podcasts);
+            mAdapterSubscriptions.setPodcasts(podcasts);
+            mAdapterIvoox.setPodcasts(podcasts);
+            mAdapterSpotify.setPodcasts(podcasts);
         });
-/*
-        mViewModel.getPodcastImages().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> images) {
-                mPodcastImages.clear();
-                mPodcastImages = images;
-             //   podcastListAdapter.setPodcastsImages(images);
-   //             podcastListAdapter2.setPodcastsImages(images);
+    }
 
-            }
-        });
 
-        mViewModel.getPodcastNames().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> names) {
-                mPodcastNames.clear();
-                mPodcastNames = names;
-                podcastListAdapter.setPodcastNames(names);
-                podcastListAdapter2.setPodcastNames(names);
-            }
-        });*/
+    /**
+     * To launch a PodcastFragment, we open a PodcastFragment with the id of the Podcast selected
+     * using the NavigationComponent
+     * @param clickedItemIndex index of the selected Podcast
+     */
+    @Override
+    public void onItemClick(int clickedItemIndex) {
+        NavDirections action =
+                PodcastListFragmentDirections.actionPodcastListFragmentToPodcastFragment("id");
+        NavHostFragment.findNavController(this).navigate(action);
     }
 }

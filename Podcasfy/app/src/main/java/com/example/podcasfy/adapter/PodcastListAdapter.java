@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.podcasfy.R;
+import com.example.podcasfy.databinding.PodcastInListBinding;
 import com.example.podcasfy.model.Podcast;
 import com.squareup.picasso.Picasso;
 
@@ -19,96 +20,64 @@ import java.util.List;
 
 public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter.PodcastHolder> {
 
-    private List<String> mPodcastNames;
-    private List<String> mPodcastImages;
-    private List<Podcast> mPodcasts;
+    private List<Podcast> mPodcastList;
     private final ItemClickListener mItemClickListener;
-
-
-    public PodcastListAdapter(List<String> podcastNames, List<String> podcastImages, ItemClickListener itemClickListener) throws Exception {
-        if(podcastNames.size() != podcastImages.size()){
-            throw new Exception("PodcastNames and PodcastImages MUST have same size");
-        }
-
-        this.mPodcastNames = podcastNames;
-        this.mPodcastImages = podcastImages;
-        this.mItemClickListener = itemClickListener;
-
-    }
 
     public PodcastListAdapter(ItemClickListener itemClickListener){
         this.mItemClickListener = itemClickListener;
-    }
-    public PodcastListAdapter(List<Podcast> podcast, ItemClickListener itemClickListener){
-
-        this.mPodcasts = podcast;
-        this.mItemClickListener = itemClickListener;
-
     }
 
     public interface ItemClickListener {
         void onItemClick(int clickedItem);
     }
 
-    public void setPodcastNames(List<String> podcastNames){
-
-        this.mPodcastNames = podcastNames;
-    }
-
-    public void setPodcastsImages(List<String> podcastImages){
-
-        this.mPodcastImages = podcastImages;
-    }
-
     public void setPodcasts(List<Podcast> podcasts){
 
-        this.mPodcasts = podcasts;
+        this.mPodcastList = podcasts;
     }
 
     @NonNull
     @Override
     public PodcastHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
 
-        LayoutInflater inflater = LayoutInflater.from(context);
-        int layoutIdForListItem = R.layout.podcast_in_list;
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        View view = inflater.inflate(layoutIdForListItem, parent, false);
+        PodcastInListBinding binding =
+                PodcastInListBinding.inflate(inflater, parent, false);
 
-        return new PodcastHolder(view);
+        return new PodcastHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PodcastHolder holder, int position) {
 
-        holder.bind (mPodcasts.get(position).getName(), mPodcasts.get(position).getMediaURL());
+        holder.bind (mPodcastList.get(position).getName(), mPodcastList.get(position).getMediaURL());
     }
 
     @Override
     public int getItemCount() {
-        if(mPodcasts != null)
-            return mPodcasts.size();
+        if(mPodcastList != null)
+            return mPodcastList.size();
         return 0;
     }
 
 
     class PodcastHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private final TextView itemName;
-        private final ImageView itemImage;
+        private PodcastInListBinding binding;
 
-        PodcastHolder(@NonNull View itemView) {
-            super(itemView);
+        PodcastHolder(@NonNull PodcastInListBinding binding) {
+            super(binding.getRoot());
 
-            itemName = itemView.findViewById(R.id.podcastName);
-            itemImage = itemView.findViewById(R.id.podcastImage);
-
+            this.binding = binding;
             itemView.setOnClickListener(this);
         }
 
         void bind(String podcastName, String podcastImageURL){
-            itemName.setText(podcastName);
-            Picasso.get().load(podcastImageURL).into(itemImage);
+
+            binding.podcastName.setText(podcastName);
+
+            Picasso.get().load(podcastImageURL).into(binding.podcastImage);
 
         }
 
@@ -118,5 +87,4 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
             mItemClickListener.onItemClick(pos);
         }
     }
-
 }
