@@ -26,6 +26,7 @@ import com.example.podcasfy.adapter.PodcastEpisodeListAdapter;
 import com.example.podcasfy.databinding.PodcastFragmentBinding;
 import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
+import com.example.podcasfy.viewmodel.ReproducerViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
@@ -34,6 +35,7 @@ import java.util.Objects;
 public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapter.ItemClickListener {
 
     private PodcastViewModel mViewModel;
+    private ReproducerViewModel reproducerViewModel;
     private PodcastFragmentBinding mBinding;
     private String podcastID;
     private PodcastEpisodeListAdapter podcastEpisodeListAdapter;
@@ -109,6 +111,8 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        reproducerViewModel = new ViewModelProvider(requireActivity()).get(ReproducerViewModel.class);
+
 
         mViewModel = new ViewModelProvider(requireActivity()).get(PodcastViewModel.class);
         mViewModel.setPodcastId(podcastID);
@@ -129,8 +133,11 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
     @Override
     public void onItemClick(int clickedItem) {
 
-        NavDirections action =
+        reproducerViewModel.setName("pepe");
+
+
+   /*     NavDirections action =
                 PodcastFragmentDirections.actionPodcastFragmentToPodcastEpsiodeFragment("id");
-        NavHostFragment.findNavController(this).navigate(action);
+        NavHostFragment.findNavController(this).navigate(action);*/
     }
 }
