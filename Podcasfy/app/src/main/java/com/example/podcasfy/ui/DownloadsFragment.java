@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -16,34 +17,62 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
 import com.example.podcasfy.adapter.PodcastEpisodeListAdapter;
+import com.example.podcasfy.databinding.DownloadFragmentBinding;
+import com.example.podcasfy.model.PodcastEpisode;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
+
+import java.util.List;
 
 public class DownloadsFragment extends Fragment implements PodcastEpisodeListAdapter.ItemClickListener {
 
+    private DownloadFragmentBinding binding;
     private PodcastEpisodeListAdapter adapter;
     private PodcastViewModel mViewModel;
 
-    public static DownloadsFragment newInstance() {
-        return new DownloadsFragment();
-    }
+    public DownloadsFragment(){}
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        binding = DataBindingUtil.inflate(inflater,R.layout.download_fragment,container,false);
 
-        View root = inflater.inflate(R.layout.download_fragment,container,false);
+        setupRecyclerView();
 
+        return binding.getRoot();
+
+    }
+
+    /**
+     * To setup the RecyclerViewDownloads we create the necessary LayoutManager and PodcastListAdapter
+     */
+    private void setupRecyclerView(){
         // Setting Adapter, RecyclerView and LayoutManager
+
+        RecyclerView recyclerViewDownloads = binding.downloadRecyclerView;
+
+        recyclerViewDownloads.setAdapter(createPodcastEpisodeListAdapter());
+
+        recyclerViewDownloads.setLayoutManager(createGridLayoutManager());
+
+    }
+
+    /**
+     * To create a GridLayoutManager with spanCount = 1 and vertical orientation
+     * @return a GridLayoutManager object with spanCount = 1 and vertical orientation
+     */
+    private GridLayoutManager createGridLayoutManager(){
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),1);
+        gridLayoutManager.setOrientation(RecyclerView.VERTICAL);
+
+        return gridLayoutManager;
+
+    }
+
+    private PodcastEpisodeListAdapter createPodcastEpisodeListAdapter(){
         adapter = new PodcastEpisodeListAdapter(this,false);
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(),1);
-        RecyclerView view = root.findViewById(R.id.downloadRecyclerView);
-
-        view.setAdapter(adapter);
-        view.setLayoutManager(layoutManager);
-
-
-        return root;
-
+        return adapter;
     }
 
     @Override
@@ -57,9 +86,33 @@ public class DownloadsFragment extends Fragment implements PodcastEpisodeListAda
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mViewModel = new PodcastViewModel();
-
-        mViewModel.getDonwloadedEpisodes().observe(getViewLifecycleOwner(), podcastEpisodes -> adapter.setPodcastEpisodes(podcastEpisodes));
+        setupPodcastViewModel();
     }
+
+    /**
+     * To setup the PodcastViewModel, we create the PodcastViewModel and observe the downloaded
+     * episodes
+     */
+
+    private void setupPodcastViewModel(){
+        createPodcastViewModel();
+        observeDownloads();
+    }
+
+    private void createPodcastViewModel(){
+        mViewModel = new PodcastViewModel();
+    }
+
+    /**
+     * To observe the downloaded episodes information and update the UI
+     */
+    private void observeDownloads(){
+        mViewModel.getDonwloadedEpisodes().observe(getViewLifecycleOwner(), this::updateAdapterEpisodes);
+    }
+
+    private void updateAdapterEpisodes(List<PodcastEpisode> podcastEpisodes){
+        adapter.setPodcastEpisodes(podcastEpisodes);
+    }
+
+
 }
