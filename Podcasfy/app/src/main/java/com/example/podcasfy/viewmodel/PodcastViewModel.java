@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
-import com.example.podcasfy.model.PodcastEpisode;
 import com.example.podcasfy.repository.PodcastRepository;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class PodcastViewModel extends ViewModel {
 
     private LiveData<Podcast> podcast;
     private LiveData<List<Podcast>> podcasts;
-    private LiveData<List<PodcastEpisode>> podcastEpisode;
+    private LiveData<List<Episode>> podcastEpisode;
     private String id;
     private MutableLiveData<String> queryId;
     private PodcastRepository podcastRepository;
@@ -37,7 +37,7 @@ public class PodcastViewModel extends ViewModel {
         return podcast;
     }
 
-    public LiveData<List<PodcastEpisode>> getPodcastEpisode() {
+    public LiveData<List<Episode>> getPodcastEpisode() {
 
         if(podcastEpisode != null){
             return podcastEpisode;
@@ -60,7 +60,7 @@ public class PodcastViewModel extends ViewModel {
     }
 
 
-    public LiveData<List<PodcastEpisode>> getDonwloadedEpisodes(){
+    public LiveData<List<Episode>> getDonwloadedEpisodes(){
 
         if(podcastEpisode != null){
             return podcastEpisode;

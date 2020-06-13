@@ -10,23 +10,22 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
-import com.example.podcasfy.adapter.PodcastEpisodeListAdapter;
+import com.example.podcasfy.adapter.EpisodeListAdapter;
 import com.example.podcasfy.databinding.DownloadFragmentBinding;
-import com.example.podcasfy.model.PodcastEpisode;
+import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
 
 import java.util.List;
 
-public class DownloadsFragment extends Fragment implements PodcastEpisodeListAdapter.ItemClickListener {
+public class DownloadsFragment extends Fragment implements EpisodeListAdapter.ItemClickListener {
 
     private DownloadFragmentBinding binding;
-    private PodcastEpisodeListAdapter adapter;
+    private EpisodeListAdapter adapter;
     private PodcastViewModel mViewModel;
 
     public DownloadsFragment(){}
@@ -70,8 +69,8 @@ public class DownloadsFragment extends Fragment implements PodcastEpisodeListAda
 
     }
 
-    private PodcastEpisodeListAdapter createPodcastEpisodeListAdapter(){
-        adapter = new PodcastEpisodeListAdapter(this,false);
+    private EpisodeListAdapter createPodcastEpisodeListAdapter(){
+        adapter = new EpisodeListAdapter(this,false);
         return adapter;
     }
 
@@ -110,8 +109,8 @@ public class DownloadsFragment extends Fragment implements PodcastEpisodeListAda
         mViewModel.getDonwloadedEpisodes().observe(getViewLifecycleOwner(), this::updateAdapterEpisodes);
     }
 
-    private void updateAdapterEpisodes(List<PodcastEpisode> podcastEpisodes){
-        adapter.setPodcastEpisodes(podcastEpisodes);
+    private void updateAdapterEpisodes(List<Episode> episodes){
+        adapter.setEpisodes(episodes);
     }
 
 

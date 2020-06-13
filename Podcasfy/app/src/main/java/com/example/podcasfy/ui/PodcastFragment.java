@@ -18,10 +18,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
-import com.example.podcasfy.adapter.PodcastEpisodeListAdapter;
+import com.example.podcasfy.adapter.EpisodeListAdapter;
 import com.example.podcasfy.databinding.PodcastFragmentBinding;
+import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
-import com.example.podcasfy.model.PodcastEpisode;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
 import com.example.podcasfy.viewmodel.ReproducerViewModel;
 import com.squareup.picasso.Picasso;
@@ -29,12 +29,12 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 
-public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapter.ItemClickListener {
+public class PodcastFragment extends Fragment implements EpisodeListAdapter.ItemClickListener {
 
     private PodcastViewModel mViewModel;
     private ReproducerViewModel reproducerViewModel;
     private PodcastFragmentBinding mBinding;
-    private PodcastEpisodeListAdapter adapter;
+    private EpisodeListAdapter adapter;
 
     public interface ItemClickListener {
         void onItemClick(int clickedItem);
@@ -60,7 +60,6 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
     /**
      * To setup the RecyclerViewEpisodes we create the necessary LayoutManager and PodcastListAdapter
      */
-
     private void setupRecyclerView(){
 
         RecyclerView recyclerViewEpisodes = mBinding.getRoot().findViewById(R.id.episodeRecyclerView);
@@ -86,8 +85,8 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
      * To create a PodcastEpisodeListAdapterw with OnClickListener but without swipeListener
      * @return a PodcastEpisodeListAdapter without swipeListener
      */
-    private PodcastEpisodeListAdapter createPodcastEpisodeListAdapter(){
-        adapter = new PodcastEpisodeListAdapter(this,false);
+    private EpisodeListAdapter createPodcastEpisodeListAdapter(){
+        adapter = new EpisodeListAdapter(this,false);
         return adapter;
     }
 
@@ -181,8 +180,8 @@ public class PodcastFragment extends Fragment implements PodcastEpisodeListAdapt
         mViewModel.getPodcastEpisode().observe(getViewLifecycleOwner(), this::updateAdapterEpisodes);
     }
 
-    private void updateAdapterEpisodes(List<PodcastEpisode> podcastEpisodesList){
-        adapter.setPodcastEpisodes(podcastEpisodesList);
+    private void updateAdapterEpisodes(List<Episode> episodesList){
+        adapter.setEpisodes(episodesList);
     }
 
     /**

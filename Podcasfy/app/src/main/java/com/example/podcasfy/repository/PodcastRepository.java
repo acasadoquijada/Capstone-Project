@@ -2,8 +2,8 @@ package com.example.podcasfy.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
-import com.example.podcasfy.model.PodcastEpisode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 public class PodcastRepository {
 
     private MutableLiveData<Podcast> podcast;
-    private MutableLiveData<List<PodcastEpisode>> podcastEpisodes;
+    private MutableLiveData<List<Episode>> podcastEpisodes;
     private MutableLiveData<List<Podcast>> podcasts;
 
     public PodcastRepository(){}
@@ -36,9 +36,9 @@ public class PodcastRepository {
         return podcast;
     }
 
-    public MutableLiveData<List<PodcastEpisode>> getPodcastEpisode(String id){
+    public MutableLiveData<List<Episode>> getPodcastEpisode(String id){
 
-        PodcastEpisode podcastEpisode = new PodcastEpisode(
+        Episode episode = new Episode(
                 "Planos y Centellas 3x20 - Snowpiercer (Serie Netflix)",
                 "Subid con nosotros al tren y evitad que la glaciación os alcance. " +
                         "Esta semana hablamos del estreno de Netflix inspirado en la película" +
@@ -49,15 +49,15 @@ public class PodcastRepository {
                 "mediaURL",
                 id);
 
-        List<PodcastEpisode> epis = new ArrayList<>();
+        List<Episode> epis = new ArrayList<>();
 
-        epis.add(podcastEpisode);
-        epis.add(podcastEpisode);
-        epis.add(podcastEpisode);
-        epis.add(podcastEpisode);
-        epis.add(podcastEpisode);
-        epis.add(podcastEpisode);
-        epis.add(podcastEpisode);
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
 
         podcastEpisodes = new MutableLiveData<>();
         podcastEpisodes.setValue(epis);
@@ -87,8 +87,8 @@ public class PodcastRepository {
         return p;
     }
 
-    public MutableLiveData<List<PodcastEpisode>> getDownloadedEspisodes(){
-        PodcastEpisode podcastEpisode = new PodcastEpisode(
+    public MutableLiveData<List<Episode>> getDownloadedEspisodes(){
+        Episode episode = new Episode(
                 "Planos y Centellas 3x20 - Snowpiercer (Serie Netflix)",
                 "Subid con nosotros al tren y evitad que la glaciación os alcance. " +
                         "Esta semana hablamos del estreno de Netflix inspirado en la película" +
@@ -99,15 +99,15 @@ public class PodcastRepository {
                 "mediaURL",
                 "id");
 
-        List<PodcastEpisode> epis = new ArrayList<>();
+        List<Episode> epis = new ArrayList<>();
 
-        epis.add(podcastEpisode);
-        epis.add(podcastEpisode);
-        epis.add(podcastEpisode);
-        epis.add(podcastEpisode);
-        epis.add(podcastEpisode);
-        epis.add(podcastEpisode);
-        epis.add(podcastEpisode);
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
 
 
         podcastEpisodes = new MutableLiveData<>();

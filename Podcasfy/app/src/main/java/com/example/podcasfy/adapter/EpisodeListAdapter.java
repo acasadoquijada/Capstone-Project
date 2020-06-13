@@ -12,19 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
-import com.example.podcasfy.model.PodcastEpisode;
+import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.utils.OnSwipeTouchListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class PodcastEpisodeListAdapter extends  RecyclerView.Adapter<PodcastEpisodeListAdapter.PodcastEpisodeHolder> {
+public class EpisodeListAdapter extends  RecyclerView.Adapter<EpisodeListAdapter.PodcastEpisodeHolder> {
 
     private final ItemClickListener mItemClickListener;
-    private List<PodcastEpisode> podcastEpisodes;
+    private List<Episode> episodes;
     private boolean mSwipeListener = false;
 
-    public PodcastEpisodeListAdapter(ItemClickListener mItemClickListener, boolean swipeListener) {
+    public EpisodeListAdapter(ItemClickListener mItemClickListener, boolean swipeListener) {
         this.mItemClickListener = mItemClickListener;
         this.mSwipeListener = swipeListener;
     }
@@ -44,22 +44,22 @@ public class PodcastEpisodeListAdapter extends  RecyclerView.Adapter<PodcastEpis
         return new PodcastEpisodeHolder(view);
     }
 
-    public void setPodcastEpisodes(List<PodcastEpisode> episodes){
-        podcastEpisodes = episodes;
+    public void setEpisodes(List<Episode> episodes){
+        this.episodes = episodes;
     }
 
     @Override
     public void onBindViewHolder(@NonNull PodcastEpisodeHolder holder, int position) {
 
         holder.bind(
-                podcastEpisodes.get(position).getName(),
-                podcastEpisodes.get(position).getImageURL());
+                episodes.get(position).getName(),
+                episodes.get(position).getImageURL());
 
     }
 
     @Override
     public int getItemCount() {
-        return podcastEpisodes.size();
+        return episodes.size();
     }
 
     public interface ItemClickListener{
