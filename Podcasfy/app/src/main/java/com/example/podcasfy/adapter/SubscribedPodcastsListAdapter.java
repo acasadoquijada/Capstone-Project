@@ -67,8 +67,8 @@ public class SubscribedPodcastsListAdapter extends RecyclerView.Adapter<Subscrib
         SubscribedHolder(@NonNull SubscribedPodcastBinding binding) {
             super(binding.getRoot());
 
-            ivoox = binding.getRoot().getContext().getString(R.string.ivoox_provider);
-            spotify=  binding.getRoot().getContext().getString(R.string.spotify_provider);
+            ivoox = binding.getRoot().getContext().getString(R.string.pref_provider_ivoox_value);
+            spotify=  binding.getRoot().getContext().getString(R.string.pref_provider_spotify_value);
 
             this.binding = binding;
             itemView.setOnClickListener(this);

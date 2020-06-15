@@ -8,12 +8,23 @@
     <string name="subscribe_button_text">Button</string>
     <string name="search_podcast_text">Search Podcast</string>
     <string name="settings_help_text">Here you will find your settings</string>
-
-    <!--Provider identifiers-->
-
-    <string name="ivoox_provider">ivoox</string>
-    <string name="spotify_provider">spotify</string>
     <string name="subscriptions_label_text">Subscriptions</string>
+
+    <!--Provider identifiers value -->
+    <string name="pref_provider_ivoox_value">ivoox</string>
+    <string name="pref_provider_spotify_value">spotify</string>
+
+    <!--Provider identifiers label -->
+    <string name="pref_provider_ivoox_label">Ivoox</string>
+    <string name="pref_provider_spotify_label">Spotify</string>
+
+    <!-- Label for the podcast provider -->
+    <string name="pref_provider_label">Podcast provider</string>
+    <!-- Key for the podcast provider -->
+    <string name="pref_provider_key" translatable="false">provider</string>
+
+
+
     <string name="episode_description_test">
 Rescatamos y analizamos este clasicazo. Debatimos sobre cómo ha envejecido y nos cuestionamos nuestros límites morales.\n\
 
@@ -27,4 +38,10 @@ Youtube: Planos y Centellas\n\
 Instagram: https://www.instagram.com/planos_y_centellas\n\
 Patreon: https://www.patreon.com/planosycentellas\n\
     </string>
+
+
+    <!-- Settings -->
+
+
+
 </resources>

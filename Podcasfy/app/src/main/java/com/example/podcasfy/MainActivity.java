@@ -10,12 +10,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.podcasfy.databinding.ActivityMainBinding;
-import com.example.podcasfy.ui.EpisodeFragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
-public class MainActivity extends AppCompatActivity implements EpisodeFragment.ItemClickListener {
+public class MainActivity extends AppCompatActivity  {
 
     private ActivityMainBinding mBinding;
     @Override
@@ -49,9 +48,4 @@ public class MainActivity extends AppCompatActivity implements EpisodeFragment.I
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
     }
 
-    @Override
-    public void onItemClick(int clickedItem) {
-
-
-    }
 }
