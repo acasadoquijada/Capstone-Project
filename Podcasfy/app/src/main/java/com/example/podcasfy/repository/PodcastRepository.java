@@ -115,4 +115,8 @@ public class PodcastRepository {
 
         return podcastEpisodes;
     }
+
+    public void deleteDownloadedEpisode(int clickedItem){
+        podcastEpisodes.getValue().remove(clickedItem);
+    }
 }

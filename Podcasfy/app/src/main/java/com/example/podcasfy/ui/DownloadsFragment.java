@@ -1,6 +1,7 @@
 package com.example.podcasfy.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,6 +118,11 @@ public class DownloadsFragment extends Fragment implements EpisodeListAdapter.It
 
     @Override
     public void onItemClick(int clickedItem, boolean delete) {
+
+        if(delete){
+            mViewModel.deletePodcast(clickedItem);
+            adapter.notifyItemRemoved(clickedItem);
+        }
 
         Toast.makeText(requireContext(),"" + delete + "-" + clickedItem,Toast.LENGTH_SHORT).show();
     }

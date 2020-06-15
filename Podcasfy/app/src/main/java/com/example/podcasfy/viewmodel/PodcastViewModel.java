@@ -14,7 +14,7 @@ public class PodcastViewModel extends ViewModel {
 
     private LiveData<Podcast> podcast;
     private LiveData<List<Podcast>> podcasts;
-    private LiveData<List<Episode>> podcastEpisode;
+    private MutableLiveData<List<Episode>> podcastEpisode;
     private String id;
     private MutableLiveData<String> queryId;
     private PodcastRepository podcastRepository;
@@ -60,7 +60,7 @@ public class PodcastViewModel extends ViewModel {
     }
 
 
-    public LiveData<List<Episode>> getDonwloadedEpisodes(){
+    public MutableLiveData<List<Episode>> getDonwloadedEpisodes(){
 
         if(podcastEpisode != null){
             return podcastEpisode;
@@ -68,5 +68,9 @@ public class PodcastViewModel extends ViewModel {
 
         podcastEpisode = podcastRepository.getDownloadedEspisodes();
         return podcastEpisode;
+    }
+
+    public void deletePodcast(int index){
+        podcastEpisode.getValue().remove(index);
     }
 }
