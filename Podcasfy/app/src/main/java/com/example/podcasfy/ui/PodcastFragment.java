@@ -36,6 +36,11 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
     private PodcastFragmentBinding mBinding;
     private EpisodeListAdapter adapter;
 
+    @Override
+    public void onItemClick(int clickedItem, boolean delete) {
+        updateName("pepe");
+    }
+
     public interface ItemClickListener {
         void onItemClick(int clickedItem);
     }
@@ -191,11 +196,6 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         reproducerViewModel = new ViewModelProvider(requireActivity()).get(ReproducerViewModel.class);
     }
 
-    @Override
-    public void onItemClick(int clickedItem) {
-        updateName("pepe");
-
-    }
 
     /**
      * To update the ViewModel name field with the name of the selected episode

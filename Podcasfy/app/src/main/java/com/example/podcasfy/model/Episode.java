@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "podcast_episode",
+@Entity(tableName = "episode",
         indices =  {@Index("podcastId")},
         foreignKeys = @ForeignKey(entity = Podcast.class,
                 parentColumns = "id",

@@ -6,37 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/slingindEpisodeImage"
-        android:layout_width="68dp"
-        android:layout_height="68dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/episode" />
-
-    <TextView
-        android:id="@+id/slidingName"
+    <include
+        android:id="@+id/reproducer_sliding_panel"
+        layout="@layout/reproducer_sliding_panel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Planos y pepinillos"
-        app:layout_constraintBottom_toTopOf="@+id/slingindEpisodeImage"
-        app:layout_constraintEnd_toStartOf="@+id/slidingMediaReproducer"
-        app:layout_constraintStart_toEndOf="@+id/slingindEpisodeImage"
-        app:layout_constraintTop_toBottomOf="@+id/slingindEpisodeImage"
-        app:layout_constraintVertical_bias="0.494" />
-
-    <ImageView
-        android:id="@+id/slidingMediaReproducer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/slingindEpisodeImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/slingindEpisodeImage"
-        app:srcCompat="@drawable/ic_play_arrow_black" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/mainEpisodeImage"
@@ -57,19 +34,27 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingDefaultResource" />
 
-    <TextView
-        android:id="@+id/mainEpsiodeDescription"
+    <ScrollView
+        android:id="@+id/SCROLLER_ID"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/episode_description_test"
+        android:fillViewport="true"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/mainMediaReproducer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainEpisodeImage" />
+        app:layout_constraintTop_toBottomOf="@+id/mainEpisodeImage">
+
+        <TextView
+            android:id="@+id/mainEpsiodeDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/episode_description_test" />
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

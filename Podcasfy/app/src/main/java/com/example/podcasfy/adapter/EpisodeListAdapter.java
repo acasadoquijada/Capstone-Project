@@ -12,11 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
+import com.example.podcasfy.databinding.PodcastEpisodeInListBinding;
+import com.example.podcasfy.databinding.PodcastInListBinding;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.utils.OnSwipeTouchListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 public class EpisodeListAdapter extends  RecyclerView.Adapter<EpisodeListAdapter.PodcastEpisodeHolder> {
 
@@ -33,15 +37,12 @@ public class EpisodeListAdapter extends  RecyclerView.Adapter<EpisodeListAdapter
     @Override
     public PodcastEpisodeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        LayoutInflater inflater = LayoutInflater.from(context);
+        PodcastEpisodeInListBinding binding =
+                PodcastEpisodeInListBinding.inflate(inflater, parent, false);
 
-        int layoutIdForListItem = R.layout.podcast_episode_in_list;
-
-        View view = inflater.inflate(layoutIdForListItem, parent, false);
-
-        return new PodcastEpisodeHolder(view);
+        return new PodcastEpisodeHolder(binding);
     }
 
     public void setEpisodes(List<Episode> episodes){
@@ -54,7 +55,6 @@ public class EpisodeListAdapter extends  RecyclerView.Adapter<EpisodeListAdapter
         holder.bind(
                 episodes.get(position).getName(),
                 episodes.get(position).getImageURL());
-
     }
 
     @Override
@@ -63,52 +63,69 @@ public class EpisodeListAdapter extends  RecyclerView.Adapter<EpisodeListAdapter
     }
 
     public interface ItemClickListener{
-        void onItemClick(int clickedItem);
+        void onItemClick(int clickedItem, boolean delete);
     }
 
 
 
     class PodcastEpisodeHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private TextView podcastEpisodeName;
-        private ImageView podcastEpisodeImage;
+        private PodcastEpisodeInListBinding binding;
 
-        public PodcastEpisodeHolder(@NonNull View itemView) {
-            super(itemView);
+        PodcastEpisodeHolder(@NonNull PodcastEpisodeInListBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
 
-            podcastEpisodeName = itemView.findViewById(R.id.podcastEpisodeName);
-            podcastEpisodeImage = itemView.findViewById(R.id.podcastEpisodeImage);
-
-
-            if(mSwipeListener){
-                itemView.setOnTouchListener(new OnSwipeTouchListener(itemView.getContext()) {
-                    public void onSwipeTop() {
-                        Toast.makeText(itemView.getContext(), "top", Toast.LENGTH_SHORT).show();
-                    }
-                    public void onSwipeRight() {
-                        Toast.makeText(itemView.getContext(), "right", Toast.LENGTH_SHORT).show();
-                    }
-                    public void onSwipeLeft() {
-                        Toast.makeText(itemView.getContext(), "left", Toast.LENGTH_SHORT).show();
-                    }
-                    public void onSwipeBottom() {
-                        Toast.makeText(itemView.getContext(), "bottom", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+            setupSwipeListener();
 
             itemView.setOnClickListener(this);
+
+        }
+
+        private void setupSwipeListener(){
+            if(mSwipeListener){
+                binding.swipeLayout.setRightSwipeEnabled(true);
+                binding.swipeLayout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
+                    @Override
+                    public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
+
+                    }
+
+                    @Override
+                    public void onSwipeClampReached(SwipeLayout swipeLayout, boolean moveToRight) {
+                        if(!moveToRight){
+                            customOnClick(binding.getRoot());
+                        }
+                    }
+
+                    @Override
+                    public void onLeftStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
+
+                    }
+
+                    @Override
+                    public void onRightStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
+
+                    }
+                });
+
+            }
         }
 
         void bind(String name, String image){
-            podcastEpisodeName.setText(name);
-            Picasso.get().load(image).into(podcastEpisodeImage);
+            binding.podcastEpisodeName.setText(name);
+            Picasso.get().load(image).into(binding.podcastEpisodeImage);
+        }
+
+        private void customOnClick(View v){
+            int pos = getAdapterPosition();
+            mItemClickListener.onItemClick(pos, true);
         }
 
         @Override
         public void onClick(View v) {
             int pos = getAdapterPosition();
-            mItemClickListener.onItemClick(pos);
+            mItemClickListener.onItemClick(pos,false);
         }
     }
 }

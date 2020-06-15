@@ -83,4 +83,6 @@ dependencies {
 
     androidTestImplementation 'androidx.test:rules:1.2.0'
 
+    implementation 'ru.rambler.android:swipe-layout:1.1.0'
+
 }

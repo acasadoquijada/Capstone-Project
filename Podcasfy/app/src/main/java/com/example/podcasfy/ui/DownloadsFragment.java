@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,7 +47,6 @@ public class DownloadsFragment extends Fragment implements EpisodeListAdapter.It
      * To setup the RecyclerViewDownloads we create the necessary LayoutManager and PodcastListAdapter
      */
     private void setupRecyclerView(){
-        // Setting Adapter, RecyclerView and LayoutManager
 
         RecyclerView recyclerViewDownloads = binding.downloadRecyclerView;
 
@@ -70,17 +70,18 @@ public class DownloadsFragment extends Fragment implements EpisodeListAdapter.It
     }
 
     private EpisodeListAdapter createPodcastEpisodeListAdapter(){
-        adapter = new EpisodeListAdapter(this,false);
+        adapter = new EpisodeListAdapter(this,true);
         return adapter;
     }
-
+/*
     @Override
     public void onItemClick(int clickedItem) {
 
-        NavDirections action =
+        Toast.makeText(requireContext(),"" + clickedItem,Toast.LENGTH_SHORT).show();
+      /*  NavDirections action =
                 DownloadsFragmentDirections.actionDonwloadsFragmentToPodcastEpsiodeFragment("id");
         NavHostFragment.findNavController(this).navigate(action);
-    }
+    }*/
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -114,4 +115,9 @@ public class DownloadsFragment extends Fragment implements EpisodeListAdapter.It
     }
 
 
+    @Override
+    public void onItemClick(int clickedItem, boolean delete) {
+
+        Toast.makeText(requireContext(),"" + delete + "-" + clickedItem,Toast.LENGTH_SHORT).show();
+    }
 }

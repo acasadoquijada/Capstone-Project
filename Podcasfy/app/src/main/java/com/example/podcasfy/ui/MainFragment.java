@@ -1,12 +1,17 @@
 package com.example.podcasfy.ui;
 
+import android.annotation.SuppressLint;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,10 +22,19 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.podcasfy.R;
 import com.example.podcasfy.databinding.MainFragmentBinding;
+import com.example.podcasfy.utils.OnSwipeTouchListener;
 import com.example.podcasfy.viewmodel.ReproducerViewModel;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
+import java.util.logging.LogRecord;
+
+import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 public class MainFragment extends Fragment {
 
@@ -28,10 +42,13 @@ public class MainFragment extends Fragment {
     private ReproducerViewModel reproducerViewModel;
     private ExoPlayer player;
     private int panelHeight;
+    private ViewHandler mHandler;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        mHandler = new ViewHandler();
 
         binding = DataBindingUtil.inflate(inflater,R.layout.main_fragment,container,false);
 
@@ -51,6 +68,7 @@ public class MainFragment extends Fragment {
      * of the sliding elements to have a smooth transition when the panel is slided.
      *
      */
+
     private void setupSlidingUpPanel(){
 
         setupPanelHeight();
@@ -71,19 +89,46 @@ public class MainFragment extends Fragment {
                 // We don't want to change this behavior. But it needs to be override
             }
         });
+
+        binding.reproducer.reproducerSlidingPanel.swipeLayout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
+            @Override
+            public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
+             //   Toast.makeText(requireContext(),"onBeginSwipe",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSwipeClampReached(SwipeLayout swipeLayout, boolean moveToRight) {
+
+                if(!moveToRight){
+                    hideSlidingPanel();
+                    swipeLayout.reset();
+                }
+            }
+
+            @Override
+            public void onLeftStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
+                Toast.makeText(requireContext(),"onLeftStickyEdge",Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onRightStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
+                Toast.makeText(requireContext(),"onRightStickyEdge",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
     private void hideSlidingPanel(){
-        changeVisibilitySlidingPanel(View.GONE);
-        changePanelHeight(0);
         changeShadowHeight(0);
+        changeVisibilitySlidingPanel(View.INVISIBLE);
+        changePanelHeight(0);
+
     }
 
-
     private void showSlidingPanel(){
-        changeVisibilitySlidingPanel(View.VISIBLE);
         changePanelHeight(panelHeight);
+        changeVisibilitySlidingPanel(View.VISIBLE);
         changeShadowHeight(4);
     }
 
@@ -96,23 +141,10 @@ public class MainFragment extends Fragment {
     }
 
     private void changeVisibilitySlidingPanel(int visibility){
-        changeVisibilitySlidingEpisodeImage(visibility);
-        changeVisibilitySlidingName(visibility);
-        changeVisibilitySlidingMediaReproducer(visibility);
+
+        binding.reproducer.reproducerSlidingPanel.swipeLayout.setVisibility(visibility);
     }
 
-    private void changeVisibilitySlidingEpisodeImage(int visibility){
-        binding.reproducer.slingindEpisodeImage.setVisibility(visibility);
-    }
-
-
-    private void changeVisibilitySlidingName(int visibility){
-        binding.reproducer.slidingName.setVisibility(visibility);
-    }
-
-    private void changeVisibilitySlidingMediaReproducer(int visibility) {
-        binding.reproducer.slidingMediaReproducer.setVisibility(visibility);
-    }
 
     private void disableSlidingPanelTouchResponsiveness(){
         binding.slidingLayout.setTouchEnabled(false);
@@ -145,7 +177,7 @@ public class MainFragment extends Fragment {
      */
 
     private void changeAlphaValueSlingindEpisodeImage(float newAlphaValue){
-        binding.reproducer.slingindEpisodeImage.setAlpha(newAlphaValue);
+        binding.reproducer.reproducerSlidingPanel.slingindEpisodeImage.setAlpha(newAlphaValue);
     }
 
     /**
@@ -153,7 +185,7 @@ public class MainFragment extends Fragment {
      */
 
     private void changeAlphaValueSlidingName(float newAlphaValue){
-        binding.reproducer.slidingName.setAlpha(newAlphaValue);
+        binding.reproducer.reproducerSlidingPanel.slidingName.setAlpha(newAlphaValue);
     }
 
     /**
@@ -161,7 +193,7 @@ public class MainFragment extends Fragment {
      */
 
     private void changeAlphaValueSlidingMediaReproducer(float newAlphaValue){
-        binding.reproducer.slidingMediaReproducer.setAlpha(newAlphaValue);
+        binding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setAlpha(newAlphaValue);
     }
 
     /**
@@ -222,10 +254,32 @@ public class MainFragment extends Fragment {
      * @param name of the podcast
      */
     private void updateSlidingUIName(String name){
-        binding.reproducer.slidingName.setText(name);
+        binding.reproducer.reproducerSlidingPanel.slidingName.setText(name);
 
         // These methods are here for testing purposes. Will be removed eventually
         binding.slidingLayout.setTouchEnabled(true);
-        showSlidingPanel();
+       // showSlidingPanel();
+        mHandler.sendMessage(Message.obtain(mHandler, 0));
+       // MediaSource mediaSource = buildMediaSource();
+
+        // Prepare ExoPlayer
+       // player.prepare(mediaSource,false,false);
+        //
+    }
+
+    private MediaSource buildMediaSource() {
+        String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4";
+        Uri uri = Uri.parse(url);
+        DataSource.Factory dataSourceFactory =
+                new DefaultDataSourceFactory(requireContext(), "exoplayer-codelab");
+        return new ProgressiveMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(uri);
+    }
+
+    private class ViewHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            showSlidingPanel();
+        }
     }
 }
