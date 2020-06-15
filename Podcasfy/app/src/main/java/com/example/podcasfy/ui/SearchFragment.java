@@ -8,6 +8,7 @@ import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
@@ -16,40 +17,76 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
+import com.example.podcasfy.adapter.EpisodeListAdapter;
 import com.example.podcasfy.adapter.PodcastListAdapter;
+import com.example.podcasfy.databinding.SearchFragmentBinding;
 import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
 
+import java.util.List;
 import java.util.Objects;
 
 
 public class SearchFragment extends Fragment implements PodcastListAdapter.ItemClickListener {
 
     private PodcastViewModel mViewModel;
-
     private PodcastListAdapter adapter;
+    private SearchFragmentBinding binding;
 
-    public static SearchFragment newInstance() {
-        return new SearchFragment();
-    }
+    public SearchFragment(){}
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        final View rootView = inflater.inflate(R.layout.search_fragment, container, false);
+        binding = DataBindingUtil.inflate(inflater,R.layout.search_fragment,container,false);
 
-        // Adapter, RecyclerView and LayoutManager
+        setupRecyclerView();
 
-        adapter = new PodcastListAdapter(this, PodcastListAdapter.SUBSCRIBED);
-        RecyclerView recyclerView = rootView.findViewById(R.id.searchRecyclerView);
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(),1);
+        setupSearchView();
 
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(layoutManager);
+        return binding.getRoot();
+    }
 
-        // Setup searchView interaction
-        SearchView searchView = rootView.findViewById(R.id.searchView);
+
+    /**
+     * To setup the RecyclerViewSearch we create the necessary LayoutManager and PodcastListAdapter
+     */
+    private void setupRecyclerView(){
+
+        RecyclerView recyclerViewSearch = binding.searchRecyclerView;
+
+        recyclerViewSearch.setLayoutManager(createGridLayoutManager());
+
+        recyclerViewSearch.setAdapter(createPodcastEpisodeListAdapter());
+    }
+
+    /**
+     * To create a GridLayoutManager with spanCount = 1 and horizontal orientation
+     * @return a GridLayoutManager object with spanCount = 1 and horizontal orientation
+     */
+    private GridLayoutManager createGridLayoutManager(){
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),1);
+        gridLayoutManager.setOrientation(RecyclerView.VERTICAL);
+
+        return gridLayoutManager;
+    }
+
+    /**
+     * To create a PodcastEpisodeListAdapterw with OnClickListener but without swipeListener
+     * @return a PodcastEpisodeListAdapter without swipeListener
+     */
+    private PodcastListAdapter createPodcastEpisodeListAdapter(){
+        adapter = new PodcastListAdapter(this,PodcastListAdapter.SUBSCRIBED);
+        return adapter;
+    }
+
+    /**
+     * To create and install the necessary listener in the SearchView to be able to
+     * search podcasts
+     */
+    private void setupSearchView(){
+        SearchView searchView = binding.searchView;
 
         // Click anywhere will open the keyboard
         searchView.setOnClickListener(v -> {
@@ -71,19 +108,52 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
                 return false;
             }
         });
-
-        return rootView;
     }
 
-    // Create ViewModel, observe changes in the queryId and query new data
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mViewModel = new ViewModelProvider(requireActivity()).get(PodcastViewModel.class);
+        setupViewModel();
 
-        mViewModel.getQueryId().observe(getViewLifecycleOwner(), s -> adapter.setPodcasts(mViewModel.searchPodcasts(s)));
+    }
+
+    /**
+     * To setup the PodcastViewModel, we create the PodcastViewModel and observe the query ID to
+     * search for new podcasts
+     */
+    private void setupViewModel(){
+        createPodcastViewModel();
+        observeQueryId();
+    }
+
+    private void createPodcastViewModel(){
+        mViewModel = new ViewModelProvider(requireActivity()).get(PodcastViewModel.class);
+    }
+
+    /**
+     * To observe the queryId. When is changed we search for new podcasts and update the adapter
+     */
+    private void observeQueryId(){
+        mViewModel.getQueryId().observe(getViewLifecycleOwner(), this::updateAdapterPodcasts);
+    }
+
+    /**
+     * To update the Adapter with the result of the searching
+     * @param query for searching
+     */
+    private void updateAdapterPodcasts(String query){
+        adapter.setPodcasts(searchPodcasts(query));
+    }
+
+    /**
+     * To search podcast with the new query
+     * @param query for searching
+     * @return podcast list according to the query
+     */
+    private List<Podcast> searchPodcasts(String query){
+        return mViewModel.searchPodcasts(query);
     }
 
     // Open a PodcastFragment
