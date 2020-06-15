@@ -18,7 +18,8 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph" />
 
-    <include layout="@layout/reproducer" android:id="@+id/reproducer"/>
+    <include layout="@layout/reproducer"
+        android:id="@+id/reproducer"/>
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 </layout>

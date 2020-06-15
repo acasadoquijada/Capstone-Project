@@ -41,7 +41,6 @@ public class MainFragment extends Fragment {
     private MainFragmentBinding binding;
     private ReproducerViewModel reproducerViewModel;
     private ExoPlayer player;
-    private int panelHeight;
     private ViewHandler mHandler;
 
     @Nullable
@@ -56,11 +55,7 @@ public class MainFragment extends Fragment {
 
         setupMediaPlayer();
 
-       return binding.getRoot();
-    }
-
-    private void setupPanelHeight(){
-        panelHeight = binding.slidingLayout.getPanelHeight();
+        return binding.getRoot();
     }
 
     /**
@@ -71,11 +66,7 @@ public class MainFragment extends Fragment {
 
     private void setupSlidingUpPanel(){
 
-        setupPanelHeight();
-
         hideSlidingPanel();
-
-        disableSlidingPanelTouchResponsiveness();
 
         setupPanelSlideListener();
 
@@ -110,7 +101,6 @@ public class MainFragment extends Fragment {
 
                 if(!moveToRight){
                     hideSlidingPanel();
-                    swipeLayout.reset();
                 }
             }
 
@@ -128,35 +118,12 @@ public class MainFragment extends Fragment {
     }
 
     private void hideSlidingPanel(){
-        changeShadowHeight(0);
-        changeVisibilitySlidingPanel(View.INVISIBLE);
-        changePanelHeight(0);
-
+        binding.slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
     private void showSlidingPanel(){
-
-        changePanelHeight(panelHeight);
-        changeVisibilitySlidingPanel(View.VISIBLE);
-        changeShadowHeight(4);
-    }
-
-    private void changePanelHeight(int panelHeight){
-        binding.slidingLayout.setPanelHeight(panelHeight);
-    }
-
-    private void changeShadowHeight(int shadowHeight){
-        binding.slidingLayout.setShadowHeight(shadowHeight);
-    }
-
-    private void changeVisibilitySlidingPanel(int visibility){
-
-        binding.reproducer.getRoot().setVisibility(visibility);
-    }
-
-
-    private void disableSlidingPanelTouchResponsiveness(){
-        binding.slidingLayout.setTouchEnabled(false);
+        binding.reproducer.reproducerSlidingPanel.swipeLayout.reset();
+        binding.slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     }
 
     /**
@@ -267,12 +234,12 @@ public class MainFragment extends Fragment {
 
         // These methods are here for testing purposes. Will be removed eventually
         binding.slidingLayout.setTouchEnabled(true);
-       // showSlidingPanel();
+        // showSlidingPanel();
         mHandler.sendMessage(Message.obtain(mHandler, 0));
-       // MediaSource mediaSource = buildMediaSource();
+        // MediaSource mediaSource = buildMediaSource();
 
         // Prepare ExoPlayer
-       // player.prepare(mediaSource,false,false);
+        // player.prepare(mediaSource,false,false);
         //
     }
 
