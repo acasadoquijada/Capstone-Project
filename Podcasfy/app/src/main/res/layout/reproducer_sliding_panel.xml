@@ -6,7 +6,6 @@
         android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
         android:layout_height="68dp"
-        android:visibility="gone"
         app:left_swipe_enabled="false"
         app:right_swipe_enabled="true">
 

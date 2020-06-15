@@ -77,6 +77,13 @@ public class MainFragment extends Fragment {
 
         disableSlidingPanelTouchResponsiveness();
 
+        setupPanelSlideListener();
+
+        setupSlidingPanelSwipeLayout();
+    }
+
+    private void setupPanelSlideListener(){
+
         binding.slidingLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
@@ -89,11 +96,13 @@ public class MainFragment extends Fragment {
                 // We don't want to change this behavior. But it needs to be override
             }
         });
+    }
 
+    private void setupSlidingPanelSwipeLayout(){
         binding.reproducer.reproducerSlidingPanel.swipeLayout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
             @Override
             public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
-             //   Toast.makeText(requireContext(),"onBeginSwipe",Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(requireContext(),"onBeginSwipe",Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -118,7 +127,6 @@ public class MainFragment extends Fragment {
         });
     }
 
-
     private void hideSlidingPanel(){
         changeShadowHeight(0);
         changeVisibilitySlidingPanel(View.INVISIBLE);
@@ -127,6 +135,7 @@ public class MainFragment extends Fragment {
     }
 
     private void showSlidingPanel(){
+
         changePanelHeight(panelHeight);
         changeVisibilitySlidingPanel(View.VISIBLE);
         changeShadowHeight(4);
@@ -142,7 +151,7 @@ public class MainFragment extends Fragment {
 
     private void changeVisibilitySlidingPanel(int visibility){
 
-        binding.reproducer.reproducerSlidingPanel.swipeLayout.setVisibility(visibility);
+        binding.reproducer.getRoot().setVisibility(visibility);
     }
 
 
