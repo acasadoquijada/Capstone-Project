@@ -3,38 +3,42 @@ package com.example.podcasfy.viewmodel;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.podcasfy.repository.PodcastListRepository;
 import com.example.podcasfy.model.Podcast;
+import com.example.podcasfy.utils.PodcastCallBack;
 
 import java.util.List;
 
-import javax.inject.Inject;
+public class PodcastListViewModel extends ViewModel implements PodcastCallBack {
 
-public class PodcastListViewModel extends ViewModel {
-
-    private LiveData<List<Podcast>> podcasts;
+    private MutableLiveData<List<Podcast>> podcasts;
     private LiveData<List<String>> podcastNames;
     private LiveData<List<String>> podcastImages;
     private PodcastListRepository podcastRepository;
 
-    @Inject
     public PodcastListViewModel (){
 
-        podcastRepository = new PodcastListRepository();
-        podcasts = podcastRepository.getPodcasts();
+        podcastRepository = new PodcastListRepository(this);
         podcastNames = podcastRepository.getPodcastsName();
         podcastImages = podcastRepository.getPodcastsImage();
+        podcasts = podcastRepository.getPodcasts();
+
     }
 
-    public LiveData<List<Podcast>> getPodcasts() {
-
-
+    public MutableLiveData<List<Podcast>> getPodcasts() {
 
         return podcasts;
     }
-    public LiveData<List<String>> getPodcastNames(){return podcastNames;}
-    public LiveData<List<String>> getPodcastImages(){return podcastImages;}
 
+    public void testing(){
+        podcastRepository.testing();
+    }
+
+    @Override
+    public void updatePodcastList(List<Podcast> podcastList) {
+        podcasts.setValue(podcastList);
+    }
 }

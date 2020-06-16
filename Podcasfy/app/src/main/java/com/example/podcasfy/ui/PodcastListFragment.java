@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,10 +127,18 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         mViewModel = new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
 
         mViewModel.getPodcasts().observe(getViewLifecycleOwner(), podcasts -> {
+
             mAdapterSubscriptions.setPodcasts(podcasts);
             mAdapterIvoox.setPodcasts(podcasts);
             mAdapterSpotify.setPodcasts(podcasts);
+
+            mAdapterSubscriptions.notifyDataSetChanged();
+            mAdapterIvoox.notifyDataSetChanged();
+            mAdapterSpotify.notifyDataSetChanged();
+            Log.d("ALEX___", "Value in Fragment " + podcasts.get(0).getDescription());
         });
+
+        mViewModel.testing();
     }
 
 

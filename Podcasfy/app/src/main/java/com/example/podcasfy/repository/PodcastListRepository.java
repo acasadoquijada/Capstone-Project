@@ -1,9 +1,14 @@
 package com.example.podcasfy.repository;
 
+import android.os.AsyncTask;
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.podcasfy.api.Ivoox;
 import com.example.podcasfy.model.Podcast;
+import com.example.podcasfy.utils.PodcastCallBack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +22,14 @@ public class PodcastListRepository {
     private  MutableLiveData<List<Podcast>> subscriptionList;
     private  MutableLiveData<List<String>> podcastsName;
     private  MutableLiveData<List<String>> podcastImage;
+    final private PodcastCallBack podcastCallBack;
+    private Ivoox ivoox;
 
 
-    public PodcastListRepository(){}
+    public PodcastListRepository(PodcastCallBack podcastCallBack){
+        this.podcastCallBack = podcastCallBack;
+        ivoox = new Ivoox();
+    }
 
     public MutableLiveData<List<Podcast>> getSubscriptionList() {
 
@@ -45,7 +55,7 @@ public class PodcastListRepository {
         return subscriptionList;
     }
 
-    public LiveData<List<Podcast>> getPodcasts(){
+    public MutableLiveData<List<Podcast>> getPodcasts(){
 
         if (podcasts != null) {
             return podcasts;
@@ -125,5 +135,33 @@ public class PodcastListRepository {
 
         return podcastImage;
 
+    }
+
+    public void testing(){
+        new FetchMoviesTask().execute("La Vida Moderna");
+    }
+
+
+    class FetchMoviesTask extends AsyncTask<String, Void, List<Podcast> > {
+
+        @Override
+        protected List<Podcast> doInBackground(String... strings) {
+
+            Podcast p = ivoox.getPodcast(strings[0]);
+
+            List<Podcast> list = new ArrayList<>();
+
+            list.add(p);
+
+            return list;
+        }
+
+        @Override
+        protected void onPostExecute(List<Podcast> podcastsList) {
+            // communicate
+            podcasts.setValue(podcastsList);
+            Log.d("ALEX___","Value in Repo " + podcastsList.get(0).getUrl());
+            podcastCallBack.updatePodcastList(podcastsList);
+        }
     }
 }
