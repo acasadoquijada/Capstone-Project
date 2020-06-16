@@ -24,11 +24,13 @@ public class PodcastListRepository {
     private  MutableLiveData<List<String>> podcastImage;
     final private PodcastCallBack podcastCallBack;
     private Ivoox ivoox;
+    private MutableLiveData<List<Podcast>> ivooxRecommended;
 
 
     public PodcastListRepository(PodcastCallBack podcastCallBack){
         this.podcastCallBack = podcastCallBack;
         ivoox = new Ivoox();
+        ivooxRecommended = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<Podcast>> getSubscriptionList() {
@@ -141,27 +143,28 @@ public class PodcastListRepository {
         new FetchMoviesTask().execute("La Vida Moderna");
     }
 
+    public void getIvooxRecommended(){
+        new FetchMoviesTask().execute("ivoox");
+    }
 
     class FetchMoviesTask extends AsyncTask<String, Void, List<Podcast> > {
 
+        private String argument;
         @Override
         protected List<Podcast> doInBackground(String... strings) {
 
-            Podcast p = ivoox.getPodcast(strings[0]);
+            argument = strings[0];
+            if(strings[0].equals("ivoox")){
+                return ivoox.getRecommended();
+            }
 
-            List<Podcast> list = new ArrayList<>();
-
-            list.add(p);
-
-            return list;
+            return null;
         }
 
         @Override
         protected void onPostExecute(List<Podcast> podcastsList) {
-            // communicate
-            podcasts.setValue(podcastsList);
-            Log.d("ALEX___","Value in Repo " + podcastsList.get(0).getUrl());
-            podcastCallBack.updatePodcastList(podcastsList);
+            ivooxRecommended.setValue(podcastsList);
+            podcastCallBack.updatePodcastList(podcastsList,argument);
         }
     }
 }

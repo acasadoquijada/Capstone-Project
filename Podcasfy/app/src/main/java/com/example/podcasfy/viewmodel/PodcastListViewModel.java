@@ -15,16 +15,14 @@ import java.util.List;
 public class PodcastListViewModel extends ViewModel implements PodcastCallBack {
 
     private MutableLiveData<List<Podcast>> podcasts;
-    private LiveData<List<String>> podcastNames;
-    private LiveData<List<String>> podcastImages;
     private PodcastListRepository podcastRepository;
 
+    private MutableLiveData<List<Podcast>> ivooxRecommended;
     public PodcastListViewModel (){
 
         podcastRepository = new PodcastListRepository(this);
-        podcastNames = podcastRepository.getPodcastsName();
-        podcastImages = podcastRepository.getPodcastsImage();
         podcasts = podcastRepository.getPodcasts();
+        ivooxRecommended = new MutableLiveData<>();
 
     }
 
@@ -37,8 +35,15 @@ public class PodcastListViewModel extends ViewModel implements PodcastCallBack {
         podcastRepository.testing();
     }
 
+    public MutableLiveData<List<Podcast>> getIvooxRecommended(){
+        podcastRepository.getIvooxRecommended();
+        return ivooxRecommended;
+    }
+
     @Override
-    public void updatePodcastList(List<Podcast> podcastList) {
-        podcasts.setValue(podcastList);
+    public void updatePodcastList(List<Podcast> podcastList, String option) {
+        if(option.equals("ivoox")){
+            ivooxRecommended.setValue(podcastList);
+        }
     }
 }

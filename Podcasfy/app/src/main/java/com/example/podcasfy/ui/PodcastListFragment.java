@@ -1,6 +1,7 @@
 package com.example.podcasfy.ui;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -20,8 +21,11 @@ import android.view.ViewGroup;
 
 import com.example.podcasfy.adapter.PodcastListAdapter;
 import com.example.podcasfy.databinding.PodcastListFragmentBinding;
+import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.example.podcasfy.R;
+
+import java.util.List;
 
 public class PodcastListFragment extends Fragment implements PodcastListAdapter.ItemClickListener  {
 
@@ -129,18 +133,14 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         mViewModel.getPodcasts().observe(getViewLifecycleOwner(), podcasts -> {
 
             mAdapterSubscriptions.setPodcasts(podcasts);
-            mAdapterIvoox.setPodcasts(podcasts);
             mAdapterSpotify.setPodcasts(podcasts);
 
             mAdapterSubscriptions.notifyDataSetChanged();
-            mAdapterIvoox.notifyDataSetChanged();
             mAdapterSpotify.notifyDataSetChanged();
-            Log.d("ALEX___", "Value in Fragment " + podcasts.get(0).getDescription());
         });
 
-        mViewModel.testing();
+        mViewModel.getIvooxRecommended().observe(getViewLifecycleOwner(), podcastList -> mAdapterIvoox.setPodcasts(podcastList));
     }
-
 
     /**
      * To launch a PodcastFragment, we open a PodcastFragment with the id of the Podcast selected

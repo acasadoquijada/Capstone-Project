@@ -41,6 +41,7 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
     public void setPodcasts(List<Podcast> podcasts){
 
         this.mPodcastList = podcasts;
+        this.notifyDataSetChanged();
     }
 
     @NonNull

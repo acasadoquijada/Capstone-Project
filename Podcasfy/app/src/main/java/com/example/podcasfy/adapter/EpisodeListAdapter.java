@@ -66,8 +66,6 @@ public class EpisodeListAdapter extends  RecyclerView.Adapter<EpisodeListAdapter
         void onItemClick(int clickedItem, boolean delete);
     }
 
-
-
     class PodcastEpisodeHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private PodcastEpisodeInListBinding binding;

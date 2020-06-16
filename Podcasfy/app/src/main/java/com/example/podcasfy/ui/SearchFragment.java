@@ -100,6 +100,7 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
             @Override
             public boolean onQueryTextSubmit(String query) {
                 mViewModel.getQueryId().setValue(query);
+                searchView.clearFocus();
                 return false;
             }
 
