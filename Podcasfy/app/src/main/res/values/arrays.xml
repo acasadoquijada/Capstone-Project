@@ -2,11 +2,11 @@
 <resources>
     <string-array name="pref_provider_options">
         <item>@string/pref_provider_ivoox_label</item>
-        <item>@string/pref_provider_spotify_label</item>
+        <item>@string/pref_provider_digital_label</item>
     </string-array>
 
     <string-array name="pref_provider_values">
         <item>@string/pref_provider_ivoox_value</item>
-        <item>@string/pref_provider_spotify_value</item>
+        <item>@string/pref_provider_digital_value</item>
     </string-array>
 </resources>

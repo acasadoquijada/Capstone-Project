@@ -68,7 +68,7 @@ public class SubscribedPodcastsListAdapter extends RecyclerView.Adapter<Subscrib
             super(binding.getRoot());
 
             ivoox = binding.getRoot().getContext().getString(R.string.pref_provider_ivoox_value);
-            spotify=  binding.getRoot().getContext().getString(R.string.pref_provider_spotify_value);
+            spotify=  binding.getRoot().getContext().getString(R.string.pref_provider_digital_value);
 
             this.binding = binding;
             itemView.setOnClickListener(this);
@@ -111,7 +111,7 @@ public class SubscribedPodcastsListAdapter extends RecyclerView.Adapter<Subscrib
         }
 
         /**
-         * To setup the Spotify logo
+         * To setup the DigitalPodcast logo
          */
 
         private void setSpotifyLogo(){

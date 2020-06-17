@@ -66,7 +66,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     private void setupRecyclerViews(){
         setupSubscriptions();
         setupIvoox();
-        setupSpotify();
+        setupDigital();
     }
 
     /**
@@ -90,10 +90,10 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     }
 
     /**
-     * To setup the RecyclerView, LayoutManager and Adapter for the Spotify RecyclerView
+     * To setup the RecyclerView, LayoutManager and Adapter for the Digital RecyclerView
      */
-    private void setupSpotify(){
-        RecyclerView recyclerViewSpotify =  binding.podcastListSpotify;
+    private void setupDigital(){
+        RecyclerView recyclerViewSpotify =  binding.podcastListDigital;
         recyclerViewSpotify.setLayoutManager(createGridLayoutManager());
         mAdapterSpotify = createPodcastListAdapter(PodcastListAdapter.SPOTIFY);
         recyclerViewSpotify.setAdapter(mAdapterSpotify);
@@ -131,15 +131,19 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         mViewModel = new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
 
         mViewModel.getPodcasts().observe(getViewLifecycleOwner(), podcasts -> {
-
             mAdapterSubscriptions.setPodcasts(podcasts);
-            mAdapterSpotify.setPodcasts(podcasts);
-
             mAdapterSubscriptions.notifyDataSetChanged();
-            mAdapterSpotify.notifyDataSetChanged();
         });
 
         mViewModel.getIvooxRecommended().observe(getViewLifecycleOwner(), podcastList -> mAdapterIvoox.setPodcasts(podcastList));
+        mViewModel.getDigitalRecommended().observe(getViewLifecycleOwner(), new Observer<List<Podcast>>() {
+            @Override
+            public void onChanged(List<Podcast> podcastList) {
+                Log.d("ALEX__","ONCHANGED");
+                mAdapterSpotify.setPodcasts(podcastList);
+                mAdapterSpotify.notifyDataSetChanged();
+            }
+        });
     }
 
     /**

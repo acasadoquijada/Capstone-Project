@@ -82,7 +82,7 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
             } else if(provider == IVOOX){
                 binding.providerLogo.setImageResource(R.drawable.ivoox_logo);
             } else {
-                binding.providerLogo.setImageResource(R.drawable.ic_spotify_sketch);
+                binding.providerLogo.setImageResource(R.drawable.ic_podcast);
             }
 
             this.binding = binding;

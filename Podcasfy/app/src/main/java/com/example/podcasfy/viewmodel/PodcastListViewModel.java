@@ -18,21 +18,18 @@ public class PodcastListViewModel extends ViewModel implements PodcastCallBack {
     private PodcastListRepository podcastRepository;
 
     private MutableLiveData<List<Podcast>> ivooxRecommended;
+    private MutableLiveData<List<Podcast>> digitalRecommended;
+
     public PodcastListViewModel (){
 
         podcastRepository = new PodcastListRepository(this);
         podcasts = podcastRepository.getPodcasts();
         ivooxRecommended = new MutableLiveData<>();
-
+        digitalRecommended = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<Podcast>> getPodcasts() {
-
         return podcasts;
-    }
-
-    public void testing(){
-        podcastRepository.testing();
     }
 
     public MutableLiveData<List<Podcast>> getIvooxRecommended(){
@@ -40,10 +37,17 @@ public class PodcastListViewModel extends ViewModel implements PodcastCallBack {
         return ivooxRecommended;
     }
 
+    public MutableLiveData<List<Podcast>> getDigitalRecommended() {
+        podcastRepository.getDigitalRecommended();
+        return digitalRecommended;
+    }
+
     @Override
     public void updatePodcastList(List<Podcast> podcastList, String option) {
         if(option.equals("ivoox")){
             ivooxRecommended.setValue(podcastList);
+        } else if(option.equals("digital")){
+            digitalRecommended.setValue(podcastList);
         }
     }
 }

@@ -1,11 +1,11 @@
 package com.example.podcasfy.repository;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.podcasfy.api.DigitalPodcast;
 import com.example.podcasfy.api.Ivoox;
 import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.utils.PodcastCallBack;
@@ -24,12 +24,14 @@ public class PodcastListRepository {
     private  MutableLiveData<List<String>> podcastImage;
     final private PodcastCallBack podcastCallBack;
     private Ivoox ivoox;
+    private DigitalPodcast digitalPodcast;
     private MutableLiveData<List<Podcast>> ivooxRecommended;
 
 
     public PodcastListRepository(PodcastCallBack podcastCallBack){
         this.podcastCallBack = podcastCallBack;
         ivoox = new Ivoox();
+        digitalPodcast = new DigitalPodcast();
         ivooxRecommended = new MutableLiveData<>();
     }
 
@@ -46,7 +48,7 @@ public class PodcastListRepository {
                 "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg","Ivoox");
 
         Podcast p2 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","spotify");
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","digitalPodcast");
 
         podcastList.add(p1);
         podcastList.add(p2);
@@ -147,6 +149,10 @@ public class PodcastListRepository {
         new FetchMoviesTask().execute("ivoox");
     }
 
+    public void getDigitalRecommended(){
+        new FetchMoviesTask().execute("digital");
+    }
+
     class FetchMoviesTask extends AsyncTask<String, Void, List<Podcast> > {
 
         private String argument;
@@ -154,10 +160,12 @@ public class PodcastListRepository {
         protected List<Podcast> doInBackground(String... strings) {
 
             argument = strings[0];
-            if(strings[0].equals("ivoox")){
-                return ivoox.getRecommended();
-            }
 
+            if(argument.equals("ivoox")){
+                return ivoox.getRecommended();
+            } else if(argument.equals("digital")){
+                return digitalPodcast.getRecommended();
+            }
             return null;
         }
 

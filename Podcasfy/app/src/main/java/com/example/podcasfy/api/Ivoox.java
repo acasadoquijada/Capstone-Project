@@ -29,10 +29,11 @@ public class Ivoox {
         Document doc = null;
 
 
-
         List<Podcast> ivooxPodcasts = new ArrayList<>();
         try {
             doc = Jsoup.connect(url).get();
+
+
             Elements names = doc.select("meta[itemprop=name]");
             Elements descriptions = doc.select("meta[itemprop=description]");
             Elements urls = doc.select("meta[itemprop=url]");
@@ -83,7 +84,6 @@ public class Ivoox {
 
         try{
             doc = Jsoup.connect(url).get();
-
             // From here I get the URL and title
             Elements elementsURLandTitle = doc.select("h3.m-top-10");
 

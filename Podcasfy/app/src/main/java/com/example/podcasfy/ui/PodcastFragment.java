@@ -2,12 +2,14 @@ package com.example.podcasfy.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +24,7 @@ import com.example.podcasfy.adapter.EpisodeListAdapter;
 import com.example.podcasfy.databinding.PodcastFragmentBinding;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
+import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
 import com.example.podcasfy.viewmodel.ReproducerViewModel;
 import com.squareup.picasso.Picasso;
@@ -32,6 +35,7 @@ import java.util.List;
 public class PodcastFragment extends Fragment implements EpisodeListAdapter.ItemClickListener {
 
     private PodcastViewModel mViewModel;
+    private PodcastListViewModel podcastListViewModel;
     private ReproducerViewModel reproducerViewModel;
     private PodcastFragmentBinding mBinding;
     private EpisodeListAdapter adapter;
@@ -53,11 +57,22 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-
         mBinding = DataBindingUtil.inflate(
                 inflater, R.layout.podcast_fragment, container, false);
 
         setupRecyclerView();
+
+        mBinding.subscriptionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    Log.d("ALEX__","SUBSCRIBE");
+                } else {
+                    Log.d("ALEX__","NO SUBSCRIBE");
+                }
+            }
+        });
 
         return mBinding.getRoot();
     }
@@ -132,6 +147,8 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         super.onActivityCreated(savedInstanceState);
         createReproducerViewModel();
         setupPodcastViewModel();
+
+        podcastListViewModel =  new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
     }
 
     /**

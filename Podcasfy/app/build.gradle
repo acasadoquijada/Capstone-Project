@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.podcasfy"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -86,5 +86,4 @@ dependencies {
     implementation 'ru.rambler.android:swipe-layout:1.1.0'
 
     implementation 'androidx.preference:preference:1.1.1'
-
 }

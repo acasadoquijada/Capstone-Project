@@ -11,19 +11,21 @@ import android.view.View;
 
 import com.example.podcasfy.databinding.ActivityMainBinding;
 
+import com.example.podcasfy.repository.PodcastListRepository;
+import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity  {
 
     private ActivityMainBinding mBinding;
+    private PodcastListViewModel mViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
         setUpBottonNavigation();
-
     }
 
     /**

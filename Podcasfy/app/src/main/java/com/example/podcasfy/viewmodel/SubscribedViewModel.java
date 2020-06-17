@@ -8,19 +8,25 @@ import androidx.lifecycle.LiveData;
 
 import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.repository.PodcastListRepository;
+import com.example.podcasfy.utils.PodcastCallBack;
 
 import java.util.List;
 
-public class SubscribedViewModel extends AndroidViewModel {
+public class SubscribedViewModel extends AndroidViewModel implements PodcastCallBack {
 
     private LiveData<List<Podcast>> subscriptionList;
     private PodcastListRepository podcastListRepository;
     public SubscribedViewModel(@NonNull Application application) {
         super(application);
-        podcastListRepository = new PodcastListRepository();
+        podcastListRepository = new PodcastListRepository(this);
     }
 
     public LiveData<List<Podcast>> getSubscriptionList() {
         return podcastListRepository.getSubscriptionList();
+    }
+
+    @Override
+    public void updatePodcastList(List<Podcast> podcastList, String option) {
+
     }
 }

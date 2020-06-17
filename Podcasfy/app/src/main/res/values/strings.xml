@@ -12,11 +12,11 @@
 
     <!--Provider identifiers value -->
     <string name="pref_provider_ivoox_value">ivoox</string>
-    <string name="pref_provider_spotify_value">spotify</string>
+    <string name="pref_provider_digital_value">digital</string>
 
     <!--Provider identifiers label -->
     <string name="pref_provider_ivoox_label">Ivoox</string>
-    <string name="pref_provider_spotify_label">Spotify</string>
+    <string name="pref_provider_digital_label">Digital Podcast</string>
 
     <!-- Label for the podcast provider -->
     <string name="pref_provider_label">Podcast provider</string>
