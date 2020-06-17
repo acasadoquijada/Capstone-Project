@@ -22,10 +22,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
 import com.example.podcasfy.adapter.EpisodeListAdapter;
+import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.databinding.PodcastFragmentBinding;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
-import com.example.podcasfy.utils.Provider;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
 import com.example.podcasfy.viewmodel.ReproducerViewModel;

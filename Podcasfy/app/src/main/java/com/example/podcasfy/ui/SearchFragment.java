@@ -11,21 +11,17 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
-import com.example.podcasfy.adapter.EpisodeListAdapter;
 import com.example.podcasfy.adapter.PodcastListAdapter;
+import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.databinding.SearchFragmentBinding;
 import com.example.podcasfy.model.Podcast;
-import com.example.podcasfy.utils.Provider;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
 
 import java.util.List;
-import java.util.Objects;
 
 
 public class SearchFragment extends Fragment implements PodcastListAdapter.ItemClickListener {

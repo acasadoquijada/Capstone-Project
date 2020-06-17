@@ -1,20 +1,17 @@
 package com.example.podcasfy.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.podcasfy.R;
+import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.databinding.PodcastInListBinding;
 import com.example.podcasfy.model.Podcast;
-import com.example.podcasfy.utils.Provider;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -75,9 +72,9 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
         PodcastHolder(@NonNull PodcastInListBinding binding) {
             super(binding.getRoot());
 
-            if(provider == Provider.SUBSCRIBED){
+            if(provider.equals(Provider.SUBSCRIBED)){
                 binding.providerLogo.setImageResource(R.drawable.ic_bookmark_black);
-            } else if(provider == Provider.IVOOX){
+            } else if(provider.equals(Provider.IVOOX)){
                 binding.providerLogo.setImageResource(R.drawable.ivoox_logo);
             } else {
                 binding.providerLogo.setImageResource(R.drawable.ic_podcast);

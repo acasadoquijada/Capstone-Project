@@ -3,12 +3,12 @@ package com.example.podcasfy.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.repository.PodcastListRepository;
 import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.utils.EpisodeCallBack;
 import com.example.podcasfy.utils.PodcastCallBack;
-import com.example.podcasfy.utils.Provider;
 
 import java.util.List;
 

@@ -8,11 +8,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.podcasfy.api.DigitalPodcast;
 import com.example.podcasfy.api.Ivoox;
+import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.utils.EpisodeCallBack;
 import com.example.podcasfy.utils.PodcastCallBack;
-import com.example.podcasfy.utils.Provider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +30,7 @@ public class PodcastListRepository {
     final private EpisodeCallBack episodeCallBack;
     private Ivoox ivoox;
     private DigitalPodcast digitalPodcast;
+    private Provider provider;
     private MutableLiveData<List<Podcast>> ivooxRecommended;
 
 
@@ -37,6 +38,7 @@ public class PodcastListRepository {
         this.podcastCallBack = podcastCallBack;
         this.episodeCallBack = episodeCallBack;
 
+        provider = new Provider();
         ivoox = new Ivoox();
         digitalPodcast = new DigitalPodcast();
         ivooxRecommended = new MutableLiveData<>();
@@ -177,9 +179,9 @@ public class PodcastListRepository {
             argument = strings[0];
 
             if(argument.equals("ivoox")){
-                return ivoox.getRecommended();
+                return provider.getRecommended(Provider.SPAIN);
             } else if(argument.equals("digital")){
-                return digitalPodcast.getRecommended();
+                return provider.getRecommended(Provider.UK);
             }
             return null;
         }
@@ -201,6 +203,7 @@ public class PodcastListRepository {
 
             provider = strings[0];
             url = strings[1];
+
 
             if(provider.equals(Provider.IVOOX)){
                 return ivoox.getEpisodes(url);

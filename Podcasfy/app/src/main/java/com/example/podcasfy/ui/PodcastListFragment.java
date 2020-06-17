@@ -20,9 +20,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.podcasfy.adapter.PodcastListAdapter;
+import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.databinding.PodcastListFragmentBinding;
 import com.example.podcasfy.model.Podcast;
-import com.example.podcasfy.utils.Provider;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.example.podcasfy.R;
 
