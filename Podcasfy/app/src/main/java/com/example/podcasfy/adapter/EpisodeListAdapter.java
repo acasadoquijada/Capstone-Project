@@ -1,21 +1,14 @@
 package com.example.podcasfy.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.podcasfy.R;
 import com.example.podcasfy.databinding.PodcastEpisodeInListBinding;
-import com.example.podcasfy.databinding.PodcastInListBinding;
 import com.example.podcasfy.model.Episode;
-import com.example.podcasfy.utils.OnSwipeTouchListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -59,7 +52,9 @@ public class EpisodeListAdapter extends  RecyclerView.Adapter<EpisodeListAdapter
 
     @Override
     public int getItemCount() {
-        return episodes.size();
+        if(episodes != null)
+            return episodes.size();
+        return 0;
     }
 
     public interface ItemClickListener{

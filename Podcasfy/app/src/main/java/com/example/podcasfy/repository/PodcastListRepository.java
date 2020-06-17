@@ -1,14 +1,18 @@
 package com.example.podcasfy.repository;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.podcasfy.api.DigitalPodcast;
 import com.example.podcasfy.api.Ivoox;
+import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
+import com.example.podcasfy.utils.EpisodeCallBack;
 import com.example.podcasfy.utils.PodcastCallBack;
+import com.example.podcasfy.utils.Provider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +27,16 @@ public class PodcastListRepository {
     private  MutableLiveData<List<String>> podcastsName;
     private  MutableLiveData<List<String>> podcastImage;
     final private PodcastCallBack podcastCallBack;
+    final private EpisodeCallBack episodeCallBack;
     private Ivoox ivoox;
     private DigitalPodcast digitalPodcast;
     private MutableLiveData<List<Podcast>> ivooxRecommended;
 
 
-    public PodcastListRepository(PodcastCallBack podcastCallBack){
+    public PodcastListRepository(PodcastCallBack podcastCallBack, EpisodeCallBack episodeCallBack){
         this.podcastCallBack = podcastCallBack;
+        this.episodeCallBack = episodeCallBack;
+
         ivoox = new Ivoox();
         digitalPodcast = new DigitalPodcast();
         ivooxRecommended = new MutableLiveData<>();
@@ -142,18 +149,26 @@ public class PodcastListRepository {
     }
 
     public void testing(){
-        new FetchMoviesTask().execute("La Vida Moderna");
+        new FetchPodcastListTask().execute("La Vida Moderna");
     }
 
     public void getIvooxRecommended(){
-        new FetchMoviesTask().execute("ivoox");
+        new FetchPodcastListTask().execute("ivoox");
     }
 
     public void getDigitalRecommended(){
-        new FetchMoviesTask().execute("digital");
+        new FetchPodcastListTask().execute("digital");
     }
 
-    class FetchMoviesTask extends AsyncTask<String, Void, List<Podcast> > {
+    public void getIvooxEpisodes(String podcastURL){
+        new FetchEpisodeListTask().execute(Provider.IVOOX,podcastURL);
+    }
+
+    public void getDigitialEpisodes(String podcastURL){
+        new FetchEpisodeListTask().execute(Provider.DIGITAL,podcastURL);
+    }
+
+    class FetchPodcastListTask extends AsyncTask<String, Void, List<Podcast> > {
 
         private String argument;
         @Override
@@ -175,4 +190,31 @@ public class PodcastListRepository {
             podcastCallBack.updatePodcastList(podcastsList,argument);
         }
     }
+
+    class FetchEpisodeListTask extends AsyncTask<String, Void, List<Episode> > {
+
+        private String url;
+        private String provider;
+
+        @Override
+        protected List<Episode> doInBackground(String... strings) {
+
+            provider = strings[0];
+            url = strings[1];
+
+            if(provider.equals(Provider.IVOOX)){
+                return ivoox.getEpisodes(url);
+            } else if(provider.equals(Provider.DIGITAL)){
+                Log.d("TEST","URL DIGITAL: " + url);
+                return digitalPodcast.getEpisodes(url);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Episode> podcastsList) {
+            episodeCallBack.updateEpisodeList(podcastsList, provider);
+        }
+    }
+
 }

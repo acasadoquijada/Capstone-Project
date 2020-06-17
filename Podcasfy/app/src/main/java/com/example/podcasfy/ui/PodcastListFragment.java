@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import com.example.podcasfy.adapter.PodcastListAdapter;
 import com.example.podcasfy.databinding.PodcastListFragmentBinding;
 import com.example.podcasfy.model.Podcast;
+import com.example.podcasfy.utils.Provider;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.example.podcasfy.R;
 
@@ -75,7 +76,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     private void setupSubscriptions(){
         RecyclerView recyclerViewSubscriptions = binding.podcastListSubscription;
         recyclerViewSubscriptions.setLayoutManager(createGridLayoutManager());
-        mAdapterSubscriptions = createPodcastListAdapter(PodcastListAdapter.SUBSCRIBED);
+        mAdapterSubscriptions = createPodcastListAdapter(Provider.SUBSCRIBED);
         recyclerViewSubscriptions.setAdapter(mAdapterSubscriptions);
     }
 
@@ -85,7 +86,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     private void setupIvoox(){
         RecyclerView recyclerViewIvoox =  binding.podcastListIvoox;
         recyclerViewIvoox.setLayoutManager(createGridLayoutManager());
-        mAdapterIvoox = createPodcastListAdapter(PodcastListAdapter.IVOOX);
+        mAdapterIvoox = createPodcastListAdapter(Provider.IVOOX);
         recyclerViewIvoox.setAdapter(mAdapterIvoox);
     }
 
@@ -93,10 +94,10 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
      * To setup the RecyclerView, LayoutManager and Adapter for the Digital RecyclerView
      */
     private void setupDigital(){
-        RecyclerView recyclerViewSpotify =  binding.podcastListDigital;
-        recyclerViewSpotify.setLayoutManager(createGridLayoutManager());
-        mAdapterSpotify = createPodcastListAdapter(PodcastListAdapter.SPOTIFY);
-        recyclerViewSpotify.setAdapter(mAdapterSpotify);
+        RecyclerView recyclerViewDigital =  binding.podcastListDigital;
+        recyclerViewDigital.setLayoutManager(createGridLayoutManager());
+        mAdapterSpotify = createPodcastListAdapter(Provider.DIGITAL);
+        recyclerViewDigital.setAdapter(mAdapterSpotify);
     }
 
     /**
@@ -114,7 +115,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         return manager;
     }
 
-    private PodcastListAdapter createPodcastListAdapter(int provider){
+    private PodcastListAdapter createPodcastListAdapter(String provider){
         return new PodcastListAdapter(this, provider);
     }
 
@@ -149,12 +150,13 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     /**
      * To launch a PodcastFragment, we open a PodcastFragment with the id of the Podcast selected
      * using the NavigationComponent
-     * @param clickedItemIndex index of the selected Podcast
+     * @param clickedItem index of the selected Podcast
      */
+
     @Override
-    public void onItemClick(int clickedItemIndex) {
+    public void onItemClick(int clickedItem, String provider) {
         NavDirections action =
-                PodcastListFragmentDirections.actionPodcastListFragmentToPodcastFragment("id");
+                PodcastListFragmentDirections.actionPodcastListFragmentToPodcastFragment(clickedItem,provider);
         NavHostFragment.findNavController(this).navigate(action);
     }
 }

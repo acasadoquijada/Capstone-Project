@@ -1,28 +1,22 @@
 package com.example.podcasfy.ui;
 
-import android.annotation.SuppressLint;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.podcasfy.R;
 import com.example.podcasfy.databinding.MainFragmentBinding;
-import com.example.podcasfy.utils.OnSwipeTouchListener;
 import com.example.podcasfy.viewmodel.ReproducerViewModel;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -32,8 +26,6 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.logging.LogRecord;
-
 import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 public class MainFragment extends Fragment {
@@ -42,6 +34,8 @@ public class MainFragment extends Fragment {
     private ReproducerViewModel reproducerViewModel;
     private ExoPlayer player;
     private ViewHandler mHandler;
+
+
 
     @Nullable
     @Override

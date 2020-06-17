@@ -16,11 +16,14 @@
         android:name="com.example.podcasfy.ui.PodcastFragment"
         android:label="PodcastFragment" >
         <argument
-            android:name="podcastName"
-            app:argType="string" />
+            android:name="pos"
+            app:argType="integer" />
         <action
             android:id="@+id/action_podcastFragment_to_podcastEpsiodeFragment"
             app:destination="@id/podcastEpsiodeFragment" />
+        <argument
+            android:name="provider"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.podcasfy.R;
 import com.example.podcasfy.databinding.PodcastInListBinding;
 import com.example.podcasfy.model.Podcast;
+import com.example.podcasfy.utils.Provider;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -22,20 +23,17 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
 
     private List<Podcast> mPodcastList;
     private final ItemClickListener mItemClickListener;
-    public final static int SUBSCRIBED = 0;
-    public final static int IVOOX = 1;
-    public final static int SPOTIFY = 2;
 
-    private int provider;
+    private String provider;
 
 
-    public PodcastListAdapter(ItemClickListener itemClickListener, int provider){
+    public PodcastListAdapter(ItemClickListener itemClickListener, String provider){
         this.mItemClickListener = itemClickListener;
         this.provider = provider;
     }
 
     public interface ItemClickListener {
-        void onItemClick(int clickedItem);
+        void onItemClick(int clickedItem, String provider);
     }
 
     public void setPodcasts(List<Podcast> podcasts){
@@ -77,9 +75,9 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
         PodcastHolder(@NonNull PodcastInListBinding binding) {
             super(binding.getRoot());
 
-            if(provider == SUBSCRIBED){
+            if(provider == Provider.SUBSCRIBED){
                 binding.providerLogo.setImageResource(R.drawable.ic_bookmark_black);
-            } else if(provider == IVOOX){
+            } else if(provider == Provider.IVOOX){
                 binding.providerLogo.setImageResource(R.drawable.ivoox_logo);
             } else {
                 binding.providerLogo.setImageResource(R.drawable.ic_podcast);
@@ -100,7 +98,7 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
         @Override
         public void onClick(View v) {
             int pos = getAdapterPosition();
-            mItemClickListener.onItemClick(pos);
+            mItemClickListener.onItemClick(pos, provider);
         }
     }
 }

@@ -21,6 +21,7 @@ import com.example.podcasfy.adapter.EpisodeListAdapter;
 import com.example.podcasfy.adapter.PodcastListAdapter;
 import com.example.podcasfy.databinding.SearchFragmentBinding;
 import com.example.podcasfy.model.Podcast;
+import com.example.podcasfy.utils.Provider;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
 
 import java.util.List;
@@ -77,7 +78,7 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
      * @return a PodcastEpisodeListAdapter without swipeListener
      */
     private PodcastListAdapter createPodcastEpisodeListAdapter(){
-        adapter = new PodcastListAdapter(this,PodcastListAdapter.SUBSCRIBED);
+        adapter = new PodcastListAdapter(this, Provider.SUBSCRIBED);
         return adapter;
     }
 
@@ -157,10 +158,9 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
         return mViewModel.searchPodcasts(query);
     }
 
-    // Open a PodcastFragment
-    @Override
-    public void onItemClick(int clickedItem) {
 
+    @Override
+    public void onItemClick(int clickedItem, String provider) {
 
     }
 }

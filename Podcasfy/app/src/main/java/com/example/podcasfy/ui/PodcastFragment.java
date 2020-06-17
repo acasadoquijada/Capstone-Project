@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +25,7 @@ import com.example.podcasfy.adapter.EpisodeListAdapter;
 import com.example.podcasfy.databinding.PodcastFragmentBinding;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
+import com.example.podcasfy.utils.Provider;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
 import com.example.podcasfy.viewmodel.ReproducerViewModel;
@@ -39,6 +41,11 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
     private ReproducerViewModel reproducerViewModel;
     private PodcastFragmentBinding mBinding;
     private EpisodeListAdapter adapter;
+
+    private String provider;
+    private int pos;
+
+    private String episodeURL;
 
     @Override
     public void onItemClick(int clickedItem, boolean delete) {
@@ -149,6 +156,38 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         setupPodcastViewModel();
 
         podcastListViewModel =  new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
+
+        assert getArguments() != null;
+        PodcastFragmentArgs podcastFragmentArgs = PodcastFragmentArgs.fromBundle(getArguments());
+
+        pos = podcastFragmentArgs.getPos();
+        provider = podcastFragmentArgs.getProvider();
+
+        if(provider.equals(Provider.IVOOX)) {
+            if (podcastListViewModel.getIvooxRecommended() != null) {
+                updateUI(podcastListViewModel.getIvooxRecommended().getValue().get(pos));
+                podcastListViewModel.getIvooxEpisodes(episodeURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
+                    @Override
+                    public void onChanged(List<Episode> episodes) {
+                        adapter.setEpisodes(episodes);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        } else if(provider.equals(Provider.SUBSCRIBED)){
+            updateUI(podcastListViewModel.getPodcasts().getValue().get(pos));
+        } else if(provider.equals(Provider.DIGITAL)) {
+            updateUI(podcastListViewModel.getDigitalRecommended().getValue().get(pos));
+            podcastListViewModel.getDigitalEpisodes(episodeURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
+                @Override
+                public void onChanged(List<Episode> episodes) {
+                    Log.d("TEST", "ONCHANGED!");
+                    adapter.setEpisodes(episodes);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        }
+
     }
 
     /**
@@ -158,8 +197,8 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
      */
     private void setupPodcastViewModel(){
         createPodcastViewModel();
-        observePodcast();
-        observeEpisodes();
+      //  observePodcast();
+       // observeEpisodes();
     }
 
     private void createPodcastViewModel(){
@@ -178,9 +217,11 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
      */
 
     private void updateUI(Podcast podcast){
+        episodeURL = podcast.getUrl();
         setActivityTitle(podcast.getName());
         setDescription(podcast.getDescription());
         setLogo(podcast.getMediaURL());
+
     }
 
     private void setActivityTitle(String name){

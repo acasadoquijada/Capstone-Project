@@ -41,6 +41,8 @@ public class Episode {
     // Foreign key to identify the podcast where the episode belongs
     private String podcastId;
 
+    public Episode(){}
+
     public Episode(
             String name,
             String description,

@@ -3,12 +3,16 @@ package com.example.podcasfy.api;
 
 import android.util.Log;
 
+import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.Scriptable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,11 +27,7 @@ public class Ivoox {
 
         String url = BASE_URL + podcastName + BASE_URL_SUFFIX;
 
-        Log.d("URL_W", url);
-
-
         Document doc = null;
-
 
         List<Podcast> ivooxPodcasts = new ArrayList<>();
         try {
@@ -47,10 +47,6 @@ public class Ivoox {
 
             // we don't care about the first one
             names.remove(0);
-
-            Log.d("API___", "names size: " + names.size());
-            Log.d("API___", "descriptions size: " + descriptions.size());
-
 
             for(int i = 0; i < names.size(); i++){
                 Podcast ivooxPodcast = new Podcast();
@@ -120,5 +116,37 @@ public class Ivoox {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<Episode> getEpisodes(String podcastURL){
+        List<Episode> episodeList = new ArrayList<>();
+        Document doc = null;
+
+        try{
+            doc = Jsoup.connect(podcastURL).get();
+            // From here I get the URL and title
+          //  Elements elementsURLandTitle = doc.select("div.col-xs-12.col-sm-6.col-md-4.col-lg-3");
+
+            Elements elements = doc.select("div.wrapper-modulo-lista");
+            Elements elementsURLandTitle = elements.select("div.col-xs-12.col-sm-6.col-md-4.col-lg-3");
+
+            Log.d("IVOOX", "size: " + elementsURLandTitle.size());
+
+            for(int i = 0; i < elementsURLandTitle.size(); i++){
+                Episode episode = new Episode();
+
+                episode.setName(elementsURLandTitle.get(i).select("div.header-modulo").select("a").attr("title"));
+                episode.setImageURL(elementsURLandTitle.get(i).select("div.header-modulo").select("a").select("img").attr("src"));
+                episode.setMediaURL(elementsURLandTitle.get(i).select("div.header-modulo").select("a").attr("href"));
+
+                episodeList.add(episode);
+            }
+            return episodeList;
+
+        } catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+
     }
 }
