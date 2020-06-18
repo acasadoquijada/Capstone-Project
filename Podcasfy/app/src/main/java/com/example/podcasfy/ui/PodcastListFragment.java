@@ -61,7 +61,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
 
         progDailog = new ProgressDialog(requireActivity());
 
-        progDailog.setIndeterminate(false);
+        progDailog.setIndeterminate(true);
         progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progDailog.setCancelable(false);
         progDailog.show();

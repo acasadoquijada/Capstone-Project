@@ -75,9 +75,9 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
             if(provider.equals(Provider.SUBSCRIBED)){
                 binding.providerLogo.setImageResource(R.drawable.ic_bookmark_black);
             } else if(provider.equals(Provider.SPAIN)){
-                binding.providerLogo.setImageResource(R.drawable.ivoox_logo);
+                binding.providerLogo.setImageResource(R.drawable.spain_logo);
             } else {
-                binding.providerLogo.setImageResource(R.drawable.ic_podcast);
+                binding.providerLogo.setImageResource(R.drawable.uk_logo);
             }
 
             this.binding = binding;
