@@ -20,6 +20,10 @@ public class Provider {
     public static final String SPAIN = "spain";
     public static final String UK = "uk";
 
+    // Number of podcasts/episodes per search
+
+    private static final int MAX_SEARCH_SIZE = 12;
+
     // URL for each kind of option
     private static final String SPAIN_URL = "http://www.radio-espana.es/podcasts";
     private static final String SPAIN_URL_SUB = "http://www.radio-espana.es";
@@ -31,6 +35,10 @@ public class Provider {
     private String url_sub;
 
     public Provider(){
+    }
+
+    private int setSearchSize(int sizeRecoveredFromWeb){
+        return Math.min(sizeRecoveredFromWeb, MAX_SEARCH_SIZE);
     }
 
     public List<Podcast> getRecommended(String country) {
@@ -50,7 +58,10 @@ public class Provider {
 
             Elements podcastElements = doc.select("a.mdc-list-item");
 
-            for (int i = 0; i < podcastElements.size(); i++) {
+            int search_size = setSearchSize(podcastElements.size());
+
+
+            for (int i = 0; i < search_size; i++) {
                 Podcast podcast = new Podcast();
 
                 podcast.setName(podcastElements.get(i).select("img").attr("alt"));
@@ -58,7 +69,7 @@ public class Provider {
                 podcast.setUrl(url_sub + podcastElements.get(i).attr("href"));
 
                 // We need to get the description from the podcast webpage
-                //
+
                 Document doc2 = Jsoup.connect(podcast.getUrl()).get();
                 String description = doc2.select("div.content-column-left").select("div.secondary-span-color").first().text();
                 podcast.setDescription(description);
@@ -91,6 +102,7 @@ public class Provider {
 
             String imageURL = doc.select("div.content-column-left").select("img").attr("src");
 
+
             for(int i = 0; i < elements.size(); i++){
 
                 Episode episode = new Episode();
@@ -122,7 +134,9 @@ public class Provider {
 
             Elements elements = doc.select("div.mdc-list.mdc-list--avatar-list").select("a.mdc-list-item");
 
-            for(int i = 0; i < 10; i++){
+            int search_size = setSearchSize(elements.size());
+
+            for(int i = 0; i < search_size; i++){
                 Podcast podcast = new Podcast();
                 podcast.setName(elements.get(i).select("img").attr("alt"));
                 podcast.setMediaURL(elements.get(i).select("img").attr("src"));
@@ -137,7 +151,6 @@ public class Provider {
             e.printStackTrace();
             return null;
         }
-
 
     }
 }
