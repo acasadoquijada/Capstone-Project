@@ -58,7 +58,8 @@ public class Provider {
                 podcast.setUrl(url_sub + podcastElements.get(i).attr("href"));
 
                 // We need to get the description from the podcast webpage
-               Document doc2 = Jsoup.connect(podcast.getUrl()).get();
+                //
+                Document doc2 = Jsoup.connect(podcast.getUrl()).get();
                 String description = doc2.select("div.content-column-left").select("div.secondary-span-color").first().text();
                 podcast.setDescription(description);
                 podcastList.add(podcast);
@@ -100,12 +101,43 @@ public class Provider {
 
                 episodeList.add(episode);
             }
-
-            Log.d("PODCAST__","size: "+ episodeList.size());
             return episodeList;
         } catch (IOException e){
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<Podcast> searchPodcast(String query){
+
+        final String search_url_prefix = "https://www.radio-uk.co.uk/search?q=";
+        List<Podcast> podcastList = new ArrayList<>();
+
+        String search_url = search_url_prefix + query;
+
+        Document doc = null;
+
+        try{
+            doc = Jsoup.connect(search_url).get();
+
+            Elements elements = doc.select("div.mdc-list.mdc-list--avatar-list").select("a.mdc-list-item");
+
+            for(int i = 0; i < 10; i++){
+                Podcast podcast = new Podcast();
+                podcast.setName(elements.get(i).select("img").attr("alt"));
+                podcast.setMediaURL(elements.get(i).select("img").attr("src"));
+                podcast.setUrl(url_sub + elements.get(i).attr("href"));
+
+                podcastList.add(podcast);
+            }
+
+            Log.d("PODCAST__","size: "+ elements.size());
+            return podcastList;
+        } catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+
+
     }
 }

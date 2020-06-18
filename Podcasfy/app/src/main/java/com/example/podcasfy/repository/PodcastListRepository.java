@@ -116,6 +116,10 @@ public class PodcastListRepository {
         new FetchEpisodeListTask().execute(Provider.UK,podcastURL);
     }
 
+    public void searchPodcast(String query){
+        new FetchSearchEpisodeListTask().execute(query);
+    }
+
     class FetchPodcastListTask extends AsyncTask<String, Void, List<Podcast> > {
 
         private String argument;
@@ -157,7 +161,23 @@ public class PodcastListRepository {
 
         @Override
         protected void onPostExecute(List<Episode> podcastsList) {
-            episodeCallBack.updateEpisodeList(podcastsList, podcastProvider);
+            episodeCallBack.updateEpisodeList(podcastsList, podcastProvider, url);
+        }
+    }
+
+    class FetchSearchEpisodeListTask extends AsyncTask<String, Void, List<Podcast> > {
+
+
+        @Override
+        protected List<Podcast> doInBackground(String... strings) {
+
+            String query = strings[0];
+            return provider.searchPodcast(query);
+        }
+
+        @Override
+        protected void onPostExecute(List<Podcast> podcastsList) {
+            podcastCallBack.updatePodcastList(podcastsList, "");
         }
     }
 

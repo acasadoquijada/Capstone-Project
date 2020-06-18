@@ -1,6 +1,7 @@
 package com.example.podcasfy.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +20,9 @@ import com.example.podcasfy.R;
 import com.example.podcasfy.adapter.PodcastListAdapter;
 import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.databinding.SearchFragmentBinding;
+import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
+import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.example.podcasfy.viewmodel.PodcastViewModel;
 
 import java.util.List;
@@ -26,7 +30,7 @@ import java.util.List;
 
 public class SearchFragment extends Fragment implements PodcastListAdapter.ItemClickListener {
 
-    private PodcastViewModel mViewModel;
+    private PodcastListViewModel viewModel;
     private PodcastListAdapter adapter;
     private SearchFragmentBinding binding;
 
@@ -38,50 +42,11 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
 
         binding = DataBindingUtil.inflate(inflater,R.layout.search_fragment,container,false);
 
-        setupRecyclerView();
-
+        setupRecyclerViewSearch();
         setupSearchView();
-
         return binding.getRoot();
     }
 
-
-    /**
-     * To setup the RecyclerViewSearch we create the necessary LayoutManager and PodcastListAdapter
-     */
-    private void setupRecyclerView(){
-
-        RecyclerView recyclerViewSearch = binding.searchRecyclerView;
-
-        recyclerViewSearch.setLayoutManager(createGridLayoutManager());
-
-        recyclerViewSearch.setAdapter(createPodcastEpisodeListAdapter());
-    }
-
-    /**
-     * To create a GridLayoutManager with spanCount = 1 and horizontal orientation
-     * @return a GridLayoutManager object with spanCount = 1 and horizontal orientation
-     */
-    private GridLayoutManager createGridLayoutManager(){
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),1);
-        gridLayoutManager.setOrientation(RecyclerView.VERTICAL);
-
-        return gridLayoutManager;
-    }
-
-    /**
-     * To create a PodcastEpisodeListAdapterw with OnClickListener but without swipeListener
-     * @return a PodcastEpisodeListAdapter without swipeListener
-     */
-    private PodcastListAdapter createPodcastEpisodeListAdapter(){
-        adapter = new PodcastListAdapter(this, Provider.SUBSCRIBED);
-        return adapter;
-    }
-
-    /**
-     * To create and install the necessary listener in the SearchView to be able to
-     * search podcasts
-     */
     private void setupSearchView(){
         SearchView searchView = binding.searchView;
 
@@ -96,7 +61,7 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                mViewModel.getQueryId().setValue(query);
+                viewModel.getSearchQuery().setValue(query);
                 searchView.clearFocus();
                 return false;
             }
@@ -108,52 +73,53 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
         });
     }
 
+    private void setupRecyclerViewSearch(){
+        RecyclerView recyclerViewSearch = binding.searchRecyclerView;
+        recyclerViewSearch.setLayoutManager(createGridLayoutManager());
+        adapter = createPodcastListAdapter(Provider.SUBSCRIBED);
+        recyclerViewSearch.setAdapter(adapter);
+    }
+
+    private GridLayoutManager createGridLayoutManager(){
+
+        int spanCount = 3;
+
+        GridLayoutManager manager = new GridLayoutManager(getContext(), spanCount);
+
+        manager.setOrientation(RecyclerView.VERTICAL);
+
+        return manager;
+    }
+
+    private PodcastListAdapter createPodcastListAdapter(String provider){
+        return new PodcastListAdapter(this, provider);
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         setupViewModel();
-
     }
 
-    /**
-     * To setup the PodcastViewModel, we create the PodcastViewModel and observe the query ID to
-     * search for new podcasts
-     */
     private void setupViewModel(){
-        createPodcastViewModel();
-        observeQueryId();
+        createViewModel();
+        observeSearchQuery();
+        observeSearchedPodcast();
     }
 
-    private void createPodcastViewModel(){
-        mViewModel = new ViewModelProvider(requireActivity()).get(PodcastViewModel.class);
+    private void createViewModel(){
+        viewModel = new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
     }
 
-    /**
-     * To observe the queryId. When is changed we search for new podcasts and update the adapter
-     */
-    private void observeQueryId(){
-        mViewModel.getQueryId().observe(getViewLifecycleOwner(), this::updateAdapterPodcasts);
+    private void observeSearchQuery(){
+        viewModel.getSearchQuery().observe(getViewLifecycleOwner(), s -> viewModel.searchPodcast(s));
     }
 
-    /**
-     * To update the Adapter with the result of the searching
-     * @param query for searching
-     */
-    private void updateAdapterPodcasts(String query){
-        adapter.setPodcasts(searchPodcasts(query));
-    }
+    private void observeSearchedPodcast(){
 
-    /**
-     * To search podcast with the new query
-     * @param query for searching
-     * @return podcast list according to the query
-     */
-    private List<Podcast> searchPodcasts(String query){
-        return mViewModel.searchPodcasts(query);
+        viewModel.getSearchedPodcast().observe(getViewLifecycleOwner(),
+                podcastList -> adapter.setPodcasts(podcastList));
     }
-
 
     @Override
     public void onItemClick(int clickedItem, String provider) {

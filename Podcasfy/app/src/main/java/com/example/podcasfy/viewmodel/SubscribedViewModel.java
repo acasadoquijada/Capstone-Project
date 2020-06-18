@@ -33,7 +33,7 @@ public class SubscribedViewModel extends AndroidViewModel implements PodcastCall
     }
 
     @Override
-    public void updateEpisodeList(List<Episode> episodeList, String option) {
+    public void updateEpisodeList(List<Episode> episodeList, String option, String url) {
 
     }
 }

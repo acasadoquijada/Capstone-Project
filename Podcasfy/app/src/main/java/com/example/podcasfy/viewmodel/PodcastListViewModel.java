@@ -1,8 +1,5 @@
 package com.example.podcasfy.viewmodel;
 
-import android.util.Log;
-
-import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -25,6 +22,10 @@ public class PodcastListViewModel extends ViewModel implements PodcastCallBack, 
     private MutableLiveData<List<Episode>> spainPodcastEpisodeList;
     private MutableLiveData<List<Episode>> ukPodcastEpisodeList;
 
+    private MutableLiveData<List<Podcast>> searchedPodcast;
+    private MutableLiveData<String> searchQuery;
+
+
     public PodcastListViewModel (){
 
         podcastRepository = new PodcastListRepository(this, this);
@@ -32,6 +33,8 @@ public class PodcastListViewModel extends ViewModel implements PodcastCallBack, 
 
         spainPodcastEpisodeList = new MutableLiveData<>();
         ukPodcastEpisodeList = new MutableLiveData<>();
+        searchQuery = new MutableLiveData<>();
+        searchedPodcast = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<Podcast>> getPodcasts() {
@@ -68,17 +71,31 @@ public class PodcastListViewModel extends ViewModel implements PodcastCallBack, 
         return ukPodcastEpisodeList;
     }
 
+    public MutableLiveData<String> getSearchQuery() {
+        return searchQuery;
+    }
+
+    public void searchPodcast(String s){
+        podcastRepository.searchPodcast(searchQuery.getValue());
+    }
+
+    public MutableLiveData<List<Podcast>> getSearchedPodcast() {
+        return searchedPodcast;
+    }
+
     @Override
     public void updatePodcastList(List<Podcast> podcastList, String option) {
         if(option.equals(Provider.SPAIN)){
             spainRecommended.setValue(podcastList);
         } else if(option.equals(Provider.UK)){
             ukRecommended.setValue(podcastList);
-        }
+        } else
+            searchedPodcast.setValue(podcastList);
     }
 
     @Override
-    public void updateEpisodeList(List<Episode> episodeList, String option) {
+    public void updateEpisodeList(List<Episode> episodeList, String option, String url) {
+
         if(option.equals(Provider.SPAIN)) {
             spainPodcastEpisodeList.setValue(episodeList);
         } else if(option.equals(Provider.UK)){
