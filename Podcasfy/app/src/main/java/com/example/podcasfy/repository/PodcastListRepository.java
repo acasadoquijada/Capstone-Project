@@ -95,6 +95,33 @@ public class PodcastListRepository {
         return podcasts;
     }
 
+    private List<Podcast> testing(){
+        List<Podcast> podcastList = new ArrayList<>();
+
+        Podcast p1 = new Podcast("Planos y NABOS","description","url",
+                "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg","Ivoox");
+
+        Podcast p2 = new Podcast("Amigos del Mapa","description2","url",
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+        Podcast p3 = new Podcast("Amigos del Mapa","description2","url",
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+        Podcast p4 = new Podcast("Amigos del Mapa","description2","url",
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+        Podcast p5 = new Podcast("Amigos del Mapa","description2","url",
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+        Podcast p6 = new Podcast("Amigos del Mapa","description2","url",
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+
+        podcastList.add(p1);
+        podcastList.add(p2);
+        podcastList.add(p3);
+        podcastList.add(p4);
+        podcastList.add(p5);
+        podcastList.add(p6);
+
+        return podcastList;
+    }
+
     public void getSpainRecommended(){
 
         // asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
@@ -120,6 +147,10 @@ public class PodcastListRepository {
         new FetchSearchEpisodeListTask().execute(query);
     }
 
+    public void getSubscribedPodcastList(){
+        new FetchPodcastListTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,Provider.SUBSCRIBED);
+    }
+
     class FetchPodcastListTask extends AsyncTask<String, Void, List<Podcast> > {
 
         private String argument;
@@ -133,6 +164,9 @@ public class PodcastListRepository {
                 return provider.getRecommended(Provider.SPAIN);
             } else if(argument.equals(Provider.UK)){
                 return provider.getRecommended(Provider.UK);
+            } else if(argument.equals(Provider.SUBSCRIBED)){
+                // call DATAbASE
+                return testing();
             }
             return null;
         }

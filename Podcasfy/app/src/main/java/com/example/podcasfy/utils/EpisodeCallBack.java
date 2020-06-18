@@ -6,6 +6,6 @@ import com.example.podcasfy.model.Podcast;
 import java.util.List;
 
 public interface EpisodeCallBack {
-    public void updateEpisodeList(List<Episode> episodeList, String option);
+    public void updateEpisodeList(List<Episode> episodeList, String option, String url);
 
 }

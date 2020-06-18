@@ -14,68 +14,76 @@ import java.util.List;
 
 public class PodcastListViewModel extends ViewModel implements PodcastCallBack, EpisodeCallBack {
 
-    private MutableLiveData<List<Podcast>> podcasts;
+
     private PodcastListRepository podcastRepository;
 
-    private MutableLiveData<List<Podcast>> spainRecommended;
-    private MutableLiveData<List<Podcast>> ukRecommended;
-    private MutableLiveData<List<Episode>> spainPodcastEpisodeList;
-    private MutableLiveData<List<Episode>> ukPodcastEpisodeList;
-
+    // Podcast per each provider + subscriptions + search
+    private MutableLiveData<List<Podcast>> spainRecommendedPodcastList;
+    private MutableLiveData<List<Podcast>> ukRecommendedPodcastList;
+    private MutableLiveData<List<Podcast>> subscribedPodcastList;
     private MutableLiveData<List<Podcast>> searchedPodcast;
+
+    // Episodes per given Podcast
+    private MutableLiveData<List<Episode>> episodeList;
+
+    // Used to triggered a search when the user sets a query
     private MutableLiveData<String> searchQuery;
 
 
     public PodcastListViewModel (){
 
         podcastRepository = new PodcastListRepository(this, this);
-        podcasts = podcastRepository.getPodcasts();
 
-        spainPodcastEpisodeList = new MutableLiveData<>();
-        ukPodcastEpisodeList = new MutableLiveData<>();
+        episodeList = new MutableLiveData<>();
         searchQuery = new MutableLiveData<>();
         searchedPodcast = new MutableLiveData<>();
     }
 
-    public MutableLiveData<List<Podcast>> getPodcasts() {
-        return podcasts;
+
+    public MutableLiveData<List<Podcast>> getSubscribedPodcastList() {
+
+        if(subscribedPodcastList == null){
+            subscribedPodcastList = new MutableLiveData<>();
+            podcastRepository.getSubscribedPodcastList();
+        }
+        return subscribedPodcastList;
     }
 
-    public MutableLiveData<List<Podcast>> getSpainRecommended(){
+    public MutableLiveData<List<Podcast>> getSpainRecommendedPodcastList(){
 
-        if(spainRecommended == null){
-            spainRecommended = new MutableLiveData<>();
+        if(spainRecommendedPodcastList == null){
+            spainRecommendedPodcastList = new MutableLiveData<>();
             podcastRepository.getSpainRecommended();
         }
 
-        return spainRecommended;
+        return spainRecommendedPodcastList;
     }
 
     public MutableLiveData<List<Podcast>> getUKRecommended() {
 
-        if(ukRecommended == null){
-            ukRecommended = new MutableLiveData<>();
+        if(ukRecommendedPodcastList == null){
+            ukRecommendedPodcastList = new MutableLiveData<>();
             podcastRepository.getUKRecommended();
         }
 
-        return ukRecommended;
+        return ukRecommendedPodcastList;
     }
 
     public MutableLiveData<List<Episode>> getSpainEpisodes(String podcastURL){
         podcastRepository.getSpainEpisodes(podcastURL);
-        return spainPodcastEpisodeList;
+        return episodeList;
     }
 
     public MutableLiveData<List<Episode>> getUKEpisodes(String podcastURL){
         podcastRepository.getUKEpisodes(podcastURL);
-        return ukPodcastEpisodeList;
+        return episodeList;
     }
 
     public MutableLiveData<String> getSearchQuery() {
         return searchQuery;
     }
 
-    public void searchPodcast(String s){
+    public void searchPodcast(){
         podcastRepository.searchPodcast(searchQuery.getValue());
     }
 
@@ -86,20 +94,18 @@ public class PodcastListViewModel extends ViewModel implements PodcastCallBack, 
     @Override
     public void updatePodcastList(List<Podcast> podcastList, String option) {
         if(option.equals(Provider.SPAIN)){
-            spainRecommended.setValue(podcastList);
+            spainRecommendedPodcastList.setValue(podcastList);
         } else if(option.equals(Provider.UK)){
-            ukRecommended.setValue(podcastList);
-        } else
+            ukRecommendedPodcastList.setValue(podcastList);
+        } else if(option.equals(Provider.SUBSCRIBED)){
+            subscribedPodcastList.setValue(podcastList);
+        }
+        else
             searchedPodcast.setValue(podcastList);
     }
 
     @Override
     public void updateEpisodeList(List<Episode> episodeList, String option, String url) {
-
-        if(option.equals(Provider.SPAIN)) {
-            spainPodcastEpisodeList.setValue(episodeList);
-        } else if(option.equals(Provider.UK)){
-            ukPodcastEpisodeList.setValue(episodeList);
-        }
+        this.episodeList.setValue(episodeList);
     }
 }

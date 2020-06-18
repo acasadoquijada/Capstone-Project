@@ -26,7 +26,6 @@ import com.example.podcasfy.databinding.PodcastListFragmentBinding;
 import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.example.podcasfy.R;
-import androidx.fragment.app.DialogFragment;
 
 import java.util.List;
 
@@ -58,13 +57,13 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
 
         binding =
                 DataBindingUtil.inflate(inflater,R.layout.podcast_list_fragment, container, false);
-
+/*
         progDailog = new ProgressDialog(requireActivity());
 
         progDailog.setIndeterminate(true);
         progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progDailog.setCancelable(false);
-        progDailog.show();
+        progDailog.show();*/
 
         setupRecyclerViews();
 
@@ -142,17 +141,19 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
 
         mViewModel = new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
 
-        mViewModel.getPodcasts().observe(getViewLifecycleOwner(), podcasts -> {
-            mAdapterSubscriptions.setPodcasts(podcasts);
-            mAdapterSubscriptions.notifyDataSetChanged();
+        mViewModel.getSubscribedPodcastList().observe(getViewLifecycleOwner(), new Observer<List<Podcast>>() {
+            @Override
+            public void onChanged(List<Podcast> podcastList) {
+                mAdapterSubscriptions.setPodcasts(podcastList);
+                mAdapterSubscriptions.notifyDataSetChanged();
+            }
         });
 
-        mViewModel.getSpainRecommended().observe(getViewLifecycleOwner(), podcastList -> mAdapterSpain.setPodcasts(podcastList));
+        mViewModel.getSpainRecommendedPodcastList().observe(getViewLifecycleOwner(), podcastList -> mAdapterSpain.setPodcasts(podcastList));
         mViewModel.getUKRecommended().observe(getViewLifecycleOwner(), new Observer<List<Podcast>>() {
             @Override
             public void onChanged(List<Podcast> podcastList) {
 
-                progDailog.dismiss();
                 Log.d("TEST_","UK NOTIFIED");
                 mAdapterUK.setPodcasts(podcastList);
                 mAdapterUK.notifyDataSetChanged();

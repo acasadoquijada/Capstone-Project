@@ -45,7 +45,7 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
     private String provider;
     private int pos;
 
-    private String episodeURL;
+    private String podcastURL;
 
     @Override
     public void onItemClick(int clickedItem, boolean delete) {
@@ -152,10 +152,9 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        createReproducerViewModel();
-        setupPodcastViewModel();
 
-        podcastListViewModel =  new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
+        createReproducerViewModel();
+        setupViewModel();
 
         assert getArguments() != null;
         PodcastFragmentArgs podcastFragmentArgs = PodcastFragmentArgs.fromBundle(getArguments());
@@ -163,61 +162,61 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         pos = podcastFragmentArgs.getPos();
         provider = podcastFragmentArgs.getProvider();
 
-        if(provider.equals(Provider.SPAIN)) {
-            if (podcastListViewModel.getSpainRecommended() != null) {
-                updateUI(podcastListViewModel.getSpainRecommended().getValue().get(pos));
-                podcastListViewModel.getSpainEpisodes(episodeURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
-                    @Override
-                    public void onChanged(List<Episode> episodes) {
-                        adapter.setEpisodes(episodes);
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-            }
-        } else if(provider.equals(Provider.SUBSCRIBED)){
-            updateUI(podcastListViewModel.getPodcasts().getValue().get(pos));
-        } else if(provider.equals(Provider.UK)) {
-            updateUI(podcastListViewModel.getUKRecommended().getValue().get(pos));
-            podcastListViewModel.getUKEpisodes(episodeURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
-                @Override
-                public void onChanged(List<Episode> episodes) {
-                    Log.d("TEST", "ONCHANGED!");
-                    adapter.setEpisodes(episodes);
-                    adapter.notifyDataSetChanged();
-                }
-            });
+        setupPodcastInformation();
+    }
+
+    private void setPodcastURL(String url){
+        podcastURL = url;
+    }
+
+    private void setupPodcastInformation(){
+
+        Podcast podcast;
+
+        if(provider.equals(Provider.SPAIN)){
+            podcast = podcastListViewModel.getSpainRecommendedPodcastList().getValue().get(pos);
+            setPodcastURL(podcast.getUrl());
+            observeSpainPodcastEpisodes();
+        } else if(provider.equals(Provider.UK)){
+            podcast = podcastListViewModel.getUKRecommended().getValue().get(pos);
+            setPodcastURL(podcast.getUrl());
+            observeUKPodcastEpisodes();
+        } else{
+            podcast = podcastListViewModel.getSubscribedPodcastList().getValue().get(pos);
+            setPodcastURL(podcast.getUrl());
         }
 
+        updateUI(podcast);
     }
 
-    /**
-     * To setup the PodcastViewModel, we create the PodcastViewModel and observe:
-     * - Podcast (podcast information)
-     * - Episodes (podcast episodes information)
-     */
-    private void setupPodcastViewModel(){
-        createPodcastViewModel();
-      //  observePodcast();
-       // observeEpisodes();
+    private void observeSpainPodcastEpisodes(){
+        podcastListViewModel.getSpainEpisodes(podcastURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
+            @Override
+            public void onChanged(List<Episode> episodes) {
+                updateAdapterEpisodes(episodes);
+            }
+        });
     }
 
-    private void createPodcastViewModel(){
-        mViewModel = new ViewModelProvider(requireActivity()).get(PodcastViewModel.class);
+    private void observeUKPodcastEpisodes(){
+        podcastListViewModel.getUKEpisodes(podcastURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
+            @Override
+            public void onChanged(List<Episode> episodes) {
+                updateAdapterEpisodes(episodes);
+            }
+        });
     }
 
-    /**
-     * To observe the podcast information and update the UI
-     */
-    private void observePodcast(){
-        mViewModel.getPodcast().observe(getViewLifecycleOwner(), this::updateUI);
+    private void setupViewModel(){
+        podcastListViewModel =  new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
     }
+
 
     /**
      * Updates the UI with the podcast information
      */
 
     private void updateUI(Podcast podcast){
-        episodeURL = podcast.getUrl();
         setActivityTitle(podcast.getName());
         setDescription(podcast.getDescription());
         setLogo(podcast.getMediaURL());
@@ -236,15 +235,10 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         Picasso.get().load(media).into(mBinding.podcastLogo);
     }
 
-    /**
-     * To observe the podcast episodes and updates the adapter
-     */
-    private void observeEpisodes(){
-        mViewModel.getPodcastEpisode().observe(getViewLifecycleOwner(), this::updateAdapterEpisodes);
-    }
 
     private void updateAdapterEpisodes(List<Episode> episodesList){
         adapter.setEpisodes(episodesList);
+        adapter.notifyDataSetChanged();
     }
 
     /**

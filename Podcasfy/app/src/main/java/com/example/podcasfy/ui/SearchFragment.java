@@ -44,6 +44,7 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
 
         setupRecyclerViewSearch();
         setupSearchView();
+
         return binding.getRoot();
     }
 
@@ -112,7 +113,7 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
     }
 
     private void observeSearchQuery(){
-        viewModel.getSearchQuery().observe(getViewLifecycleOwner(), s -> viewModel.searchPodcast(s));
+        viewModel.getSearchQuery().observe(getViewLifecycleOwner(), s -> viewModel.searchPodcast());
     }
 
     private void observeSearchedPodcast(){
