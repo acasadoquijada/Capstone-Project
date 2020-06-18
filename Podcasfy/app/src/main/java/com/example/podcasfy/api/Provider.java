@@ -15,13 +15,12 @@ import java.util.List;
 
 public class Provider {
 
+    // Different options to get podcasts
     public static final String SUBSCRIBED = "subscribed";
-    public static final String IVOOX = "ivoox";
-    public static final String DIGITAL = "digital";
-
     public static final String SPAIN = "spain";
     public static final String UK = "uk";
 
+    // URL for each kind of option
     private static final String SPAIN_URL = "http://www.radio-espana.es/podcasts";
     private static final String SPAIN_URL_SUB = "http://www.radio-espana.es";
 
@@ -58,9 +57,18 @@ public class Provider {
                 podcast.setMediaURL(podcastElements.get(i).select("img").attr("src"));
                 podcast.setUrl(url_sub + podcastElements.get(i).attr("href"));
 
+                // We need to get the description from the podcast webpage
+               Document doc2 = Jsoup.connect(podcast.getUrl()).get();
+                String description = doc2.select("div.content-column-left").select("div.secondary-span-color").first().text();
+                podcast.setDescription(description);
                 podcastList.add(podcast);
             }
 
+            for(int i = 0; i < podcastList.size(); i++){
+                Document docPodcastPage = Jsoup.connect(podcastList.get(i).getUrl()).get();
+            }
+
+            Log.d("PODCAST__","recomen size: " + podcastList.size());
             return podcastList;
 
         } catch (IOException e){
@@ -78,22 +86,22 @@ public class Provider {
 
             Elements elements = doc.select("div.podcast-item");
 
+         //   String description = doc.select("div.content-column-left").select("div.secondary-span-color").first().text();
+
             String imageURL = doc.select("div.content-column-left").select("img").attr("src");
 
-            Log.d("PODCAST__","MEDIA: " + elements.get(0).select("svg[data-url$=.mp3]").attr("data-url"));
-
-            String a = "a";
             for(int i = 0; i < elements.size(); i++){
 
                 Episode episode = new Episode();
-                String nameQuery = "episode_" + (i+1);
+
                 episode.setName(elements.get(i).text());
                 episode.setImageURL(imageURL);
                 episode.setMediaURL(elements.get(i).select("svg[data-url$=.mp3]").attr("data-url"));
-                Log.d("PODCAST__","MEDIA: " + elements.get(i).select("svg[data-url$=.mp3]").attr("data-url"));
 
                 episodeList.add(episode);
             }
+
+            Log.d("PODCAST__","size: "+ episodeList.size());
             return episodeList;
         } catch (IOException e){
             e.printStackTrace();

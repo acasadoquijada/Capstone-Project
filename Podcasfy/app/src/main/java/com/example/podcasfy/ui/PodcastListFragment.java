@@ -4,6 +4,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.example.podcasfy.databinding.PodcastListFragmentBinding;
 import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.example.podcasfy.R;
+import androidx.fragment.app.DialogFragment;
 
 import java.util.List;
 
@@ -33,10 +35,12 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     private PodcastListViewModel mViewModel;
 
     private PodcastListAdapter mAdapterSubscriptions;
-    private PodcastListAdapter mAdapterIvoox;
-    private PodcastListAdapter mAdapterSpotify;
+    private PodcastListAdapter mAdapterSpain;
+    private PodcastListAdapter mAdapterUK;
 
     private PodcastListFragmentBinding binding;
+
+    private ProgressDialog progDailog;
 
     public PodcastListFragment(){}
 
@@ -55,6 +59,13 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         binding =
                 DataBindingUtil.inflate(inflater,R.layout.podcast_list_fragment, container, false);
 
+        progDailog = new ProgressDialog(requireActivity());
+
+        progDailog.setIndeterminate(false);
+        progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progDailog.setCancelable(false);
+        progDailog.show();
+
         setupRecyclerViews();
 
         return binding.getRoot();
@@ -66,8 +77,8 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
      */
     private void setupRecyclerViews(){
         setupSubscriptions();
-        setupIvoox();
-        setupDigital();
+        setupSpain();
+        setupUK();
     }
 
     /**
@@ -81,23 +92,23 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     }
 
     /**
-     * To setup the RecyclerView, LayoutManager and Adapter for the Ivoox RecyclerView
+     * To setup the RecyclerView, LayoutManager and Adapter for the Spain RecyclerView
      */
-    private void setupIvoox(){
-        RecyclerView recyclerViewIvoox =  binding.podcastListIvoox;
-        recyclerViewIvoox.setLayoutManager(createGridLayoutManager());
-        mAdapterIvoox = createPodcastListAdapter(Provider.IVOOX);
-        recyclerViewIvoox.setAdapter(mAdapterIvoox);
+    private void setupSpain(){
+        RecyclerView recyclerViewSpain =  binding.podcastListIvoox;
+        recyclerViewSpain.setLayoutManager(createGridLayoutManager());
+        mAdapterSpain = createPodcastListAdapter(Provider.SPAIN);
+        recyclerViewSpain.setAdapter(mAdapterSpain);
     }
 
     /**
-     * To setup the RecyclerView, LayoutManager and Adapter for the Digital RecyclerView
+     * To setup the RecyclerView, LayoutManager and Adapter for the UK RecyclerView
      */
-    private void setupDigital(){
-        RecyclerView recyclerViewDigital =  binding.podcastListDigital;
-        recyclerViewDigital.setLayoutManager(createGridLayoutManager());
-        mAdapterSpotify = createPodcastListAdapter(Provider.DIGITAL);
-        recyclerViewDigital.setAdapter(mAdapterSpotify);
+    private void setupUK(){
+        RecyclerView recyclerViewUK = binding.podcastListDigital;
+        recyclerViewUK.setLayoutManager(createGridLayoutManager());
+        mAdapterUK = createPodcastListAdapter(Provider.UK);
+        recyclerViewUK.setAdapter(mAdapterUK);
     }
 
     /**
@@ -136,13 +147,15 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
             mAdapterSubscriptions.notifyDataSetChanged();
         });
 
-        mViewModel.getIvooxRecommended().observe(getViewLifecycleOwner(), podcastList -> mAdapterIvoox.setPodcasts(podcastList));
-        mViewModel.getDigitalRecommended().observe(getViewLifecycleOwner(), new Observer<List<Podcast>>() {
+        mViewModel.getSpainRecommended().observe(getViewLifecycleOwner(), podcastList -> mAdapterSpain.setPodcasts(podcastList));
+        mViewModel.getUKRecommended().observe(getViewLifecycleOwner(), new Observer<List<Podcast>>() {
             @Override
             public void onChanged(List<Podcast> podcastList) {
-                Log.d("ALEX__","ONCHANGED");
-                mAdapterSpotify.setPodcasts(podcastList);
-                mAdapterSpotify.notifyDataSetChanged();
+
+                progDailog.dismiss();
+                Log.d("TEST_","UK NOTIFIED");
+                mAdapterUK.setPodcasts(podcastList);
+                mAdapterUK.notifyDataSetChanged();
             }
         });
     }

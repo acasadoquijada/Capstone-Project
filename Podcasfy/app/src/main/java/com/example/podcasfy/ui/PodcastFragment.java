@@ -163,10 +163,10 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         pos = podcastFragmentArgs.getPos();
         provider = podcastFragmentArgs.getProvider();
 
-        if(provider.equals(Provider.IVOOX)) {
-            if (podcastListViewModel.getIvooxRecommended() != null) {
-                updateUI(podcastListViewModel.getIvooxRecommended().getValue().get(pos));
-                podcastListViewModel.getIvooxEpisodes(episodeURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
+        if(provider.equals(Provider.SPAIN)) {
+            if (podcastListViewModel.getSpainRecommended() != null) {
+                updateUI(podcastListViewModel.getSpainRecommended().getValue().get(pos));
+                podcastListViewModel.getSpainEpisodes(episodeURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
                     @Override
                     public void onChanged(List<Episode> episodes) {
                         adapter.setEpisodes(episodes);
@@ -176,9 +176,9 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
             }
         } else if(provider.equals(Provider.SUBSCRIBED)){
             updateUI(podcastListViewModel.getPodcasts().getValue().get(pos));
-        } else if(provider.equals(Provider.DIGITAL)) {
-            updateUI(podcastListViewModel.getDigitalRecommended().getValue().get(pos));
-            podcastListViewModel.getDigitalEpisodes(episodeURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
+        } else if(provider.equals(Provider.UK)) {
+            updateUI(podcastListViewModel.getUKRecommended().getValue().get(pos));
+            podcastListViewModel.getUKEpisodes(episodeURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
                 @Override
                 public void onChanged(List<Episode> episodes) {
                     Log.d("TEST", "ONCHANGED!");

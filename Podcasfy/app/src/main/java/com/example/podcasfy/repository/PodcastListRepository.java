@@ -3,11 +3,8 @@ package com.example.podcasfy.repository;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.podcasfy.api.DigitalPodcast;
-import com.example.podcasfy.api.Ivoox;
 import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
@@ -24,14 +21,11 @@ public class PodcastListRepository {
 
     private  MutableLiveData<List<Podcast>> podcasts;
     private  MutableLiveData<List<Podcast>> subscriptionList;
-    private  MutableLiveData<List<String>> podcastsName;
-    private  MutableLiveData<List<String>> podcastImage;
+
     final private PodcastCallBack podcastCallBack;
     final private EpisodeCallBack episodeCallBack;
-    private Ivoox ivoox;
-    private DigitalPodcast digitalPodcast;
+
     private Provider provider;
-    private MutableLiveData<List<Podcast>> ivooxRecommended;
 
 
     public PodcastListRepository(PodcastCallBack podcastCallBack, EpisodeCallBack episodeCallBack){
@@ -39,9 +33,6 @@ public class PodcastListRepository {
         this.episodeCallBack = episodeCallBack;
 
         provider = new Provider();
-        ivoox = new Ivoox();
-        digitalPodcast = new DigitalPodcast();
-        ivooxRecommended = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<Podcast>> getSubscriptionList() {
@@ -104,70 +95,25 @@ public class PodcastListRepository {
         return podcasts;
     }
 
-    public LiveData<List<String>> getPodcastsName(){
+    public void getSpainRecommended(){
 
-        if(podcastsName != null){
-            return podcastsName;
-        }
-
-        podcastsName = new MutableLiveData<>();
-        List<String> names = new ArrayList<>();
-
-        Podcast p1 = new Podcast("Planos y Centellas ","description","url",
-                "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg","ivoox");
-
-        Podcast p2 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","ivoox");
-
-        names.add("Planos y Centellas Planos y Centellas Planos y Centellas Planos y Centellas");
-        names.add("Amigos del Mapa");
-        names.add("Amigos del Mapa");
-        names.add("Amigos del Mapa");
-        names.add("Amigos del Mapa");
-
-        podcastsName.setValue(names);
-
-        return podcastsName;
+        // asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
+       // new FetchPodcastListTask().execute(Provider.SPAIN);
+        new FetchPodcastListTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,Provider.SPAIN);
     }
 
-    public LiveData<List<String>> getPodcastsImage(){
-        if(podcastImage != null){
-            return podcastImage;
-        }
-
-        podcastImage = new MutableLiveData<>();
-        List<String> images = new ArrayList<>();
-
-        images.add("https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg");
-        images.add("https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg");
-        images.add("https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg");
-        images.add("https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg");
-        images.add("https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg");
-
-        podcastImage.setValue(images);
-
-        return podcastImage;
-
+    public void getUKRecommended(){
+        new FetchPodcastListTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,Provider.UK);
     }
 
-    public void testing(){
-        new FetchPodcastListTask().execute("La Vida Moderna");
+    public void getSpainEpisodes(String podcastURL){
+        // asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
+        new FetchEpisodeListTask().execute(Provider.SPAIN,podcastURL);
     }
 
-    public void getIvooxRecommended(){
-        new FetchPodcastListTask().execute("ivoox");
-    }
-
-    public void getDigitalRecommended(){
-        new FetchPodcastListTask().execute("digital");
-    }
-
-    public void getIvooxEpisodes(String podcastURL){
-        new FetchEpisodeListTask().execute(Provider.IVOOX,podcastURL);
-    }
-
-    public void getDigitialEpisodes(String podcastURL){
-        new FetchEpisodeListTask().execute(Provider.DIGITAL,podcastURL);
+    public void getUKEpisodes(String podcastURL){
+        // asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
+        new FetchEpisodeListTask().execute(Provider.UK,podcastURL);
     }
 
     class FetchPodcastListTask extends AsyncTask<String, Void, List<Podcast> > {
@@ -177,10 +123,11 @@ public class PodcastListRepository {
         protected List<Podcast> doInBackground(String... strings) {
 
             argument = strings[0];
+            Log.d("PODCAST__", "argument: " + argument);
 
-            if(argument.equals("ivoox")){
+            if(argument.equals(Provider.SPAIN)){
                 return provider.getRecommended(Provider.SPAIN);
-            } else if(argument.equals("digital")){
+            } else if(argument.equals(Provider.UK)){
                 return provider.getRecommended(Provider.UK);
             }
             return null;
@@ -188,7 +135,7 @@ public class PodcastListRepository {
 
         @Override
         protected void onPostExecute(List<Podcast> podcastsList) {
-            ivooxRecommended.setValue(podcastsList);
+            Log.d("PODCAST__","ON POST EXECUTE" + podcastsList.size());
             podcastCallBack.updatePodcastList(podcastsList,argument);
         }
     }
@@ -196,27 +143,21 @@ public class PodcastListRepository {
     class FetchEpisodeListTask extends AsyncTask<String, Void, List<Episode> > {
 
         private String url;
-        private String provider;
+        private String podcastProvider;
 
         @Override
         protected List<Episode> doInBackground(String... strings) {
 
-            provider = strings[0];
+            Log.d("PODCAST__", "provider: " + podcastProvider + " url: " + url);
+            podcastProvider = strings[0];
             url = strings[1];
 
-
-            if(provider.equals(Provider.IVOOX)){
-                return ivoox.getEpisodes(url);
-            } else if(provider.equals(Provider.DIGITAL)){
-                Log.d("TEST","URL DIGITAL: " + url);
-                return digitalPodcast.getEpisodes(url);
-            }
-            return null;
+            return provider.getEpisodes(url);
         }
 
         @Override
         protected void onPostExecute(List<Episode> podcastsList) {
-            episodeCallBack.updateEpisodeList(podcastsList, provider);
+            episodeCallBack.updateEpisodeList(podcastsList, podcastProvider);
         }
     }
 
