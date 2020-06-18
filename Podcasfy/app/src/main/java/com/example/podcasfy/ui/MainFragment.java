@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.podcasfy.R;
@@ -25,6 +27,7 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.squareup.picasso.Picasso;
 
 import ru.rambler.libs.swipe_layout.SwipeLayout;
 
@@ -201,7 +204,8 @@ public class MainFragment extends Fragment {
 
     private void setupReproducerViewModel(){
         createReproducerViewModel();
-        observePodcastName();
+        observeEpisodetName();
+        observeEpisodeLogo();
     }
 
     /**
@@ -214,9 +218,33 @@ public class MainFragment extends Fragment {
     /**
      * To observe and update the podcast name in the UI
      */
-    private void observePodcastName(){
+    private void observeEpisodetName(){
         reproducerViewModel.getName().observe(
                 getViewLifecycleOwner(), this::updateSlidingUIName);
+    }
+
+    /**
+     * To observe and update the podcast name in the UI
+     */
+    private void observeEpisodeLogo(){
+        reproducerViewModel.getLogoURL().observe(
+                getViewLifecycleOwner(), new Observer<String>() {
+                    @Override
+                    public void onChanged(String s) {
+                        Log.d("REPRODUCER",s);
+                        Picasso.get().load(s).into(binding.reproducer.reproducerSlidingPanel.slingindEpisodeImage);
+                        Picasso.get().load(s).into(binding.reproducer.mainEpisodeImage);
+                    }
+                });
+    }
+
+    private void observeEpisodeMediaURL(){
+        reproducerViewModel.getMediaURL().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                // Here i update the content of the reproducer!!
+            }
+        });
     }
 
     /**
@@ -225,7 +253,7 @@ public class MainFragment extends Fragment {
      */
     private void updateSlidingUIName(String name){
         binding.reproducer.reproducerSlidingPanel.slidingName.setText(name);
-
+        binding.reproducer.mainEpsiodeDescription.setText(name);
         // These methods are here for testing purposes. Will be removed eventually
         binding.slidingLayout.setTouchEnabled(true);
         // showSlidingPanel();

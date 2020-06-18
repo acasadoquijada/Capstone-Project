@@ -36,7 +36,6 @@ import java.util.List;
 
 public class PodcastFragment extends Fragment implements EpisodeListAdapter.ItemClickListener {
 
-    private PodcastViewModel mViewModel;
     private PodcastListViewModel podcastListViewModel;
     private ReproducerViewModel reproducerViewModel;
     private PodcastFragmentBinding mBinding;
@@ -44,12 +43,19 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
 
     private String provider;
     private int pos;
+    private Episode episode;
 
     private String podcastURL;
 
     @Override
     public void onItemClick(int clickedItem, boolean delete) {
-        updateName("pepe");
+
+        Episode episode = podcastListViewModel.getEpisodeList().getValue().get(clickedItem);
+
+        Log.d("REPRODUCER",episode.getName());
+        updateName(episode.getName());
+        updateLogo(episode.getImageURL());
+        updateMediaURL(episode.getMediaURL());
     }
 
     public interface ItemClickListener {
@@ -255,5 +261,13 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
      */
     private void updateName(String name){
         reproducerViewModel.setName(name);
+    }
+
+    private void updateLogo(String logo){
+        reproducerViewModel.setLogoURL(logo);
+    }
+
+    private void updateMediaURL(String mediaURL){
+        reproducerViewModel.setMediaURL(mediaURL);
     }
 }
