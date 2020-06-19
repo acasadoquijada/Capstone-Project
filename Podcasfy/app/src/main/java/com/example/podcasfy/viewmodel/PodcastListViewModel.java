@@ -23,8 +23,12 @@ public class PodcastListViewModel extends ViewModel implements PodcastCallBack, 
     private MutableLiveData<List<Podcast>> subscribedPodcastList;
     private MutableLiveData<List<Podcast>> searchedPodcast;
 
+
     // Episodes per given Podcast
     private MutableLiveData<List<Episode>> episodeList;
+
+    // Donwloaded episodes
+    private MutableLiveData<List<Episode>> episodesDownloadedList;
 
     // Used to triggered a search when the user sets a query
     private MutableLiveData<String> searchQuery;
@@ -100,6 +104,19 @@ public class PodcastListViewModel extends ViewModel implements PodcastCallBack, 
         return searchedPodcast;
     }
 
+    public void deletePodcast(int index) {
+        episodesDownloadedList.getValue().remove(index);
+    }
+
+    public MutableLiveData<List<Episode>> getDownloadedEspisodes(){
+        if(episodesDownloadedList == null){
+            episodesDownloadedList = new MutableLiveData<>();
+            podcastRepository.getDownloadedEpisodes();
+        }
+
+        return episodesDownloadedList;
+    }
+
     @Override
     public void updatePodcastList(List<Podcast> podcastList, String option) {
         if(option.equals(Provider.SPAIN)){
@@ -115,6 +132,10 @@ public class PodcastListViewModel extends ViewModel implements PodcastCallBack, 
 
     @Override
     public void updateEpisodeList(List<Episode> episodeList, String option, String url) {
-        this.episodeList.setValue(episodeList);
+        if(option.equals(Provider.DONWLOADS)){
+            this.episodesDownloadedList.setValue(episodeList);
+        } else{
+            this.episodeList.setValue(episodeList);
+        }
     }
 }

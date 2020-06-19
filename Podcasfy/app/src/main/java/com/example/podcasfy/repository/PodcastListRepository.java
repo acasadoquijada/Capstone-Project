@@ -155,6 +155,10 @@ public class PodcastListRepository {
         new FetchPodcastListTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,Provider.SUBSCRIBED);
     }
 
+    public void getDownloadedEpisodes(){
+        new FetchEpisodeListTask().execute(Provider.DONWLOADS,"a");
+    }
+
     class FetchPodcastListTask extends AsyncTask<String, Void, List<Podcast> > {
 
         private String argument;
@@ -181,6 +185,8 @@ public class PodcastListRepository {
             podcastCallBack.updatePodcastList(podcastsList,argument);
         }
     }
+
+
 
     private List<Episode> generateEpisodes(){
         Episode episode = new Episode(
@@ -218,9 +224,13 @@ public class PodcastListRepository {
             podcastProvider = strings[0];
             url = strings[1];
 
-            if(podcastProvider.equals(Provider.SUBSCRIBED)){
+            if(podcastProvider.equals(Provider.SUBSCRIBED)) {
                 return generateEpisodes();
-            } else
+            }
+            else if (podcastProvider.equals(Provider.DONWLOADS)) {
+                return generateEpisodes();
+            }
+             else
                 return provider.getEpisodes(url);
         }
 

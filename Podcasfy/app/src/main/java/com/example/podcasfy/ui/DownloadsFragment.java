@@ -1,7 +1,6 @@
 package com.example.podcasfy.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,7 +18,7 @@ import com.example.podcasfy.R;
 import com.example.podcasfy.adapter.EpisodeListAdapter;
 import com.example.podcasfy.databinding.DownloadFragmentBinding;
 import com.example.podcasfy.model.Episode;
-import com.example.podcasfy.viewmodel.PodcastViewModel;
+import com.example.podcasfy.viewmodel.PodcastListViewModel;
 
 import java.util.List;
 
@@ -28,8 +26,8 @@ public class DownloadsFragment extends Fragment implements EpisodeListAdapter.It
 
     private DownloadFragmentBinding binding;
     private EpisodeListAdapter adapter;
-    private PodcastViewModel mViewModel;
-
+ //   private PodcastViewModel mViewModel;
+    private PodcastListViewModel mViewModel;
     public DownloadsFragment(){}
 
     @Nullable
@@ -74,15 +72,6 @@ public class DownloadsFragment extends Fragment implements EpisodeListAdapter.It
         adapter = new EpisodeListAdapter(this,true);
         return adapter;
     }
-/*
-    @Override
-    public void onItemClick(int clickedItem) {
-
-        Toast.makeText(requireContext(),"" + clickedItem,Toast.LENGTH_SHORT).show();
-      /*  NavDirections action =
-                DownloadsFragmentDirections.actionDonwloadsFragmentToPodcastEpsiodeFragment("id");
-        NavHostFragment.findNavController(this).navigate(action);
-    }*/
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -101,18 +90,20 @@ public class DownloadsFragment extends Fragment implements EpisodeListAdapter.It
     }
 
     private void createPodcastViewModel(){
-        mViewModel = new PodcastViewModel();
+        mViewModel  = new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
     }
 
     /**
      * To observe the downloaded episodes information and update the UI
      */
     private void observeDownloads(){
-        mViewModel.getDonwloadedEpisodes().observe(getViewLifecycleOwner(), this::updateAdapterEpisodes);
+
+        mViewModel.getDownloadedEspisodes().observe(getViewLifecycleOwner(), this::updateAdapterEpisodes);
     }
 
     private void updateAdapterEpisodes(List<Episode> episodes){
         adapter.setEpisodes(episodes);
+        adapter.notifyDataSetChanged();
     }
 
 

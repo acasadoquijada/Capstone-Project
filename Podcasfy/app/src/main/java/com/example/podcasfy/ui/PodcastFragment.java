@@ -27,7 +27,6 @@ import com.example.podcasfy.databinding.PodcastFragmentBinding;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
-import com.example.podcasfy.viewmodel.PodcastViewModel;
 import com.example.podcasfy.viewmodel.ReproducerViewModel;
 import com.squareup.picasso.Picasso;
 

@@ -42,6 +42,6 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ivoox_logo" />
+        app:srcCompat="@drawable/spain_logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

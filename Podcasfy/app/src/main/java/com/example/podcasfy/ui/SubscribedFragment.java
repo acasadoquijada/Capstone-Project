@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
@@ -16,15 +17,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
-import com.example.podcasfy.adapter.PodcastListAdapter;
 import com.example.podcasfy.adapter.SubscribedPodcastsListAdapter;
-import com.example.podcasfy.databinding.PodcastListFragmentBinding;
 import com.example.podcasfy.databinding.SubscribedPodcastsFragmentBinding;
 import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
-import com.example.podcasfy.viewmodel.SubscribedViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SubscribedFragment extends Fragment implements SubscribedPodcastsListAdapter.ItemClickListener{
@@ -32,7 +29,8 @@ public class SubscribedFragment extends Fragment implements SubscribedPodcastsLi
 
     private SubscribedPodcastsFragmentBinding binding;
     private SubscribedPodcastsListAdapter mAdapter;
-    private SubscribedViewModel mViewModel;
+    private PodcastListViewModel mViewModel;
+
     public SubscribedFragment(){}
 
     @Nullable
@@ -88,10 +86,13 @@ public class SubscribedFragment extends Fragment implements SubscribedPodcastsLi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(requireActivity()).get(SubscribedViewModel.class);
+        mViewModel = new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
 
-        mViewModel.getSubscriptionList().observe(getViewLifecycleOwner(), podcasts -> {
-            mAdapter.setSubscriptions(podcasts);
+        mViewModel.getSubscribedPodcastList().observe(getViewLifecycleOwner(), new Observer<List<Podcast>>() {
+            @Override
+            public void onChanged(List<Podcast> podcastList) {
+                mAdapter.setSubscriptions(podcastList);
+            }
         });
     }
 

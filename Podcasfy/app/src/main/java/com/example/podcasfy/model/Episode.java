@@ -106,7 +106,7 @@ public class Episode {
         return date;
     }
 
-    String getPodcastId() {
+    public String getPodcastId() {
         return podcastId;
     }
 
