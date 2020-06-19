@@ -52,14 +52,10 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
 
         Episode episode = podcastListViewModel.getEpisodeList().getValue().get(clickedItem);
 
-        Log.d("REPRODUCER",episode.getName());
+        Log.d("REPRODUCER ON CLICK",episode.getName());
         updateName(episode.getName());
         updateLogo(episode.getImageURL());
         updateMediaURL(episode.getMediaURL());
-    }
-
-    public interface ItemClickListener {
-        void onItemClick(int clickedItem);
     }
 
     public PodcastFragment(){
@@ -190,6 +186,7 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         } else{
             podcast = podcastListViewModel.getSubscribedPodcastList().getValue().get(pos);
             setPodcastURL(podcast.getUrl());
+            observeSubscribedPodcastEpisodes();
         }
 
         updateUI(podcast);
@@ -206,6 +203,15 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
 
     private void observeUKPodcastEpisodes(){
         podcastListViewModel.getUKEpisodes(podcastURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
+            @Override
+            public void onChanged(List<Episode> episodes) {
+                updateAdapterEpisodes(episodes);
+            }
+        });
+    }
+
+    private void observeSubscribedPodcastEpisodes(){
+        podcastListViewModel.getSubscribedEpisodes(1).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
             @Override
             public void onChanged(List<Episode> episodes) {
                 updateAdapterEpisodes(episodes);

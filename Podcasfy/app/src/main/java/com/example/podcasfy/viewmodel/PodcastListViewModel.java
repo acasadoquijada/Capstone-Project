@@ -69,6 +69,10 @@ public class PodcastListViewModel extends ViewModel implements PodcastCallBack, 
         return ukRecommendedPodcastList;
     }
 
+    public MutableLiveData<List<Episode>> getEpisodeList() {
+        return episodeList;
+    }
+
     public MutableLiveData<List<Episode>> getSpainEpisodes(String podcastURL){
         podcastRepository.getSpainEpisodes(podcastURL);
         return episodeList;
@@ -76,6 +80,11 @@ public class PodcastListViewModel extends ViewModel implements PodcastCallBack, 
 
     public MutableLiveData<List<Episode>> getUKEpisodes(String podcastURL){
         podcastRepository.getUKEpisodes(podcastURL);
+        return episodeList;
+    }
+
+    public MutableLiveData<List<Episode>> getSubscribedEpisodes(int podcastId){
+        podcastRepository.getSubscribedEpisodes(podcastId);
         return episodeList;
     }
 

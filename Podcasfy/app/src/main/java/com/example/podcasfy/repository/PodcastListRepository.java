@@ -143,6 +143,10 @@ public class PodcastListRepository {
         new FetchEpisodeListTask().execute(Provider.UK,podcastURL);
     }
 
+    public void getSubscribedEpisodes(int podcastId){
+        new FetchEpisodeListTask().execute(Provider.SUBSCRIBED, "id");
+    }
+
     public void searchPodcast(String query){
         new FetchSearchEpisodeListTask().execute(query);
     }
@@ -178,6 +182,31 @@ public class PodcastListRepository {
         }
     }
 
+    private List<Episode> generateEpisodes(){
+        Episode episode = new Episode(
+                "Planos y Centellas 3x20 - Snowpiercer (Serie Netflix)",
+                "Subid con nosotros al tren y evitad que la glaciación os alcance. " +
+                        "Esta semana hablamos del estreno de Netflix inspirado en la película" +
+                        " homónima \"Snowpiercer\". Un misterioso asesinato amenaza con desestabilizar " +
+                        "el delicado equilibrio del tren-arca, la última esperanza de la humanidad.",
+
+                "https://static-1.ivoox.com/audios/0/7/8/7/1531591027870_MD.jpg",
+                "mediaURL",
+                "id");
+
+        List<Episode> epis = new ArrayList<>();
+
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
+        epis.add(episode);
+
+        return epis;
+    }
+
     class FetchEpisodeListTask extends AsyncTask<String, Void, List<Episode> > {
 
         private String url;
@@ -186,11 +215,13 @@ public class PodcastListRepository {
         @Override
         protected List<Episode> doInBackground(String... strings) {
 
-            Log.d("PODCAST__", "provider: " + podcastProvider + " url: " + url);
             podcastProvider = strings[0];
             url = strings[1];
 
-            return provider.getEpisodes(url);
+            if(podcastProvider.equals(Provider.SUBSCRIBED)){
+                return generateEpisodes();
+            } else
+                return provider.getEpisodes(url);
         }
 
         @Override
