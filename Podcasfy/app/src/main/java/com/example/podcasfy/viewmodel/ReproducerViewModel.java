@@ -13,6 +13,7 @@ public class ReproducerViewModel extends ViewModel {
     public ReproducerViewModel(){
         name = new MutableLiveData<>();
         logoURL = new MutableLiveData<>();
+        mediaURL = new MutableLiveData<>();
     }
 
     public LiveData<String> getName() {
