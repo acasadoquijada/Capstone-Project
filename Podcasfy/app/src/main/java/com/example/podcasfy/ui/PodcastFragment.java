@@ -46,6 +46,7 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
 
     private String podcastURL;
     private String podcastId;
+    private boolean susbcribed;
 
     @Override
     public void onItemClick(int clickedItem, boolean delete) {
@@ -75,7 +76,7 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                if(isChecked){
+                if(isChecked && !susbcribed){
 
                     podcastListViewModel.subscribeToPodcast(pos,provider);
                     Log.d("ALEX__","SUBSCRIBE");
@@ -177,7 +178,6 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
     private void setupPodcastInformation(){
 
         Podcast podcast;
-        boolean susbcribed;
 
         if(provider.equals(Provider.SPAIN)){
             podcast = podcastListViewModel.getSpainRecommendedPodcastList().getValue().get(pos);
@@ -196,8 +196,11 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         }
 
 
-        if(podcastListViewModel.isPodcastSubscribed(podcast)){
+        susbcribed = podcastListViewModel.isPodcastSubscribed(podcast);
+
+        if(susbcribed){
             Log.d("ALEX__", "SUBSCRIBED");
+            mBinding.subscriptionButton.setChecked(true);
             // update subscribe button
         } else{
             Log.d("ALEX__", "UNSUBSCRIBED");
