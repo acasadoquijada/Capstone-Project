@@ -42,12 +42,12 @@ public class Provider {
         return Math.min(sizeRecoveredFromWeb, MAX_SEARCH_SIZE);
     }
 
-    public List<Podcast> getRecommended(String country) {
+    public List<Podcast> getRecommended(String podcastProvider) {
 
-        if(country.equals(SPAIN)){
+        if(podcastProvider.equals(SPAIN)){
             url = SPAIN_URL;
             url_sub = SPAIN_URL_SUB;
-        } else if(country.equals(UK)){
+        } else if(podcastProvider.equals(UK)){
             url = UK_URL;
             url_sub = UK_URL_SUB;
         }
@@ -68,6 +68,8 @@ public class Provider {
                 podcast.setName(podcastElements.get(i).select("img").attr("alt"));
                 podcast.setMediaURL(podcastElements.get(i).select("img").attr("src"));
                 podcast.setUrl(url_sub + podcastElements.get(i).attr("href"));
+                podcast.setProvider(podcastProvider);
+                podcast.generateId();
 
                 // We need to get the description from the podcast webpage
 
@@ -142,6 +144,8 @@ public class Provider {
                 podcast.setName(elements.get(i).select("img").attr("alt"));
                 podcast.setMediaURL(elements.get(i).select("img").attr("src"));
                 podcast.setUrl(url_sub + elements.get(i).attr("href"));
+
+                podcast.generateId();
 
                 podcastList.add(podcast);
             }

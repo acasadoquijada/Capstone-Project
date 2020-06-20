@@ -144,6 +144,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         mViewModel.getSubscribedPodcastList().observe(getViewLifecycleOwner(), new Observer<List<Podcast>>() {
             @Override
             public void onChanged(List<Podcast> podcastList) {
+                Log.d("TEST_","SUBSCRIBED NOTIFIED");
                 mAdapterSubscriptions.setPodcasts(podcastList);
                 mAdapterSubscriptions.notifyDataSetChanged();
             }
@@ -154,7 +155,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
             @Override
             public void onChanged(List<Podcast> podcastList) {
 
-                Log.d("TEST_","UK NOTIFIED");
+
                 mAdapterUK.setPodcasts(podcastList);
                 mAdapterUK.notifyDataSetChanged();
             }

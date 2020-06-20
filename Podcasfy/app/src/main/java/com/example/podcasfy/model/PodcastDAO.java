@@ -25,6 +25,9 @@ public interface PodcastDAO {
     @Delete
     void delete(Podcast podcast);
 
+    @Query("DELETE FROM podcast WHERE id = :id")
+    void delete(String id);
+
     @Query("DELETE FROM podcast")
     void deleteTable();
 }

@@ -45,6 +45,7 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
     private Episode episode;
 
     private String podcastURL;
+    private String podcastId;
 
     @Override
     public void onItemClick(int clickedItem, boolean delete) {
@@ -75,8 +76,11 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if(isChecked){
+
+                    podcastListViewModel.subscribeToPodcast(pos,provider);
                     Log.d("ALEX__","SUBSCRIBE");
                 } else {
+                    podcastListViewModel.unsubscribeToPodcast(podcastId);
                     Log.d("ALEX__","NO SUBSCRIBE");
                 }
             }
@@ -173,21 +177,33 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
     private void setupPodcastInformation(){
 
         Podcast podcast;
+        boolean susbcribed;
 
         if(provider.equals(Provider.SPAIN)){
             podcast = podcastListViewModel.getSpainRecommendedPodcastList().getValue().get(pos);
             setPodcastURL(podcast.getUrl());
             observeSpainPodcastEpisodes();
+
         } else if(provider.equals(Provider.UK)){
             podcast = podcastListViewModel.getUKRecommended().getValue().get(pos);
             setPodcastURL(podcast.getUrl());
             observeUKPodcastEpisodes();
+
         } else{
             podcast = podcastListViewModel.getSubscribedPodcastList().getValue().get(pos);
             setPodcastURL(podcast.getUrl());
             observeSubscribedPodcastEpisodes();
         }
 
+
+        if(podcastListViewModel.isPodcastSubscribed(podcast)){
+            Log.d("ALEX__", "SUBSCRIBED");
+            // update subscribe button
+        } else{
+            Log.d("ALEX__", "UNSUBSCRIBED");
+        }
+
+        podcastId = podcast.getId();
         updateUI(podcast);
     }
 

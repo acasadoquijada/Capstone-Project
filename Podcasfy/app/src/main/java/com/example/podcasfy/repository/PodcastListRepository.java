@@ -1,13 +1,16 @@
 package com.example.podcasfy.repository;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.podcasfy.api.Provider;
+import com.example.podcasfy.model.AppDataBase;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
+import com.example.podcasfy.model.PodcastDAO;
 import com.example.podcasfy.utils.EpisodeCallBack;
 import com.example.podcasfy.utils.PodcastCallBack;
 
@@ -27,8 +30,10 @@ public class PodcastListRepository {
 
     private Provider provider;
 
+    private Context context;
 
-    public PodcastListRepository(PodcastCallBack podcastCallBack, EpisodeCallBack episodeCallBack){
+    public PodcastListRepository(Context context, PodcastCallBack podcastCallBack, EpisodeCallBack episodeCallBack){
+        this.context = context;
         this.podcastCallBack = podcastCallBack;
         this.episodeCallBack = episodeCallBack;
 
@@ -99,18 +104,18 @@ public class PodcastListRepository {
         List<Podcast> podcastList = new ArrayList<>();
 
         Podcast p1 = new Podcast("Planos y NABOS","description","url",
-                "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg","Ivoox");
+                "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg",Provider.SPAIN);
 
         Podcast p2 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg",Provider.UK);
         Podcast p3 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg",Provider.UK);
         Podcast p4 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg",Provider.UK);
         Podcast p5 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg",Provider.SPAIN);
         Podcast p6 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
+                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg",Provider.UK);
 
         podcastList.add(p1);
         podcastList.add(p2);
@@ -159,6 +164,46 @@ public class PodcastListRepository {
         new FetchEpisodeListTask().execute(Provider.DONWLOADS,"a");
     }
 
+    public void subscribeToPodcast(Podcast podcast){
+        new AddPodcastDatabaseTask().execute(podcast);
+    }
+
+    public void unsubscribeToPodcast(String id){
+        new DeletePodcastDatabaseTask().execute(id);
+    }
+
+    class DeletePodcastDatabaseTask extends AsyncTask<String,Void, List<Podcast>> {
+        @Override
+        protected List<Podcast> doInBackground(String... strings) {
+
+            AppDataBase.getInstance(context).podcastDAO().delete(strings[0]);
+
+            return AppDataBase.getInstance(context).podcastDAO().getPodcasts();
+        }
+
+        @Override
+        protected void onPostExecute(List<Podcast> podcastList) {
+            podcastCallBack.updatePodcastList(podcastList,Provider.SUBSCRIBED);
+        }
+    }
+        class AddPodcastDatabaseTask extends AsyncTask<Podcast,Void, List<Podcast>>{
+
+        @Override
+        protected List<Podcast> doInBackground(Podcast... podcasts) {
+
+            Podcast podcast = podcasts[0];
+            AppDataBase.getInstance(context).podcastDAO().insertPodcast(podcast);
+
+            Log.d("TESTING__", "CALL TO DATABASE TO RETRIEVE NEW DATA");
+            return AppDataBase.getInstance(context).podcastDAO().getPodcasts();
+        }
+
+        @Override
+        protected void onPostExecute(List<Podcast> podcastList) {
+            podcastCallBack.updatePodcastList(podcastList,Provider.SUBSCRIBED);
+        }
+    }
+
     class FetchPodcastListTask extends AsyncTask<String, Void, List<Podcast> > {
 
         private String argument;
@@ -173,8 +218,8 @@ public class PodcastListRepository {
             } else if(argument.equals(Provider.UK)){
                 return provider.getRecommended(Provider.UK);
             } else if(argument.equals(Provider.SUBSCRIBED)){
-                // call DATAbASE
-                return testing();
+                // call DATAbAS
+                return AppDataBase.getInstance(context).podcastDAO().getPodcasts();
             }
             return null;
         }

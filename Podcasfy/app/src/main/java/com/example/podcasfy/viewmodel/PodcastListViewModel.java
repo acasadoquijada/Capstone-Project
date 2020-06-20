@@ -1,5 +1,9 @@
 package com.example.podcasfy.viewmodel;
 
+import android.app.Application;
+import android.util.Log;
+
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -12,8 +16,9 @@ import com.example.podcasfy.utils.PodcastCallBack;
 
 import java.util.List;
 
-public class PodcastListViewModel extends ViewModel implements PodcastCallBack, EpisodeCallBack {
+public class PodcastListViewModel extends AndroidViewModel implements PodcastCallBack, EpisodeCallBack {
 
+    private Application application;
 
     private PodcastListRepository podcastRepository;
 
@@ -34,9 +39,10 @@ public class PodcastListViewModel extends ViewModel implements PodcastCallBack, 
     private MutableLiveData<String> searchQuery;
 
 
-    public PodcastListViewModel (){
+    public PodcastListViewModel (Application application){
+        super(application);
 
-        podcastRepository = new PodcastListRepository(this, this);
+        podcastRepository = new PodcastListRepository(application.getApplicationContext(),this, this);
 
         episodeList = new MutableLiveData<>();
         searchQuery = new MutableLiveData<>();
@@ -117,13 +123,42 @@ public class PodcastListViewModel extends ViewModel implements PodcastCallBack, 
         return episodesDownloadedList;
     }
 
+    public void subscribeToPodcast(int pos, String provider){
+
+        Podcast podcast;
+        if(provider.equals(Provider.SPAIN)){
+            podcast = spainRecommendedPodcastList.getValue().get(pos);
+        } else if(provider.equals(Provider.UK)){
+            podcast = ukRecommendedPodcastList.getValue().get(pos);
+        } else
+            podcast = null;
+        podcastRepository.subscribeToPodcast(podcast);
+    }
+
+    public void unsubscribeToPodcast(String id){
+        podcastRepository.unsubscribeToPodcast(id);
+    }
+
+    public boolean isPodcastSubscribed(Podcast podcast){
+
+        for(int i = 0; i < subscribedPodcastList.getValue().size(); i++){
+            if(subscribedPodcastList.getValue().get(i).getName().equals(podcast.getName())){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public void updatePodcastList(List<Podcast> podcastList, String option) {
+
         if(option.equals(Provider.SPAIN)){
             spainRecommendedPodcastList.setValue(podcastList);
         } else if(option.equals(Provider.UK)){
             ukRecommendedPodcastList.setValue(podcastList);
         } else if(option.equals(Provider.SUBSCRIBED)){
+            Log.d("ALEX__", "DB SIZE: " + podcastList.size());
             subscribedPodcastList.setValue(podcastList);
         }
         else
