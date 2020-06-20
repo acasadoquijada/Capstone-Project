@@ -93,8 +93,8 @@ public class PodcastListViewModel extends AndroidViewModel implements PodcastCal
         return episodeList;
     }
 
-    public MutableLiveData<List<Episode>> getSubscribedEpisodes(int podcastId){
-        podcastRepository.getSubscribedEpisodes(podcastId);
+    public MutableLiveData<List<Episode>> getSubscribedEpisodes(String podcastURL){
+        podcastRepository.getSubscribedEpisodes(podcastURL);
         return episodeList;
     }
 

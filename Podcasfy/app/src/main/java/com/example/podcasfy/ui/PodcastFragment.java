@@ -229,7 +229,7 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
     }
 
     private void observeSubscribedPodcastEpisodes(){
-        podcastListViewModel.getSubscribedEpisodes(1).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
+        podcastListViewModel.getSubscribedEpisodes(podcastURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
             @Override
             public void onChanged(List<Episode> episodes) {
                 updateAdapterEpisodes(episodes);

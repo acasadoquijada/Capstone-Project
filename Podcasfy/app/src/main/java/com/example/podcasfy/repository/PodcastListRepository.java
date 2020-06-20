@@ -148,8 +148,8 @@ public class PodcastListRepository {
         new FetchEpisodeListTask().execute(Provider.UK,podcastURL);
     }
 
-    public void getSubscribedEpisodes(int podcastId){
-        new FetchEpisodeListTask().execute(Provider.SUBSCRIBED, "id");
+    public void getSubscribedEpisodes(String podcastURL){
+        new FetchEpisodeListTask().execute(Provider.SUBSCRIBED, podcastURL);
     }
 
     public void searchPodcast(String query){
@@ -218,7 +218,6 @@ public class PodcastListRepository {
             } else if(argument.equals(Provider.UK)){
                 return provider.getRecommended(Provider.UK);
             } else if(argument.equals(Provider.SUBSCRIBED)){
-                // call DATAbAS
                 return AppDataBase.getInstance(context).podcastDAO().getPodcasts();
             }
             return null;
@@ -269,10 +268,7 @@ public class PodcastListRepository {
             podcastProvider = strings[0];
             url = strings[1];
 
-            if(podcastProvider.equals(Provider.SUBSCRIBED)) {
-                return generateEpisodes();
-            }
-            else if (podcastProvider.equals(Provider.DONWLOADS)) {
+            if (podcastProvider.equals(Provider.DONWLOADS)) {
                 return generateEpisodes();
             }
              else
@@ -292,6 +288,7 @@ public class PodcastListRepository {
         protected List<Podcast> doInBackground(String... strings) {
 
             String query = strings[0];
+            Log.d("TESTING_","QUERY IN BACKGROUND" + query);
             return provider.searchPodcast(query);
         }
 

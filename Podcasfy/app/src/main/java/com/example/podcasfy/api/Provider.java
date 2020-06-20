@@ -130,6 +130,8 @@ public class Provider {
 
         String search_url = search_url_prefix + query;
 
+        Log.d("TESTING__", "SEARCH URL: " + search_url);
+
         Document doc = null;
 
         try{
@@ -144,6 +146,8 @@ public class Provider {
                 podcast.setName(elements.get(i).select("img").attr("alt"));
                 podcast.setMediaURL(elements.get(i).select("img").attr("src"));
                 podcast.setUrl(url_sub + elements.get(i).attr("href"));
+
+                podcast.setProvider(Provider.SUBSCRIBED);
 
                 podcast.generateId();
 
