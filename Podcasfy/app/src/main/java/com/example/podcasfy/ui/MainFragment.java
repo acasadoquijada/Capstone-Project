@@ -211,6 +211,7 @@ public class MainFragment extends Fragment {
                     //show
                     reproducerViewModel.getPlayer().setPlayWhenReady(true);
                     binding.slidingLayout.setTouchEnabled(true);
+                    binding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setImageDrawable(requireContext().getDrawable(R.drawable.ic_pause));
                     showSlidingPanel();
                 } else {
                     //don't
@@ -218,7 +219,7 @@ public class MainFragment extends Fragment {
 
                     binding.slidingLayout.setTouchEnabled(false);
                     reproducerViewModel.getPlayer().setPlayWhenReady(false);
-
+                    binding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setImageDrawable(requireContext().getDrawable(R.drawable.ic_play_arrow));
                     hideSlidingPanel();
 
                 }

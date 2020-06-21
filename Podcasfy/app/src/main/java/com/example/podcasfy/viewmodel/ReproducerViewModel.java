@@ -16,7 +16,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
 import java.util.Objects;
 
-public class ReproducerViewModel extends AndroidViewModel {
+public class ReproducerViewModel extends AndroidViewModel implements ExoPlayer.EventListener {
 
     private Application application;
     private MutableLiveData<String> name;
@@ -28,7 +28,7 @@ public class ReproducerViewModel extends AndroidViewModel {
     private MediaSource mediaSource;
 
     private MutableLiveData<Boolean> showReproducer;
-
+    private MutableLiveData<Boolean> get;
 
     public ReproducerViewModel(Application application){
         super(application);
@@ -42,10 +42,15 @@ public class ReproducerViewModel extends AndroidViewModel {
 
         position = 0;
 
+        get = new MutableLiveData<>();
         name = new MutableLiveData<>();
         logoURL = new MutableLiveData<>();
         mediaURL = new MutableLiveData<>();
 
+    }
+
+    public MutableLiveData<Boolean> getGet() {
+        return get;
     }
 
     public ExoPlayer getPlayer() {
@@ -127,4 +132,5 @@ public class ReproducerViewModel extends AndroidViewModel {
     public void setMediaURL(String mediaURL) {
         this.mediaURL.setValue(mediaURL);
     }
+
 }

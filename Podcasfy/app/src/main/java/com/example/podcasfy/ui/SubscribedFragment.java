@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
 import com.example.podcasfy.adapter.SubscribedPodcastsListAdapter;
+import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.databinding.SubscribedPodcastsFragmentBinding;
 import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
@@ -100,7 +101,7 @@ public class SubscribedFragment extends Fragment implements SubscribedPodcastsLi
     public void onItemClick(int clickedItem) {
 
         NavDirections action =
-        SubscribedFragmentDirections.actionSubscribedPodcastFragmentToPodcastFragment(0,"1");
+        SubscribedFragmentDirections.actionSubscribedPodcastFragmentToPodcastFragment(0, Provider.SUBSCRIBED);
 
         NavHostFragment.findNavController(this).navigate(action);
 

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
+import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.databinding.SubscribedPodcastBinding;
 import com.example.podcasfy.model.Podcast;
 import com.squareup.picasso.Picasso;
@@ -61,14 +62,10 @@ public class SubscribedPodcastsListAdapter extends RecyclerView.Adapter<Subscrib
     public class SubscribedHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private SubscribedPodcastBinding binding;
-        private final String spotify;
-        private final String ivoox;
 
         SubscribedHolder(@NonNull SubscribedPodcastBinding binding) {
             super(binding.getRoot());
 
-            ivoox = binding.getRoot().getContext().getString(R.string.pref_provider_ivoox_value);
-            spotify=  binding.getRoot().getContext().getString(R.string.pref_provider_digital_value);
 
             this.binding = binding;
             itemView.setOnClickListener(this);
@@ -96,28 +93,11 @@ public class SubscribedPodcastsListAdapter extends RecyclerView.Adapter<Subscrib
          */
 
         private void setupProviderLogo(String provider){
-            if(provider.toLowerCase().equals(ivoox)){
-                setIvooxLogo();
-            } else if(provider.toLowerCase().equals(spotify)){
-                setSpotifyLogo();
+            if(provider.equals(Provider.SPAIN)){
+                binding.provider.setImageResource(R.drawable.spain_logo);
+            } else if(provider.equals(Provider.UK)){
+                binding.provider.setImageResource(R.drawable.uk_logo);
             }
-        }
-
-        /**
-         * To setup the Ivoox logo
-         */
-        private void setIvooxLogo(){
-            Picasso.get().load(R.drawable.ivoox_logo).into(binding.provider);
-        }
-
-        /**
-         * To setup the DigitalPodcast logo
-         */
-
-        private void setSpotifyLogo(){
-            // Picasso doesn't support SVG
-            // https://github.com/square/picasso/issues/1109
-            binding.provider.setImageResource(R.drawable.ic_spotify_sketch);
         }
 
         @Override

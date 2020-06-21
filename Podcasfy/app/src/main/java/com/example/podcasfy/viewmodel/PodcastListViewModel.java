@@ -173,7 +173,7 @@ public class PodcastListViewModel extends AndroidViewModel implements PodcastCal
         } else if(provider.equals(Provider.UK)){
             podcast = ukRecommendedPodcastList.getValue().get(pos);
         } else
-            podcast = null;
+            podcast = searchedPodcast.getValue().get(pos);
         podcastRepository.subscribeToPodcast(podcast);
     }
 
