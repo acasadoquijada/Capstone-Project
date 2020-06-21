@@ -40,6 +40,7 @@ public class EpisodeListAdapter extends  RecyclerView.Adapter<EpisodeListAdapter
 
     public void setEpisodes(List<Episode> episodes){
         this.episodes = episodes;
+        this.notifyDataSetChanged();
     }
 
     @Override

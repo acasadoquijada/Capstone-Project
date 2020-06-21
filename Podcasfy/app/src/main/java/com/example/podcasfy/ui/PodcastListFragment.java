@@ -29,6 +29,8 @@ import com.example.podcasfy.R;
 
 import java.util.List;
 
+import retrofit.http.POST;
+
 public class PodcastListFragment extends Fragment implements PodcastListAdapter.ItemClickListener  {
 
     private PodcastListViewModel mViewModel;
@@ -129,7 +131,6 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         return new PodcastListAdapter(this, provider);
     }
 
-
     /**
      * To create the ViewModel and setup the observer, we observe the changes in the Podcasts field
      * and update the podcastListAdapter with the new list of podcasts
@@ -138,30 +139,54 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mViewModel = new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
-
-        mViewModel.getSubscribedPodcastList().observe(getViewLifecycleOwner(), new Observer<List<Podcast>>() {
-            @Override
-            public void onChanged(List<Podcast> podcastList) {
-                Log.d("TEST_","SUBSCRIBED NOTIFIED");
-                mAdapterSubscriptions.setPodcasts(podcastList);
-                mAdapterSubscriptions.notifyDataSetChanged();
-            }
-        });
-
-        mViewModel.getSpainRecommendedPodcastList().observe(getViewLifecycleOwner(), podcastList -> mAdapterSpain.setPodcasts(podcastList));
-        mViewModel.getUKRecommended().observe(getViewLifecycleOwner(), new Observer<List<Podcast>>() {
-            @Override
-            public void onChanged(List<Podcast> podcastList) {
-
-
-                mAdapterUK.setPodcasts(podcastList);
-                mAdapterUK.notifyDataSetChanged();
-            }
-        });
+        setupViewModel();
     }
 
+    /**
+     * To create the ViewModel and observe the different PodcastList
+     */
+    private void setupViewModel(){
+        createViewModel();
+        observePodcastLists();
+    }
+
+    private void createViewModel(){
+        mViewModel = new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
+    }
+
+    private void observePodcastLists(){
+        observeSubscribed();
+        observeSpain();
+        observeUK();
+    }
+
+    private void observeSubscribed(){
+        mViewModel.getSubscribedPodcastList().observe(getViewLifecycleOwner(),
+                this::updateSubscribedPodcastList);
+    }
+
+    private void observeSpain(){
+        mViewModel.getSpainRecommendedPodcastList().observe(getViewLifecycleOwner(),
+                this::updateSpainPodcastList);
+
+    }
+
+    private void observeUK(){
+        mViewModel.getUKRecommended().observe(getViewLifecycleOwner(),
+                this::updateUKPodcastList);
+    }
+
+    private void updateSubscribedPodcastList(List<Podcast> podcastList){
+        mAdapterSubscriptions.setPodcasts(podcastList);
+    }
+
+    private void updateSpainPodcastList(List<Podcast> podcastList){
+        mAdapterSpain.setPodcasts(podcastList);
+    }
+
+    private void updateUKPodcastList(List<Podcast> podcastList){
+        mAdapterUK.setPodcasts(podcastList);
+    }
     /**
      * To launch a PodcastFragment, we open a PodcastFragment with the id of the Podcast selected
      * using the NavigationComponent

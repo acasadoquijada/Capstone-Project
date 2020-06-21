@@ -2,28 +2,24 @@ package com.example.podcasfy.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.PluralsRes;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
 import com.example.podcasfy.adapter.EpisodeListAdapter;
-import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.databinding.PodcastFragmentBinding;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
@@ -32,6 +28,7 @@ import com.example.podcasfy.viewmodel.ReproducerViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Objects;
 
 
 public class PodcastFragment extends Fragment implements EpisodeListAdapter.ItemClickListener {
@@ -43,26 +40,11 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
 
     private String provider;
     private int pos;
-    private Episode episode;
 
-    private String podcastURL;
     private String podcastId;
     private boolean susbcribed;
 
-    @Override
-    public void onItemClick(int clickedItem, boolean delete) {
-
-        Episode episode = podcastListViewModel.getEpisodeList().getValue().get(clickedItem);
-
-        Log.d("REPRODUCER ON CLICK",episode.getName());
-        updateName(episode.getName());
-        updateLogo(episode.getImageURL());
-        updateMediaURL(episode.getMediaURL());
-    }
-
-    public PodcastFragment(){
-
-    }
+    public PodcastFragment(){}
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -73,20 +55,7 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
 
         setupRecyclerView();
 
-        mBinding.subscriptionButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if(isChecked && !susbcribed){
-
-                    podcastListViewModel.subscribeToPodcast(pos,provider);
-                    Log.d("ALEX__","SUBSCRIBE");
-                } else {
-                    podcastListViewModel.unsubscribeToPodcast(podcastId);
-                    Log.d("ALEX__","NO SUBSCRIBE");
-                }
-            }
-        });
+        setupSubscriptionButton();
 
         return mBinding.getRoot();
     }
@@ -124,9 +93,31 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         return adapter;
     }
 
+    /**
+     * To setup the subscription button. We ensure that if we are already subscribed we set the
+     * button properly to avoid re-subscriptions
+     */
+    private void setupSubscriptionButton(){
+        mBinding.subscriptionButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked && !susbcribed){
+                subscribeToPodcast();
+            } else {
+                unsubscribedToPodcast();
+            }
+        });
+    }
+
+    private void subscribeToPodcast(){
+        podcastListViewModel.subscribeToPodcast(pos,provider);
+    }
+
+    private void unsubscribedToPodcast(){
+        podcastListViewModel.unsubscribeToPodcast(podcastId);
+    }
+
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.app_bar_menu, menu);
         super.onCreateOptionsMenu(menu,inflater);
 }
@@ -161,89 +152,58 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         super.onActivityCreated(savedInstanceState);
 
         createReproducerViewModel();
-        setupViewModel();
 
-        assert getArguments() != null;
-        PodcastFragmentArgs podcastFragmentArgs = PodcastFragmentArgs.fromBundle(getArguments());
+        createViewModel();
 
-        pos = podcastFragmentArgs.getPos();
-        provider = podcastFragmentArgs.getProvider();
+        getBundleArguments();
 
         setupPodcastInformation();
     }
 
-    private void setPodcastURL(String url){
-        podcastURL = url;
+    private void createViewModel(){
+        podcastListViewModel =  new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
+    }
+
+    private void getBundleArguments(){
+        assert getArguments() != null;
+        PodcastFragmentArgs podcastFragmentArgs = PodcastFragmentArgs.fromBundle(getArguments());
+        pos = podcastFragmentArgs.getPos();
+        provider = podcastFragmentArgs.getProvider();
     }
 
     private void setupPodcastInformation(){
 
-        Podcast podcast;
+        Podcast podcast = podcastListViewModel.getPodcast(provider,pos);
 
-        if(provider.equals(Provider.SPAIN)){
-            podcast = podcastListViewModel.getSpainRecommendedPodcastList().getValue().get(pos);
-            setPodcastURL(podcast.getUrl());
-            observeSpainPodcastEpisodes();
+        observePodcastEpisodes(podcast.getUrl());
 
-        } else if(provider.equals(Provider.UK)){
-            podcast = podcastListViewModel.getUKRecommended().getValue().get(pos);
-            setPodcastURL(podcast.getUrl());
-            observeUKPodcastEpisodes();
+        getIfPodcastIsSubscribed(podcast);
 
-        } else if(provider.equals(Provider.SUBSCRIBED)){
-            podcast = podcastListViewModel.getSubscribedPodcastList().getValue().get(pos);
-            setPodcastURL(podcast.getUrl());
-            observeSubscribedPodcastEpisodes();
-        } else{
-            podcast = podcastListViewModel.getSearchedPodcast().getValue().get(pos);
-            setPodcastURL(podcast.getUrl());
-            observeSubscribedPodcastEpisodes();
-        }
+        getPodcastId(podcast);
 
-
-        susbcribed = podcastListViewModel.isPodcastSubscribed(podcast);
+        updateUI(podcast);
 
         if(susbcribed){
-            mBinding.subscriptionButton.setChecked(true);
-        } else{
-            Log.d("ALEX__", "UNSUBSCRIBED");
+            setSubscriptionButtonChecked();
         }
+    }
 
+    private void observePodcastEpisodes(String podcastURL){
+        podcastListViewModel.getEpisodeList(provider, podcastURL).observe(getViewLifecycleOwner(),
+                this::updateAdapterEpisodes);
+    }
+
+    private void getIfPodcastIsSubscribed(Podcast podcast){
+        susbcribed = podcastListViewModel.isPodcastSubscribed(podcast);
+    }
+
+    private void getPodcastId(Podcast podcast){
         podcastId = podcast.getId();
-        updateUI(podcast);
     }
 
-    private void observeSpainPodcastEpisodes(){
-        podcastListViewModel.getSpainEpisodes(podcastURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
-            @Override
-            public void onChanged(List<Episode> episodes) {
-                updateAdapterEpisodes(episodes);
-            }
-        });
+    private void setSubscriptionButtonChecked(){
+        mBinding.subscriptionButton.setChecked(true);
     }
-
-    private void observeUKPodcastEpisodes(){
-        podcastListViewModel.getUKEpisodes(podcastURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
-            @Override
-            public void onChanged(List<Episode> episodes) {
-                updateAdapterEpisodes(episodes);
-            }
-        });
-    }
-
-    private void observeSubscribedPodcastEpisodes(){
-        podcastListViewModel.getSubscribedEpisodes(podcastURL).observe(getViewLifecycleOwner(), new Observer<List<Episode>>() {
-            @Override
-            public void onChanged(List<Episode> episodes) {
-                updateAdapterEpisodes(episodes);
-            }
-        });
-    }
-
-    private void setupViewModel(){
-        podcastListViewModel =  new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
-    }
-
 
     /**
      * Updates the UI with the podcast information
@@ -271,16 +231,23 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
 
     private void updateAdapterEpisodes(List<Episode> episodesList){
         adapter.setEpisodes(episodesList);
-        adapter.notifyDataSetChanged();
     }
 
-    /**
-     * To create the ReproducerViewModel
-     */
     private void createReproducerViewModel(){
         reproducerViewModel = new ViewModelProvider(requireActivity()).get(ReproducerViewModel.class);
     }
 
+    @Override
+    public void onItemClick(int clickedItem, boolean delete) {
+        Episode episode = Objects.requireNonNull(podcastListViewModel.getEpisodeList().getValue()).get(clickedItem);
+        updateReproducerViewModelInfo(episode);
+    }
+
+    private void updateReproducerViewModelInfo(Episode episode){
+        updateName(episode.getName());
+        updateLogo(episode.getImageURL());
+        updateMediaURL(episode.getMediaURL());
+    }
 
     /**
      * To update the ViewModel name field with the name of the selected episode
@@ -296,5 +263,12 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
 
     private void updateMediaURL(String mediaURL){
         reproducerViewModel.setMediaURL(mediaURL);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // We leave the fragment, we set the name of the app in the UI
+        setActivityTitle(requireActivity().getString(R.string.app_name));
     }
 }

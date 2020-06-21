@@ -36,9 +36,9 @@ public class Provider {
     private String url;
     private String url_sub;
 
-    public Provider(){
-    }
+    public Provider(){}
 
+    // We only want to search for MAX_SEARCH_SIZE podcasts
     private int setSearchSize(int sizeRecoveredFromWeb){
         return Math.min(sizeRecoveredFromWeb, MAX_SEARCH_SIZE);
     }
@@ -53,10 +53,9 @@ public class Provider {
             url_sub = UK_URL_SUB;
         }
         List<Podcast> podcastList = new ArrayList<>();
-        Document doc = null;
 
         try{
-            doc = Jsoup.connect(url).get();
+            Document doc = Jsoup.connect(url).get();
 
             Elements podcastElements = doc.select("a.mdc-list-item");
 
@@ -73,6 +72,7 @@ public class Provider {
                 podcast.generateId();
 
                 // We need to get the description from the podcast webpage
+                // This should be improved
 
                 Document doc2 = Jsoup.connect(podcast.getUrl()).get();
                 String description = doc2.select("div.content-column-left").select("div.secondary-span-color").first().text();
@@ -80,29 +80,21 @@ public class Provider {
                 podcastList.add(podcast);
             }
 
-            for(int i = 0; i < podcastList.size(); i++){
-                Document docPodcastPage = Jsoup.connect(podcastList.get(i).getUrl()).get();
-            }
-
-            Log.d("PODCAST__","recomen size: " + podcastList.size());
             return podcastList;
 
         } catch (IOException e){
             e.printStackTrace();
-            return null;
+            return podcastList;
         }
     }
 
     public List<Episode> getEpisodes(String podcastURL){
         List<Episode> episodeList = new ArrayList<>();
-        Document doc = null;
 
         try{
-            doc = Jsoup.connect(podcastURL).get();
+            Document doc = Jsoup.connect(podcastURL).get();
 
             Elements elements = doc.select("div.podcast-item");
-
-         //   String description = doc.select("div.content-column-left").select("div.secondary-span-color").first().text();
 
             String imageURL = doc.select("div.content-column-left").select("img").attr("src");
 
@@ -120,7 +112,7 @@ public class Provider {
             return episodeList;
         } catch (IOException e){
             e.printStackTrace();
-            return null;
+            return episodeList;
         }
     }
 
@@ -131,12 +123,9 @@ public class Provider {
 
         String search_url = search_url_prefix + query;
 
-        Log.d("TESTING__", "SEARCH URL: " + search_url);
-
-        Document doc = null;
-
         try{
-            doc = Jsoup.connect(search_url).get();
+
+            Document doc = Jsoup.connect(search_url).get();
 
             Elements elements = doc.select("div.mdc-list.mdc-list--avatar-list").select("a.mdc-list-item");
 
@@ -155,12 +144,10 @@ public class Provider {
                 podcastList.add(podcast);
             }
 
-            Log.d("PODCAST__","size: "+ elements.size());
             return podcastList;
         } catch (IOException e){
             e.printStackTrace();
-            return null;
+            return podcastList;
         }
-
     }
 }

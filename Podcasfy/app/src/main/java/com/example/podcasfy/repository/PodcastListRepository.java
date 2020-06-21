@@ -40,93 +40,6 @@ public class PodcastListRepository {
         provider = new Provider();
     }
 
-    public MutableLiveData<List<Podcast>> getSubscriptionList() {
-
-        if(subscriptionList != null){
-            return subscriptionList;
-        }
-
-        subscriptionList = new MutableLiveData<>();
-        List<Podcast> podcastList = new ArrayList<>();
-
-        Podcast p1 = new Podcast("Planos y Centellas","description","url",
-                "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg","Ivoox");
-
-        Podcast p2 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","digitalPodcast");
-
-        podcastList.add(p1);
-        podcastList.add(p2);
-        podcastList.add(p2);
-
-        subscriptionList.setValue(podcastList);
-
-        return subscriptionList;
-    }
-
-    public MutableLiveData<List<Podcast>> getPodcasts(){
-
-        if (podcasts != null) {
-            return podcasts;
-        }
-
-        podcasts = new MutableLiveData<>();
-
-        List<Podcast> podcastList = new ArrayList<>();
-
-        Podcast p1 = new Podcast("Planos y Centellas","description","url",
-                "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg","Ivoox");
-
-        Podcast p2 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
-        Podcast p3 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
-        Podcast p4 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
-        Podcast p5 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
-        Podcast p6 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg","provider2");
-
-        podcastList.add(p1);
-        podcastList.add(p2);
-        podcastList.add(p3);
-        podcastList.add(p4);
-        podcastList.add(p5);
-        podcastList.add(p6);
-
-        podcasts.setValue(podcastList);
-
-        return podcasts;
-    }
-
-    private List<Podcast> testing(){
-        List<Podcast> podcastList = new ArrayList<>();
-
-        Podcast p1 = new Podcast("Planos y NABOS","description","url",
-                "https://static-2.ivoox.com/canales/3/8/0/0/2671546770083_MD.jpg",Provider.SPAIN);
-
-        Podcast p2 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg",Provider.UK);
-        Podcast p3 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg",Provider.UK);
-        Podcast p4 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg",Provider.UK);
-        Podcast p5 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg",Provider.SPAIN);
-        Podcast p6 = new Podcast("Amigos del Mapa","description2","url",
-                "https://static-1.ivoox.com/canales/8/5/2/4/9071587544258_MD.jpg",Provider.UK);
-
-        podcastList.add(p1);
-        podcastList.add(p2);
-        podcastList.add(p3);
-        podcastList.add(p4);
-        podcastList.add(p5);
-        podcastList.add(p6);
-
-        return podcastList;
-    }
-
     public void getSpainRecommended(){
 
         // asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
@@ -139,12 +52,10 @@ public class PodcastListRepository {
     }
 
     public void getSpainEpisodes(String podcastURL){
-        // asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
         new FetchEpisodeListTask().execute(Provider.SPAIN,podcastURL);
     }
 
     public void getUKEpisodes(String podcastURL){
-        // asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
         new FetchEpisodeListTask().execute(Provider.UK,podcastURL);
     }
 
@@ -194,7 +105,8 @@ public class PodcastListRepository {
             Podcast podcast = podcasts[0];
             AppDataBase.getInstance(context).podcastDAO().insertPodcast(podcast);
 
-            Log.d("TESTING__", "CALL TO DATABASE TO RETRIEVE NEW DATA");
+            // THIS SHOULD BE IMPROVE. We should return only the new podcast, not re-querying the
+            // database
             return AppDataBase.getInstance(context).podcastDAO().getPodcasts();
         }
 
@@ -225,7 +137,6 @@ public class PodcastListRepository {
 
         @Override
         protected void onPostExecute(List<Podcast> podcastsList) {
-            Log.d("PODCAST__","ON POST EXECUTE" + podcastsList.size());
             podcastCallBack.updatePodcastList(podcastsList,argument);
         }
     }
@@ -288,7 +199,6 @@ public class PodcastListRepository {
         protected List<Podcast> doInBackground(String... strings) {
 
             String query = strings[0];
-            Log.d("TESTING_","QUERY IN BACKGROUND" + query);
             return provider.searchPodcast(query);
         }
 
