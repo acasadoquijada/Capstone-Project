@@ -1,6 +1,7 @@
 package com.example.podcasfy.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -70,7 +73,7 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
     private void setupRecyclerViewSearch(){
         RecyclerView recyclerViewSearch = binding.searchRecyclerView;
         recyclerViewSearch.setLayoutManager(createGridLayoutManager());
-        adapter = createPodcastListAdapter(Provider.SUBSCRIBED);
+        adapter = createPodcastListAdapter(Provider.SEARCH);
         recyclerViewSearch.setAdapter(adapter);
     }
 
@@ -118,5 +121,9 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
     @Override
     public void onItemClick(int clickedItem, String provider) {
 
+        Log.d("ITEM CLICKED", "" + clickedItem);
+        NavDirections action =
+                SearchFragmentDirections.actionSearchFragmentToPodcastFragment(clickedItem,provider);
+        NavHostFragment.findNavController(this).navigate(action);
     }
 }

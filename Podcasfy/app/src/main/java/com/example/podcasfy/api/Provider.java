@@ -20,6 +20,7 @@ public class Provider {
     public static final String SPAIN = "spain";
     public static final String UK = "uk";
     public static final String DONWLOADS ="donwloads";
+    public static final String SEARCH = "search";
 
     // Number of podcasts/episodes per search
 
@@ -147,7 +148,7 @@ public class Provider {
                 podcast.setMediaURL(elements.get(i).select("img").attr("src"));
                 podcast.setUrl(url_sub + elements.get(i).attr("href"));
 
-                podcast.setProvider(Provider.SUBSCRIBED);
+                podcast.setProvider(Provider.SEARCH);
 
                 podcast.generateId();
 

@@ -13,6 +13,7 @@ import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -189,8 +190,12 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
             setPodcastURL(podcast.getUrl());
             observeUKPodcastEpisodes();
 
-        } else{
+        } else if(provider.equals(Provider.SUBSCRIBED)){
             podcast = podcastListViewModel.getSubscribedPodcastList().getValue().get(pos);
+            setPodcastURL(podcast.getUrl());
+            observeSubscribedPodcastEpisodes();
+        } else{
+            podcast = podcastListViewModel.getSearchedPodcast().getValue().get(pos);
             setPodcastURL(podcast.getUrl());
             observeSubscribedPodcastEpisodes();
         }
@@ -199,9 +204,7 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         susbcribed = podcastListViewModel.isPodcastSubscribed(podcast);
 
         if(susbcribed){
-            Log.d("ALEX__", "SUBSCRIBED");
             mBinding.subscriptionButton.setChecked(true);
-            // update subscribe button
         } else{
             Log.d("ALEX__", "UNSUBSCRIBED");
         }
