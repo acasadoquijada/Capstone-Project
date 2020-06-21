@@ -2,6 +2,7 @@ package com.example.podcasfy.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -240,6 +241,8 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
     @Override
     public void onItemClick(int clickedItem, boolean delete) {
         Episode episode = Objects.requireNonNull(podcastListViewModel.getEpisodeList().getValue()).get(clickedItem);
+
+        Log.d("MEDIA_URL", "media in PodcastFragment " + episode.getMediaURL());
         updateReproducerViewModelInfo(episode);
     }
 
@@ -247,6 +250,8 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         updateName(episode.getName());
         updateLogo(episode.getImageURL());
         updateMediaURL(episode.getMediaURL());
+        reproducerViewModel.setShowReproducer(true);
+      //  reproducerViewModel.setShowReproducer(true);
     }
 
     /**
@@ -268,6 +273,7 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
     @Override
     public void onPause() {
         super.onPause();
+
         // We leave the fragment, we set the name of the app in the UI
         setActivityTitle(requireActivity().getString(R.string.app_name));
     }

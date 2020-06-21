@@ -105,7 +105,8 @@ public class Provider {
 
                 episode.setName(elements.get(i).text());
                 episode.setImageURL(imageURL);
-                episode.setMediaURL(elements.get(i).select("svg[data-url$=.mp3]").attr("data-url"));
+
+                episode.setMediaURL(elements.get(i).getElementsByTag("svg").attr("data-url"));
 
                 episodeList.add(episode);
             }

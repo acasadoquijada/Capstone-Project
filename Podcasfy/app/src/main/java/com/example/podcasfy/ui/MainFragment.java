@@ -20,12 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.podcasfy.R;
 import com.example.podcasfy.databinding.MainFragmentBinding;
 import com.example.podcasfy.viewmodel.ReproducerViewModel;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 
@@ -35,22 +30,13 @@ public class MainFragment extends Fragment {
 
     private MainFragmentBinding binding;
     private ReproducerViewModel reproducerViewModel;
-    private ExoPlayer player;
-    private ViewHandler mHandler;
-
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        mHandler = new ViewHandler();
-
         binding = DataBindingUtil.inflate(inflater,R.layout.main_fragment,container,false);
 
         setupSlidingUpPanel();
-
-        setupMediaPlayer();
 
         return binding.getRoot();
     }
@@ -63,7 +49,7 @@ public class MainFragment extends Fragment {
 
     private void setupSlidingUpPanel(){
 
-        hideSlidingPanel();
+      //  hideSlidingPanel();
 
         setupPanelSlideListener();
 
@@ -90,32 +76,33 @@ public class MainFragment extends Fragment {
         binding.reproducer.reproducerSlidingPanel.swipeLayout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
             @Override
             public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
-                //   Toast.makeText(requireContext(),"onBeginSwipe",Toast.LENGTH_SHORT).show();
+                //nothing to do
             }
 
             @Override
             public void onSwipeClampReached(SwipeLayout swipeLayout, boolean moveToRight) {
-
                 if(!moveToRight){
-                    hideSlidingPanel();
+                    reproducerViewModel.stopPlayer();
+                    reproducerViewModel.setPostion(0);
+                    reproducerViewModel.setShowReproducer(false);
                 }
             }
 
             @Override
             public void onLeftStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                Toast.makeText(requireContext(),"onLeftStickyEdge",Toast.LENGTH_SHORT).show();
-
+                //nothing to do
             }
 
             @Override
             public void onRightStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                Toast.makeText(requireContext(),"onRightStickyEdge",Toast.LENGTH_SHORT).show();
+                //nothing to do
             }
         });
     }
 
     private void hideSlidingPanel(){
         binding.slidingLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+       // reproducerViewModel.setShowReproducer(false);
     }
 
     private void showSlidingPanel(){
@@ -174,21 +161,15 @@ public class MainFragment extends Fragment {
      */
 
     private void setupMediaPlayer(){
-        createExoPlayer();
-        setPlayWhenReady();
         setExoPlayerInPlayerView();
     }
 
-    private void createExoPlayer(){
-        player =  ExoPlayerFactory.newSimpleInstance(requireContext());
-    }
-
-    private void setPlayWhenReady(){
-        player.setPlayWhenReady(true);
-    }
 
     private void setExoPlayerInPlayerView(){
-        binding.reproducer.mainMediaReproducer.setPlayer(player);
+        if(reproducerViewModel.getPlayer() == null){
+            Log.d("EXOPLAYER_", "NULL");
+        }
+        binding.reproducer.mainMediaReproducer.setPlayer(reproducerViewModel.getPlayer());
     }
 
     @Override
@@ -196,7 +177,7 @@ public class MainFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         setupReproducerViewModel();
-
+        setupMediaPlayer();
     }
     /**
      * To create the ReproducerViewModel and observe podcastName to update the UI.
@@ -206,6 +187,11 @@ public class MainFragment extends Fragment {
         createReproducerViewModel();
         observeEpisodetName();
         observeEpisodeLogo();
+        observeEpisodeMediaURL();
+        //observePlay();
+
+        observeShowReproducer();
+
     }
 
     /**
@@ -213,6 +199,31 @@ public class MainFragment extends Fragment {
      */
     private void createReproducerViewModel(){
         reproducerViewModel = new ViewModelProvider(requireActivity()).get(ReproducerViewModel.class);
+    }
+
+    private void observeShowReproducer(){
+        reproducerViewModel.getShowReproducer().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean){
+
+                    Log.d("TESTING", "I SHOULD REPRODUCE!");
+                    //show
+                    reproducerViewModel.getPlayer().setPlayWhenReady(true);
+                    binding.slidingLayout.setTouchEnabled(true);
+                    showSlidingPanel();
+                } else {
+                    //don't
+                    Log.d("TESTING", "I SHOULD NOT REPRODUCE!");
+
+                    binding.slidingLayout.setTouchEnabled(false);
+                    reproducerViewModel.getPlayer().setPlayWhenReady(false);
+
+                    hideSlidingPanel();
+
+                }
+            }
+        });
     }
 
     /**
@@ -231,7 +242,6 @@ public class MainFragment extends Fragment {
                 getViewLifecycleOwner(), new Observer<String>() {
                     @Override
                     public void onChanged(String s) {
-                        Log.d("REPRODUCER",s);
                         Picasso.get().load(s).into(binding.reproducer.reproducerSlidingPanel.slingindEpisodeImage);
                         Picasso.get().load(s).into(binding.reproducer.mainEpisodeImage);
                     }
@@ -242,9 +252,22 @@ public class MainFragment extends Fragment {
         reproducerViewModel.getMediaURL().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                // Here i update the content of the reproducer!!
+                reproducerViewModel.setupAudio();
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        reproducerViewModel.storePlayerPosition();
+        reproducerViewModel.stopPlayer();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        reproducerViewModel.resumePlayer();
     }
 
     /**
@@ -254,30 +277,8 @@ public class MainFragment extends Fragment {
     private void updateSlidingUIName(String name){
         binding.reproducer.reproducerSlidingPanel.slidingName.setText(name);
         binding.reproducer.mainEpsiodeDescription.setText(name);
-        // These methods are here for testing purposes. Will be removed eventually
-        binding.slidingLayout.setTouchEnabled(true);
-        // showSlidingPanel();
-        mHandler.sendMessage(Message.obtain(mHandler, 0));
-        // MediaSource mediaSource = buildMediaSource();
 
-        // Prepare ExoPlayer
-        // player.prepare(mediaSource,false,false);
-        //
+        showSlidingPanel();
     }
 
-    private MediaSource buildMediaSource() {
-        String url = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4";
-        Uri uri = Uri.parse(url);
-        DataSource.Factory dataSourceFactory =
-                new DefaultDataSourceFactory(requireContext(), "exoplayer-codelab");
-        return new ProgressiveMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(uri);
-    }
-
-    private class ViewHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            showSlidingPanel();
-        }
-    }
 }

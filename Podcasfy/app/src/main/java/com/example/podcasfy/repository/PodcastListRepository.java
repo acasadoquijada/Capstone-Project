@@ -10,7 +10,6 @@ import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.model.AppDataBase;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
-import com.example.podcasfy.model.PodcastDAO;
 import com.example.podcasfy.utils.EpisodeCallBack;
 import com.example.podcasfy.utils.PodcastCallBack;
 
@@ -21,9 +20,6 @@ import javax.inject.Singleton;
 
 @Singleton
 public class PodcastListRepository {
-
-    private  MutableLiveData<List<Podcast>> podcasts;
-    private  MutableLiveData<List<Podcast>> subscriptionList;
 
     final private PodcastCallBack podcastCallBack;
     final private EpisodeCallBack episodeCallBack;
