@@ -1,8 +1,8 @@
 package com.example.podcasfy.repository;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -10,7 +10,6 @@ import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.model.AppDataBase;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
-import com.example.podcasfy.utils.EpisodeCallBack;
 import com.example.podcasfy.utils.PodcastCallBack;
 
 import java.util.ArrayList;
@@ -18,57 +17,105 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
+
+// Follow this SO post
+// https://stackoverflow.com/questions/51601046/should-i-make-asynctask-member-of-livedata-or-repository-class-as-replacement/51631757
+@SuppressLint("StaticFieldLeak")
+
 @Singleton
 public class PodcastListRepository {
 
     final private PodcastCallBack podcastCallBack;
-    final private EpisodeCallBack episodeCallBack;
+
+    private MutableLiveData<List<Podcast>> spainRecommendedPodcastList;
+    private MutableLiveData<List<Podcast>> ukRecommendedPodcastList;
+    private MutableLiveData<List<Podcast>> subscribedPodcastList;
+    private MutableLiveData<List<Podcast>> searchedPodcastList;
+
+    private MutableLiveData<List<Episode>> episodeList;
+
 
     private Provider provider;
 
     private Context context;
 
-    public PodcastListRepository(Context context, PodcastCallBack podcastCallBack, EpisodeCallBack episodeCallBack){
+    public PodcastListRepository(Context context, PodcastCallBack podcastCallBack){
         this.context = context;
         this.podcastCallBack = podcastCallBack;
-        this.episodeCallBack = episodeCallBack;
+
+        searchedPodcastList = new MutableLiveData<>();
+        episodeList = new MutableLiveData<>();
 
         provider = new Provider();
+
     }
 
-    public void getSpainRecommended(){
+    public MutableLiveData<List<Podcast>> getSpainRecommendedPodcastList(){
 
-        // asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
-       // new FetchPodcastListTask().execute(Provider.SPAIN);
-        new FetchPodcastListTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,Provider.SPAIN);
+        if(spainRecommendedPodcastList == null){
+            spainRecommendedPodcastList = new MutableLiveData<>();
+            new getPodcastListTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,Provider.SPAIN);
+        }
+
+        return spainRecommendedPodcastList;
     }
 
-    public void getUKRecommended(){
-        new FetchPodcastListTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,Provider.UK);
+    public MutableLiveData<List<Podcast>> getUKRecommended(){
+
+        if(ukRecommendedPodcastList == null){
+            ukRecommendedPodcastList = new MutableLiveData<>();
+            new getPodcastListTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,Provider.UK);
+        }
+
+        return ukRecommendedPodcastList;
     }
 
-    public void getSpainEpisodes(String podcastURL){
-        new FetchEpisodeListTask().execute(Provider.SPAIN,podcastURL);
-    }
+    public MutableLiveData<List<Podcast>> getSubscribedPodcastList(){
+        if(subscribedPodcastList == null){
+            subscribedPodcastList = new MutableLiveData<>();
+            new getPodcastListTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,Provider.SUBSCRIBED);
+        }
 
-    public void getUKEpisodes(String podcastURL){
-        new FetchEpisodeListTask().execute(Provider.UK,podcastURL);
-    }
-
-    public void getSubscribedEpisodes(String podcastURL){
-        new FetchEpisodeListTask().execute(Provider.SUBSCRIBED, podcastURL);
+        return subscribedPodcastList;
     }
 
     public void searchPodcast(String query){
-        new FetchSearchEpisodeListTask().execute(query);
+        new getSearchedPodcastListTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,query);
     }
 
-    public void getSubscribedPodcastList(){
-        new FetchPodcastListTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,Provider.SUBSCRIBED);
+    public MutableLiveData<List<Podcast>> getSearchedEpisodeList(){
+        return searchedPodcastList;
     }
 
-    public void getDownloadedEpisodes(){
-        new FetchEpisodeListTask().execute(Provider.DONWLOADS,"a");
+    public MutableLiveData<List<Episode>> getEpisodeList(String provider, String podcastURL){
+
+        if(provider.equals(Provider.SPAIN)){
+            getSpainEpisodes(podcastURL);
+        } else if(provider.equals(Provider.UK)){
+            getUKEpisodes(podcastURL);
+        } else if(provider.equals(Provider.SUBSCRIBED)){
+            getSubscribedEpisodes(podcastURL);
+        } else {
+            getDownloadedEpisodes();
+        }
+        return episodeList;
+    }
+
+
+    private void getSpainEpisodes(String podcastURL){
+        new getEpisodeListTask().execute(Provider.SPAIN,podcastURL);
+    }
+
+    private void getUKEpisodes(String podcastURL){
+        new getEpisodeListTask().execute(Provider.UK,podcastURL);
+    }
+
+    private void getSubscribedEpisodes(String podcastURL){
+        new getEpisodeListTask().execute(Provider.SUBSCRIBED, podcastURL);
+    }
+
+    private void getDownloadedEpisodes(){
+        new getEpisodeListTask().execute(Provider.DONWLOADS,"");
     }
 
     public void subscribeToPodcast(Podcast podcast){
@@ -77,6 +124,69 @@ public class PodcastListRepository {
 
     public void unsubscribeToPodcast(String id){
         new DeletePodcastDatabaseTask().execute(id);
+    }
+
+
+    class getPodcastListTask extends AsyncTask<String, Void, List<Podcast> > {
+
+        private String argument;
+
+        @Override
+        protected List<Podcast> doInBackground(String... strings) {
+
+            argument = strings[0];
+
+            switch (argument) {
+                case Provider.SPAIN:
+                    return provider.getRecommended(Provider.SPAIN);
+                case Provider.UK:
+                    return provider.getRecommended(Provider.UK);
+                case Provider.SUBSCRIBED:
+                    return AppDataBase.getInstance(context).podcastDAO().getPodcasts();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Podcast> podcastsList) {
+
+            switch (argument) {
+                case Provider.SPAIN:
+                    spainRecommendedPodcastList.setValue(podcastsList);
+                    break;
+                case Provider.UK:
+                    ukRecommendedPodcastList.setValue(podcastsList);
+                    break;
+                case Provider.SUBSCRIBED:
+                    subscribedPodcastList.setValue(podcastsList);
+                    break;
+            }
+        }
+    }
+
+    class getEpisodeListTask extends AsyncTask<String, Void, List<Episode> > {
+
+        private String url;
+        private String podcastProvider;
+
+        @Override
+        protected List<Episode> doInBackground(String... strings) {
+
+            podcastProvider = strings[0];
+            url = strings[1];
+
+            if (podcastProvider.equals(Provider.DONWLOADS)) {
+                return generateEpisodes();
+            }
+            else
+                return provider.getEpisodes(url);
+        }
+
+        @Override
+        protected void onPostExecute(List<Episode> podcastsList) {
+            episodeList.setValue(podcastsList);
+     //       episodeCallBack.updateEpisodeList(podcastsList, podcastProvider, url);
+        }
     }
 
     class DeletePodcastDatabaseTask extends AsyncTask<String,Void, List<Podcast>> {
@@ -112,32 +222,6 @@ public class PodcastListRepository {
         }
     }
 
-    class FetchPodcastListTask extends AsyncTask<String, Void, List<Podcast> > {
-
-        private String argument;
-        @Override
-        protected List<Podcast> doInBackground(String... strings) {
-
-            argument = strings[0];
-            Log.d("PODCAST__", "argument: " + argument);
-
-            if(argument.equals(Provider.SPAIN)){
-                return provider.getRecommended(Provider.SPAIN);
-            } else if(argument.equals(Provider.UK)){
-                return provider.getRecommended(Provider.UK);
-            } else if(argument.equals(Provider.SUBSCRIBED)){
-                return AppDataBase.getInstance(context).podcastDAO().getPodcasts();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List<Podcast> podcastsList) {
-            podcastCallBack.updatePodcastList(podcastsList,argument);
-        }
-    }
-
-
 
     private List<Episode> generateEpisodes(){
         Episode episode = new Episode(
@@ -164,43 +248,17 @@ public class PodcastListRepository {
         return epis;
     }
 
-    class FetchEpisodeListTask extends AsyncTask<String, Void, List<Episode> > {
-
-        private String url;
-        private String podcastProvider;
-
-        @Override
-        protected List<Episode> doInBackground(String... strings) {
-
-            podcastProvider = strings[0];
-            url = strings[1];
-
-            if (podcastProvider.equals(Provider.DONWLOADS)) {
-                return generateEpisodes();
-            }
-             else
-                return provider.getEpisodes(url);
-        }
-
-        @Override
-        protected void onPostExecute(List<Episode> podcastsList) {
-            episodeCallBack.updateEpisodeList(podcastsList, podcastProvider, url);
-        }
-    }
-
-    class FetchSearchEpisodeListTask extends AsyncTask<String, Void, List<Podcast> > {
-
+    class getSearchedPodcastListTask extends AsyncTask<String, Void, List<Podcast> > {
 
         @Override
         protected List<Podcast> doInBackground(String... strings) {
-
             String query = strings[0];
             return provider.searchPodcast(query);
         }
 
         @Override
         protected void onPostExecute(List<Podcast> podcastsList) {
-            podcastCallBack.updatePodcastList(podcastsList, "");
+            searchedPodcastList.setValue(podcastsList);
         }
     }
 

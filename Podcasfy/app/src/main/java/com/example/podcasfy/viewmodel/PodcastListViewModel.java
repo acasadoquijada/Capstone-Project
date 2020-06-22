@@ -10,13 +10,12 @@ import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.repository.PodcastListRepository;
 import com.example.podcasfy.model.Podcast;
-import com.example.podcasfy.utils.EpisodeCallBack;
 import com.example.podcasfy.utils.PodcastCallBack;
 
 import java.util.List;
 import java.util.Objects;
 
-public class PodcastListViewModel extends AndroidViewModel implements PodcastCallBack, EpisodeCallBack {
+public class PodcastListViewModel extends AndroidViewModel implements PodcastCallBack {
 
     private PodcastListRepository podcastRepository;
 
@@ -39,32 +38,18 @@ public class PodcastListViewModel extends AndroidViewModel implements PodcastCal
     public PodcastListViewModel (Application application){
         super(application);
 
-        podcastRepository = new PodcastListRepository(application.getApplicationContext(),this, this);
+        podcastRepository = new PodcastListRepository(application.getApplicationContext(),this);
 
         episodeList = new MutableLiveData<>();
         searchQuery = new MutableLiveData<>();
         searchedPodcast = new MutableLiveData<>();
     }
 
-    public MutableLiveData<List<Podcast>> getPodcastList(String provider){
-
-        switch (provider) {
-            case Provider.SPAIN:
-                return getSpainRecommendedPodcastList();
-            case Provider.UK:
-                return getUKRecommended();
-            case Provider.SUBSCRIBED:
-                return getSubscribedPodcastList();
-            default:
-                return getSearchedPodcast();
-        }
-    }
 
     public MutableLiveData<List<Podcast>> getSubscribedPodcastList() {
 
         if(subscribedPodcastList == null){
-            subscribedPodcastList = new MutableLiveData<>();
-            podcastRepository.getSubscribedPodcastList();
+            subscribedPodcastList = podcastRepository.getSubscribedPodcastList();
         }
 
         return subscribedPodcastList;
@@ -73,21 +58,28 @@ public class PodcastListViewModel extends AndroidViewModel implements PodcastCal
     public MutableLiveData<List<Podcast>> getSpainRecommendedPodcastList(){
 
         if(spainRecommendedPodcastList == null){
-            spainRecommendedPodcastList = new MutableLiveData<>();
-            podcastRepository.getSpainRecommended();
+            spainRecommendedPodcastList = podcastRepository.getSpainRecommendedPodcastList();
         }
-
         return spainRecommendedPodcastList;
     }
 
     public MutableLiveData<List<Podcast>> getUKRecommended() {
 
         if(ukRecommendedPodcastList == null){
-            ukRecommendedPodcastList = new MutableLiveData<>();
-            podcastRepository.getUKRecommended();
+            ukRecommendedPodcastList = podcastRepository.getUKRecommended();
         }
-
         return ukRecommendedPodcastList;
+    }
+
+    public void searchPodcast(){
+        podcastRepository.searchPodcast(searchQuery.getValue());
+    }
+
+    public MutableLiveData<List<Podcast>> getSearchedPodcastList(){
+
+        searchedPodcast = podcastRepository.getSearchedEpisodeList();
+
+        return podcastRepository.getSearchedEpisodeList();
     }
 
     public Podcast getPodcast(String provider, int pos){
@@ -126,43 +118,36 @@ public class PodcastListViewModel extends AndroidViewModel implements PodcastCal
     }
 
     private MutableLiveData<List<Episode>> getSpainEpisodes(String podcastURL){
-        podcastRepository.getSpainEpisodes(podcastURL);
+
+        episodeList = podcastRepository.getEpisodeList(Provider.SPAIN, podcastURL);
+
         return episodeList;
+
     }
 
     private MutableLiveData<List<Episode>> getUKEpisodes(String podcastURL){
-        podcastRepository.getUKEpisodes(podcastURL);
+        episodeList = podcastRepository.getEpisodeList(Provider.UK, podcastURL);
         return episodeList;
     }
 
     private MutableLiveData<List<Episode>> getSubscribedEpisodes(String podcastURL){
-        podcastRepository.getSubscribedEpisodes(podcastURL);
+        episodeList = podcastRepository.getEpisodeList(Provider.SUBSCRIBED, podcastURL);
         return episodeList;
     }
+
+    public MutableLiveData<List<Episode>> getDownloadedEspisodes(){
+        episodesDownloadedList = podcastRepository.getEpisodeList(Provider.DONWLOADS,"");
+
+        return episodesDownloadedList;
+    }
+
 
     public MutableLiveData<String> getSearchQuery() {
         return searchQuery;
     }
 
-    public void searchPodcast(){
-        podcastRepository.searchPodcast(searchQuery.getValue());
-    }
-
-    public MutableLiveData<List<Podcast>> getSearchedPodcast() {
-        return searchedPodcast;
-    }
-
     public void deletePodcast(int index) {
         episodesDownloadedList.getValue().remove(index);
-    }
-
-    public MutableLiveData<List<Episode>> getDownloadedEspisodes(){
-        if(episodesDownloadedList == null){
-            episodesDownloadedList = new MutableLiveData<>();
-            podcastRepository.getDownloadedEpisodes();
-        }
-
-        return episodesDownloadedList;
     }
 
     public void subscribeToPodcast(int pos, String provider){
@@ -208,15 +193,6 @@ public class PodcastListViewModel extends AndroidViewModel implements PodcastCal
             default:
                 searchedPodcast.setValue(podcastList);
                 break;
-        }
-    }
-
-    @Override
-    public void updateEpisodeList(List<Episode> episodeList, String option, String url) {
-        if(option.equals(Provider.DONWLOADS)){
-            this.episodesDownloadedList.setValue(episodeList);
-        } else{
-            this.episodeList.setValue(episodeList);
         }
     }
 }
