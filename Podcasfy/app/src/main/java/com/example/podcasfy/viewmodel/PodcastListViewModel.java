@@ -1,6 +1,7 @@
 package com.example.podcasfy.viewmodel;
 
 import android.app.Application;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
@@ -11,6 +12,7 @@ import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.repository.PodcastListRepository;
 import com.example.podcasfy.model.Podcast;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
 
@@ -18,6 +20,8 @@ public class PodcastListViewModel extends AndroidViewModel {
 
     private static final String TAG = PodcastListViewModel.class.getSimpleName();
     private PodcastListRepository podcastRepository;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     // Podcast per each provider + subscriptions + search
     private MutableLiveData<List<Podcast>> spainRecommendedPodcastList;
@@ -35,9 +39,26 @@ public class PodcastListViewModel extends AndroidViewModel {
     private MutableLiveData<String> searchQuery;
 
 
+    public void logEventEpisodeName(String name){
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Episode name");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "text");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+    }
+
+    public void logEventPodcastName(String name){
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Podcast name");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "text");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+    }
+
     public PodcastListViewModel (Application application){
         super(application);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(application.getApplicationContext());
         podcastRepository = new PodcastListRepository(application.getApplicationContext());
 
         episodeList = new MutableLiveData<>();

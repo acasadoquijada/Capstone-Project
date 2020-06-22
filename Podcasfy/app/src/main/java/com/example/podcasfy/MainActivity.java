@@ -12,6 +12,8 @@ import android.view.View;
 import com.example.podcasfy.databinding.ActivityMainBinding;
 
 import com.example.podcasfy.viewmodel.ReproducerViewModel;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.installations.FirebaseInstallationsRegistrar;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 
@@ -22,10 +24,13 @@ public class MainActivity extends AppCompatActivity  {
 
     private ActivityMainBinding mBinding;
     private ReproducerViewModel reproducerViewModel;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         setupDataBinding();
 
@@ -313,4 +318,5 @@ public class MainActivity extends AppCompatActivity  {
         super.onResume();
         reproducerViewModel.onResume();
     }
+
 }

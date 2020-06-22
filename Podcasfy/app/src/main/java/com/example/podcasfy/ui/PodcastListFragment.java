@@ -30,7 +30,6 @@ import com.google.android.gms.ads.AdRequest;
 
 import java.util.List;
 
-import retrofit.http.POST;
 
 public class PodcastListFragment extends Fragment implements PodcastListAdapter.ItemClickListener  {
 

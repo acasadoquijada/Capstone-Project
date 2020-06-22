@@ -35,6 +35,8 @@ import java.util.Objects;
 
 public class PodcastFragment extends Fragment implements EpisodeListAdapter.ItemClickListener {
 
+    private static final String TAG = PodcastFragment.class.getSimpleName();
+
     private PodcastListViewModel podcastListViewModel;
     private ReproducerViewModel reproducerViewModel;
     private PodcastFragmentBinding mBinding;
@@ -213,14 +215,16 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
 
     private void updateUI(Podcast podcast){
         setActivityTitle(podcast.getName());
+        podcastListViewModel.logEventPodcastName(podcast.getName());
         setDescription(podcast.getDescription());
         setLogo(podcast.getMediaURL());
-
     }
 
     private void setActivityTitle(String name){
         requireActivity().setTitle(name);
     }
+
+
 
     private void setDescription(String description){
         mBinding.podcastDescription.setText(description);
@@ -252,7 +256,7 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         updateLogo(episode.getImageURL());
         updateMediaURL(episode.getMediaURL());
         reproducerViewModel.setShowReproducer(true);
-      //  reproducerViewModel.setShowReproducer(true);
+        podcastListViewModel.logEventEpisodeName(episode.getName());
     }
 
     /**
@@ -277,5 +281,11 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
 
         // We leave the fragment, we set the name of the app in the UI
         setActivityTitle(requireActivity().getString(R.string.app_name));
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
     }
 }
