@@ -57,8 +57,6 @@ public class ReproducerViewModel extends AndroidViewModel implements ExoPlayer.E
         return player;
     }
 
-
-
     public void storePlayerPosition(){
         position = player.getCurrentPosition();
     }
@@ -96,12 +94,6 @@ public class ReproducerViewModel extends AndroidViewModel implements ExoPlayer.E
         }
     }
 
-    public void resumePlayer(){
-        if(player != null) {
-            setupAudio();
-        }
-    }
-
     private MediaSource buildMediaSource(String url) {
         Uri uri = Uri.parse(url);
         DataSource.Factory dataSourceFactory =
@@ -109,6 +101,7 @@ public class ReproducerViewModel extends AndroidViewModel implements ExoPlayer.E
         return new ProgressiveMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(uri);
     }
+
     public LiveData<String> getName() {
         return this.name;
     }
@@ -117,7 +110,7 @@ public class ReproducerViewModel extends AndroidViewModel implements ExoPlayer.E
         this.name.setValue(name);
     }
 
-    public MutableLiveData<String> getLogoURL() {
+    public MutableLiveData<String> getImageURL() {
         return logoURL;
     }
 
@@ -131,6 +124,21 @@ public class ReproducerViewModel extends AndroidViewModel implements ExoPlayer.E
 
     public void setMediaURL(String mediaURL) {
         this.mediaURL.setValue(mediaURL);
+    }
+
+    public void onPause(){
+        storePlayerPosition();
+        stopPlayer();
+    }
+
+    public void onResume(){
+        if(player != null) {
+            setupAudio();
+        }
+    }
+
+    public void resetPosition(){
+        position = 0;
     }
 
 }

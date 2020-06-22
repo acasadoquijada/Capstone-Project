@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph.xml"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_root"
     app:startDestination="@id/podcastListFragment">
 
     <fragment
         android:id="@+id/podcastListFragment"
         android:name="com.example.podcasfy.ui.PodcastListFragment"
-        android:label="PodcastListFragment" >
+        android:label="PodcastListFragment">
         <action
             android:id="@+id/action_podcastListFragment_to_podcastFragment"
             app:destination="@id/podcastFragment"
@@ -25,6 +26,12 @@
         <argument
             android:name="provider"
             app:argType="string" />
+        <action
+            android:id="@+id/action_podcastFragment_to_podcastListFragment"
+            app:destination="@id/podcastListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/podcastListFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
