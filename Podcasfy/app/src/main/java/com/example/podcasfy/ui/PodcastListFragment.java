@@ -26,6 +26,7 @@ import com.example.podcasfy.databinding.PodcastListFragmentBinding;
 import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.example.podcasfy.R;
+import com.google.android.gms.ads.AdRequest;
 
 import java.util.List;
 
@@ -69,8 +70,23 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
 
         setupRecyclerViews();
 
+        setupAdd();
+
         return binding.getRoot();
 
+    }
+
+    private void setupAdd(){
+        loadAd(buildAdRequest());
+    }
+
+    private AdRequest buildAdRequest(){
+        return new AdRequest.Builder()
+                .build();
+    }
+
+    private void loadAd(AdRequest adRequest){
+        binding.adView.loadAd(adRequest);
     }
 
     /**

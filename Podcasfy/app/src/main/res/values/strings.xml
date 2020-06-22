@@ -42,6 +42,7 @@ Patreon: https://www.patreon.com/planosycentellas\n\
     <string name="PodcastImageViewContentDescription">Podcast\'s image</string>
     <string name="podcastProviderLogoContentDescription">Logo representing the provider of the podcast</string>
     <string name="slidingMediaReproducerImageContentDescription">Image representing the state (play/pause) of the media reproducer</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
 
     <!-- Settings -->

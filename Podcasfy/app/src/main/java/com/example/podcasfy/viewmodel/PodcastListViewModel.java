@@ -1,6 +1,7 @@
 package com.example.podcasfy.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class PodcastListViewModel extends AndroidViewModel {
 
+    private static final String TAG = PodcastListViewModel.class.getSimpleName();
     private PodcastListRepository podcastRepository;
 
     // Podcast per each provider + subscriptions + search
@@ -92,7 +94,8 @@ public class PodcastListViewModel extends AndroidViewModel {
             case Provider.SEARCH:
                 return searchedPodcast.getValue().get(pos);
             default:
-                return null;
+                Log.d(TAG,"No podcast available for provider " + provider + " pos " + pos);
+                return new Podcast();
         }
 
     }
@@ -107,7 +110,8 @@ public class PodcastListViewModel extends AndroidViewModel {
             case Provider.SEARCH:
                 return getSubscribedEpisodes(podcastURL);
             default:
-                return null;
+                Log.d(TAG,"No episodes available for provider " + provider + " url " + podcastURL);
+                return new MutableLiveData<>();
         }
     }
 

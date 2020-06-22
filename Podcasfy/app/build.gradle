@@ -70,7 +70,7 @@ dependencies {
 
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
 
-    def nav_version = "2.3.0-beta01"
+    def nav_version = "2.3.0-rc01"
 
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
@@ -86,4 +86,7 @@ dependencies {
     implementation 'ru.rambler.android:swipe-layout:1.1.0'
 
     implementation 'androidx.preference:preference:1.1.1'
+
+    implementation 'com.google.android.gms:play-services-ads:19.2.0'
+
 }

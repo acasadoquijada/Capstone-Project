@@ -24,6 +24,7 @@ import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.databinding.SearchFragmentBinding;
 import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
+import com.google.android.gms.ads.AdRequest;
 
 import java.util.List;
 
@@ -44,8 +45,22 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
 
         setupRecyclerViewSearch();
         setupSearchView();
+        setupAdd();
 
         return binding.getRoot();
+    }
+
+    private void setupAdd(){
+        loadAd(buildAdRequest());
+    }
+
+    private AdRequest buildAdRequest(){
+        return new AdRequest.Builder()
+                .build();
+    }
+
+    private void loadAd(AdRequest adRequest){
+        binding.adView.loadAd(adRequest);
     }
 
     private void setupSearchView(){
