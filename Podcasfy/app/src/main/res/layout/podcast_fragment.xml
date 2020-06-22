@@ -42,7 +42,8 @@
                         app:layout_constraintEnd_toStartOf="@+id/podcastDescription"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/planos_centellas" />
+                        app:srcCompat="@drawable/planos_centellas"
+                        android:contentDescription="@string/PodcastImageViewContentDescription" />
 
                     <TextView
                         android:id="@+id/podcastDescription"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -18,7 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/planos_centellas" />
+        app:srcCompat="@drawable/planos_centellas"
+        android:contentDescription="@string/PodcastImageViewContentDescription" />
 
     <TextView
         android:id="@+id/podcastName"
@@ -42,6 +43,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/spain_logo" />
+        app:srcCompat="@drawable/spain_logo"
+        android:contentDescription="@string/podcastProviderLogoContentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

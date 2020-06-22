@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ru.rambler.libs.swipe_layout.SwipeLayout
         android:id="@+id/swipeLayout"
@@ -22,14 +23,15 @@
                 android:layout_marginTop="0dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/episode" />
+                app:srcCompat="@drawable/episode"
+                android:contentDescription="@string/episodeImageViewContentDescription" />
 
             <TextView
                 android:id="@+id/slidingName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Planos y pepinillos"
+                tools:text="Planos y pepinillos"
                 app:layout_constraintBottom_toTopOf="@+id/slingindEpisodeImage"
                 app:layout_constraintEnd_toStartOf="@+id/slidingMediaReproducer"
                 app:layout_constraintStart_toEndOf="@+id/slingindEpisodeImage"
@@ -44,7 +46,8 @@
                 app:layout_constraintBottom_toTopOf="@+id/slingindEpisodeImage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/slingindEpisodeImage"
-                app:srcCompat="@drawable/ic_play_arrow" />
+                app:srcCompat="@drawable/ic_play_arrow"
+                android:contentDescription="@string/slidingMediaReproducerImageContentDescription" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!--RIGHT-->

@@ -38,6 +38,10 @@ Youtube: Planos y Centellas\n\
 Instagram: https://www.instagram.com/planos_y_centellas\n\
 Patreon: https://www.patreon.com/planosycentellas\n\
     </string>
+    <string name="episodeImageViewContentDescription">Episode\'s image</string>
+    <string name="PodcastImageViewContentDescription">Podcast\'s image</string>
+    <string name="podcastProviderLogoContentDescription">Logo representing the provider of the podcast</string>
+    <string name="slidingMediaReproducerImageContentDescription">Image representing the state (play/pause) of the media reproducer</string>
 
 
     <!-- Settings -->
