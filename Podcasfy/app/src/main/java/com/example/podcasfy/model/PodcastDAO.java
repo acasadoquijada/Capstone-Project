@@ -1,5 +1,7 @@
 package com.example.podcasfy.model;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,7 +16,7 @@ public interface PodcastDAO {
     void insertPodcast(Podcast podcast);
 
     @Query("SELECT * FROM podcast")
-    List<Podcast> getPodcasts();
+    LiveData<List<Podcast>> getPodcasts();
 
     @Query("SELECT * FROM podcast WHERE provider = :provider")
     List<Podcast> getPodcastsByProvider(String provider);

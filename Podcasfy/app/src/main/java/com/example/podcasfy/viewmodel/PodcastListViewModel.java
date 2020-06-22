@@ -1,28 +1,26 @@
 package com.example.podcasfy.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.podcasfy.api.Provider;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.repository.PodcastListRepository;
 import com.example.podcasfy.model.Podcast;
-import com.example.podcasfy.utils.PodcastCallBack;
 
 import java.util.List;
-import java.util.Objects;
 
-public class PodcastListViewModel extends AndroidViewModel implements PodcastCallBack {
+public class PodcastListViewModel extends AndroidViewModel {
 
     private PodcastListRepository podcastRepository;
 
     // Podcast per each provider + subscriptions + search
     private MutableLiveData<List<Podcast>> spainRecommendedPodcastList;
     private MutableLiveData<List<Podcast>> ukRecommendedPodcastList;
-    private MutableLiveData<List<Podcast>> subscribedPodcastList;
+    private LiveData<List<Podcast>> subscribedPodcastList;
     private MutableLiveData<List<Podcast>> searchedPodcast;
 
     // Episodes per given Podcast
@@ -38,7 +36,7 @@ public class PodcastListViewModel extends AndroidViewModel implements PodcastCal
     public PodcastListViewModel (Application application){
         super(application);
 
-        podcastRepository = new PodcastListRepository(application.getApplicationContext(),this);
+        podcastRepository = new PodcastListRepository(application.getApplicationContext());
 
         episodeList = new MutableLiveData<>();
         searchQuery = new MutableLiveData<>();
@@ -46,7 +44,7 @@ public class PodcastListViewModel extends AndroidViewModel implements PodcastCal
     }
 
 
-    public MutableLiveData<List<Podcast>> getSubscribedPodcastList() {
+    public LiveData<List<Podcast>> getSubscribedPodcastList() {
 
         if(subscribedPodcastList == null){
             subscribedPodcastList = podcastRepository.getSubscribedPodcastList();
@@ -168,31 +166,13 @@ public class PodcastListViewModel extends AndroidViewModel implements PodcastCal
 
     public boolean isPodcastSubscribed(Podcast podcast){
 
-        for(int i = 0; i < Objects.requireNonNull(subscribedPodcastList.getValue()).size(); i++){
-            if(subscribedPodcastList.getValue().get(i).getName().equals(podcast.getName())){
-                return true;
+        if(subscribedPodcastList.getValue() != null){
+            for(int i = 0; i < subscribedPodcastList.getValue().size(); i++){
+                if(subscribedPodcastList.getValue().get(i).getName().equals(podcast.getName())){
+                    return true;
+                }
             }
         }
         return false;
-    }
-
-    @Override
-    public void updatePodcastList(List<Podcast> podcastList, String option) {
-
-        switch (option) {
-            case Provider.SPAIN:
-                spainRecommendedPodcastList.setValue(podcastList);
-                break;
-            case Provider.UK:
-                ukRecommendedPodcastList.setValue(podcastList);
-                break;
-            case Provider.SUBSCRIBED:
-                Log.d("ALEX__", "DB SIZE: " + podcastList.size());
-                subscribedPodcastList.setValue(podcastList);
-                break;
-            default:
-                searchedPodcast.setValue(podcastList);
-                break;
-        }
     }
 }
