@@ -9,7 +9,11 @@
         android:label="PodcastListFragment" >
         <action
             android:id="@+id/action_podcastListFragment_to_podcastFragment"
-            app:destination="@id/podcastFragment" />
+            app:destination="@id/podcastFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/podcastFragment"
@@ -18,9 +22,6 @@
         <argument
             android:name="pos"
             app:argType="integer" />
-        <action
-            android:id="@+id/action_podcastFragment_to_podcastEpsiodeFragment"
-            app:destination="@id/podcastEpsiodeFragment" />
         <argument
             android:name="provider"
             app:argType="string" />
@@ -31,7 +32,9 @@
         android:label="SearchFragment" >
         <action
             android:id="@+id/action_searchFragment_to_podcastFragment"
-            app:destination="@id/podcastFragment" />
+            app:destination="@id/podcastFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/subscribedPodcastFragment"
@@ -39,7 +42,9 @@
         android:label="SubscribedPodcastFragment" >
         <action
             android:id="@+id/action_subscribedPodcastFragment_to_podcastFragment"
-            app:destination="@id/podcastFragment" />
+            app:destination="@id/podcastFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -48,17 +53,5 @@
     <fragment
         android:id="@+id/donwloadsFragment"
         android:name="com.example.podcasfy.ui.DownloadsFragment"
-        android:label="DonwloadsFragment" >
-        <action
-            android:id="@+id/action_donwloadsFragment_to_podcastEpsiodeFragment"
-            app:destination="@id/podcastEpsiodeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/podcastEpsiodeFragment"
-        android:name="com.example.podcasfy.ui.EpisodeFragment"
-        android:label="PodcastEpsiodeFragment" >
-        <argument
-            android:name="podcastEpsiodeId"
-            app:argType="string" />
-    </fragment>
+        android:label="DonwloadsFragment" />
 </navigation>

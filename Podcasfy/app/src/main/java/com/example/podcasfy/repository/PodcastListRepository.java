@@ -3,6 +3,7 @@ package com.example.podcasfy.repository;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -83,6 +84,10 @@ public class PodcastListRepository {
     }
 
     public MutableLiveData<List<Episode>> getEpisodeList(String provider, String podcastURL){
+
+        if(episodeList.getValue() != null){
+            episodeList.getValue().clear();
+        }
 
         switch (provider) {
             case Provider.SPAIN:
