@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.media.session.PlaybackState;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 
 import com.example.podcasfy.databinding.ActivityMainBinding;
 
@@ -27,17 +29,15 @@ import com.squareup.picasso.Picasso;
 import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding mBinding;
     private ReproducerViewModel reproducerViewModel;
-    private FirebaseAnalytics mFirebaseAnalytics;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         setupDataBinding();
 
@@ -49,15 +49,18 @@ public class MainActivity extends AppCompatActivity{
 
         setupSlidingUpPanel();
 
-        setupSlidingPanelPlayerControll();
+        setupSlidingPanelPlayerControl();
 
     }
 
-    private void setupSlidingPanelPlayerControll(){
+    private void setupSlidingPanelPlayerControl(){
 
-        // This button should be a toggle button.
-        // Like the subscribe button
- //       mBinding.reproducer.reproducerSlidingPanel.slingindEpisodeImage
+        mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                reproducerViewModel.getPlayer().setPlayWhenReady(!isChecked);
+            }
+        });
     }
 
     private void setupDataBinding(){
@@ -98,10 +101,10 @@ public class MainActivity extends AppCompatActivity{
 
                 if(aBoolean){
                     Log.d(TAG, "onPlayerStateChanged: PLAYING");
-                    mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setImageDrawable(getDrawable(R.drawable.ic_pause));
+             //       mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setImageDrawable(getDrawable(R.drawable.ic_pause));
                 } else{
                     Log.d(TAG, "onPlayerStateChanged: PAUSED");
-                    mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setImageDrawable(getDrawable(R.drawable.ic_play_arrow));
+            //        mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setImageDrawable(getDrawable(R.drawable.ic_play_arrow));
 
                 }
             }
@@ -153,8 +156,8 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void setSlidingMediaReproducerImage(int drawableId){
-        mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.
-                setImageDrawable(getDrawable(drawableId));
+    //    mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.
+        //        setImageDrawable(getDrawable(drawableId));
     }
 
     private void stopPlayer(){
@@ -217,6 +220,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void setExoPlayerInPlayerView(){
         mBinding.reproducer.mainMediaReproducer.setPlayer(reproducerViewModel.getPlayer());
+     //   reproducerViewModel.getPlayer().addListener(this);
     }
 
     /**
@@ -343,6 +347,34 @@ public class MainActivity extends AppCompatActivity{
     private void setSlidingPanelState(SlidingUpPanelLayout.PanelState state){
         mBinding.slidingLayout.setPanelState(state);
     }
+
+  //  @Override
+    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+    }
+
+   //@Override
+    public void onLoadingChanged(boolean isLoading) {
+
+    }
+
+  //  @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        if((playbackState == ExoPlayer.STATE_READY) && playWhenReady){
+            Log.d("TESTING__", "onPlayerStateChanged: PLAYING!!");
+            mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setBackgroundDrawable(getDrawable(R.drawable.ic_pause));
+        } else if((playbackState == ExoPlayer.STATE_READY)){
+            Log.d("TESTING__", "onPlayerStateChanged: PAUSED");
+            mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setBackgroundDrawable(getDrawable(R.drawable.ic_play_arrow));
+        }
+    }
+
+ //   @Override
+    public void onPlayerError(ExoPlaybackException error) {
+
+    }
+
+
 
     @Override
     public void onPause() {

@@ -62,8 +62,7 @@ public class ReproducerViewModel extends AndroidViewModel implements ExoPlayer.E
 
         player = ExoPlayerFactory.newSimpleInstance(this.application.getApplicationContext(),trackSelector,loadControl);
 
-        player.addListener(this);
-
+       // player.addListener(this);
 
         position = 0;
 

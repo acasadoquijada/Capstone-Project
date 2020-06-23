@@ -1,7 +1,6 @@
 package com.example.podcasfy.ui;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.ProgressDialog;
@@ -43,6 +42,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
 
     private ProgressDialog progDailog;
 
+    private int visibleCount = 2;
     public PodcastListFragment(){}
 
     /**
@@ -59,19 +59,25 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
 
         binding =
                 DataBindingUtil.inflate(inflater,R.layout.podcast_list_fragment, container, false);
-/*
-        progDailog = new ProgressDialog(requireActivity());
 
-        progDailog.setIndeterminate(true);
-        progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progDailog.setCancelable(false);
-        progDailog.show();*/
+        setupProgressDialog();
 
         setupRecyclerViews();
 
         setupAdd();
 
         return binding.getRoot();
+
+    }
+
+
+    private void setupProgressDialog(){
+        progDailog = new ProgressDialog(requireActivity());
+
+        progDailog.setIndeterminate(true);
+        progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progDailog.setCancelable(false);
+        progDailog.show();
 
     }
 
@@ -189,19 +195,45 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     private void observeUK(){
         mViewModel.getUKRecommended().observe(getViewLifecycleOwner(),
                 this::updateUKPodcastList);
+
     }
 
     private void updateSubscribedPodcastList(List<Podcast> podcastList){
         mAdapterSubscriptions.setPodcasts(podcastList);
+
     }
 
     private void updateSpainPodcastList(List<Podcast> podcastList){
         mAdapterSpain.setPodcasts(podcastList);
+        decreaseVisibleCount();
     }
 
     private void updateUKPodcastList(List<Podcast> podcastList){
         mAdapterUK.setPodcasts(podcastList);
+        decreaseVisibleCount();
     }
+
+    private void decreaseVisibleCount(){
+        visibleCount--;
+        if(visibleCount == 0){
+            setUIVisible();
+        }
+    }
+
+    private void setUIVisible(){
+        setLinearLayoutVisible();
+        dismissProgressDialog();
+    }
+
+    private void setLinearLayoutVisible(){
+        binding.linearLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void dismissProgressDialog(){
+        progDailog.dismiss();
+    }
+
+
     /**
      * To launch a PodcastFragment, we open a PodcastFragment with the id of the Podcast selected
      * using the NavigationComponent
