@@ -27,6 +27,6 @@ public abstract class AppDataBase extends RoomDatabase {
     }
 
     public abstract PodcastDAO podcastDAO();
-    public abstract EpisodeDAO podcastEpisodeDAO();
+    public abstract EpisodeDAO episodeDAO();
 
 }

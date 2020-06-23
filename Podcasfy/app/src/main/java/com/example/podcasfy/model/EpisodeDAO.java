@@ -1,5 +1,6 @@
 package com.example.podcasfy.model;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -11,11 +12,14 @@ import java.util.List;
 public interface EpisodeDAO {
 
     @Insert
-    void insertEpisode(Episode episode);
+    void insert(Episode episode);
+
+    @Query("SELECT * FROM Episode ORDER BY id DESC")
+    LiveData<List<Episode>> getAll();
 
     @Query("SELECT * FROM Episode WHERE podcastId = :podcastId")
-    List<Episode> getEpisodes(String podcastId);
+    List<Episode> get(String podcastId);
 
     @Delete
-    void deleteEpisode(Episode episode);
+    void delete(Episode episode);
 }

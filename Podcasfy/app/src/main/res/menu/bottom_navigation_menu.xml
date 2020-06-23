@@ -18,10 +18,10 @@
         android:title="@string/bot_nav_subscribed_text"/>
 
     <item
-        android:id="@+id/donwloadsFragment"
+        android:id="@+id/historicalFragment"
         android:enabled="true"
-        android:icon="@drawable/ic_get_app_white"
-        android:title="@string/bot_nav_downloads_text"/>
+        android:icon="@drawable/ic_history_white"
+        android:title="@string/bot_nav_historical_text"/>
 
     <item
         android:id="@+id/settingsFragment"

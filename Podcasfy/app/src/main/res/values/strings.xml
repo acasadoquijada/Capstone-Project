@@ -3,7 +3,7 @@
     <string name="bot_nav_home_text">home</string>
     <string name="bot_nav_search_text">Search</string>
     <string name="bot_nav_subscribed_text">Subscribed</string>
-    <string name="bot_nav_downloads_text">Downloads</string>
+    <string name="bot_nav_historical_text">Historical</string>
     <string name="bot_nav_bot_nav_settings_text">Settings</string>
     <string name="subscribe_button_text">Button</string>
     <string name="search_podcast_text">Search Podcast</string>
@@ -23,26 +23,12 @@
     <!-- Key for the podcast provider -->
     <string name="pref_provider_key" translatable="false">provider</string>
 
-
-
-    <string name="episode_description_test">
-Rescatamos y analizamos este clasicazo. Debatimos sobre cómo ha envejecido y nos cuestionamos nuestros límites morales.\n\
-
-Nota: Planos y Centellas NO apoya el canibalismo.\n\
-
-
-¡Síguenos en las redes sociales para enterarte de todos los análisis!\n\
-
-Twitter: @planoscentellas\n\
-Youtube: Planos y Centellas\n\
-Instagram: https://www.instagram.com/planos_y_centellas\n\
-Patreon: https://www.patreon.com/planosycentellas\n\
-    </string>
     <string name="episodeImageViewContentDescription">Episode\'s image</string>
     <string name="PodcastImageViewContentDescription">Podcast\'s image</string>
     <string name="podcastProviderLogoContentDescription">Logo representing the provider of the podcast</string>
     <string name="slidingMediaReproducerImageContentDescription">Image representing the state (play/pause) of the media reproducer</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="historicalEpisodesLabel">Historical episodes</string>
 
 
     <!-- Settings -->

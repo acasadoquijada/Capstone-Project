@@ -8,17 +8,11 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "episode",
-        indices =  {@Index("podcastId")},
-        foreignKeys = @ForeignKey(entity = Podcast.class,
-                parentColumns = "id",
-                childColumns = "podcastId",
-                onDelete = CASCADE))
+@Entity(tableName = "episode")
 public class Episode {
 
-    @PrimaryKey
-    @NonNull
-    private String id;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
     // This is the path where the mp3 file is stored in the device
     private String storePathDevice;
@@ -55,7 +49,6 @@ public class Episode {
         this.imageURL = imageURL;
         this.mediaURL = mediaURL;
         this.podcastId = podcastId;
-        this.id = name.toLowerCase().replaceAll("\\s","_") + "-" + podcastId;
     }
 
     public void setStorePathDevice(String storePathDevice) {
@@ -115,11 +108,11 @@ public class Episode {
     }
 
     @NonNull
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(@NonNull String id) {
+    public void setId(@NonNull int id) {
         this.id = id;
     }
 }

@@ -58,7 +58,7 @@
         android:name="com.example.podcasfy.ui.SettingsFragment"
         android:label="SettingsFragment" />
     <fragment
-        android:id="@+id/donwloadsFragment"
-        android:name="com.example.podcasfy.ui.DownloadsFragment"
-        android:label="DonwloadsFragment" />
+        android:id="@+id/historicalFragment"
+        android:name="com.example.podcasfy.ui.HistoricalFragment"
+        android:label="HistoricalFragment" />
 </navigation>

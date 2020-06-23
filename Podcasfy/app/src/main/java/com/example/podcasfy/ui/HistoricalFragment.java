@@ -16,25 +16,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
 import com.example.podcasfy.adapter.EpisodeListAdapter;
-import com.example.podcasfy.databinding.DownloadFragmentBinding;
+import com.example.podcasfy.databinding.HistoricalFragmentBinding;
 import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
+import com.example.podcasfy.viewmodel.ReproducerViewModel;
 
 import java.util.List;
+import java.util.Objects;
 
-public class DownloadsFragment extends Fragment implements EpisodeListAdapter.ItemClickListener {
+public class HistoricalFragment extends Fragment implements EpisodeListAdapter.ItemClickListener {
 
-    private DownloadFragmentBinding binding;
+    private HistoricalFragmentBinding binding;
     private EpisodeListAdapter adapter;
- //   private PodcastViewModel mViewModel;
-    private PodcastListViewModel mViewModel;
-    public DownloadsFragment(){}
+    private PodcastListViewModel podcastListViewModel;
+    private ReproducerViewModel reproducerViewModel;
+
+    public HistoricalFragment(){}
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater,R.layout.download_fragment,container,false);
+        binding = DataBindingUtil.inflate(inflater,R.layout.historical_fragment,container,false);
 
         setupRecyclerView();
 
@@ -47,7 +50,7 @@ public class DownloadsFragment extends Fragment implements EpisodeListAdapter.It
      */
     private void setupRecyclerView(){
 
-        RecyclerView recyclerViewDownloads = binding.downloadRecyclerView;
+        RecyclerView recyclerViewDownloads = binding.historicalRecyclerView;
 
         recyclerViewDownloads.setAdapter(createPodcastEpisodeListAdapter());
 
@@ -86,11 +89,16 @@ public class DownloadsFragment extends Fragment implements EpisodeListAdapter.It
 
     private void setupPodcastViewModel(){
         createPodcastViewModel();
+        createReproducerViewModel();
         observeDownloads();
     }
 
     private void createPodcastViewModel(){
-        mViewModel  = new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
+        podcastListViewModel = new ViewModelProvider(requireActivity()).get(PodcastListViewModel.class);
+    }
+
+    private void createReproducerViewModel(){
+        reproducerViewModel = new ViewModelProvider(requireActivity()).get(ReproducerViewModel.class);
     }
 
     /**
@@ -98,7 +106,7 @@ public class DownloadsFragment extends Fragment implements EpisodeListAdapter.It
      */
     private void observeDownloads(){
 
-        mViewModel.getDownloadedEspisodes().observe(getViewLifecycleOwner(), this::updateAdapterEpisodes);
+        podcastListViewModel.getHistoricalEpisodeList().observe(getViewLifecycleOwner(), this::updateAdapterEpisodes);
     }
 
     private void updateAdapterEpisodes(List<Episode> episodes){
@@ -111,10 +119,55 @@ public class DownloadsFragment extends Fragment implements EpisodeListAdapter.It
     public void onItemClick(int clickedItem, boolean delete) {
 
         if(delete){
-            mViewModel.deletePodcast(clickedItem);
+            podcastListViewModel.deleteEpisode(clickedItem);
             adapter.notifyItemRemoved(clickedItem);
+        } else {
+
+            if(clickedItem != -1){
+                Episode episode = Objects.requireNonNull(podcastListViewModel.getHistoricalEpisodeList().getValue()).get(clickedItem);
+                updateReproducerViewModelInfo(episode);
+                Toast.makeText(requireContext(),"" + delete + "-" + clickedItem,Toast.LENGTH_SHORT).show();
+            }
         }
 
-        Toast.makeText(requireContext(),"" + delete + "-" + clickedItem,Toast.LENGTH_SHORT).show();
+        /*
+                NavDirections action =
+        SubscribedFragmentDirections.actionSubscribedPodcastFragmentToPodcastFragment(clickedItem, Provider.SUBSCRIBED);
+
+        NavHostFragment.findNavController(this).navigate(action);
+         */
+
     }
+
+    private void updateReproducerViewModelInfo(Episode episode){
+        updateName(episode.getName());
+        updateLogo(episode.getImageURL());
+        updateMediaURL(episode.getMediaURL());
+        reproducerViewModel.setShowReproducer(true);
+        podcastListViewModel.logEventEpisodeName(episode.getName());
+    }
+
+    /**
+     * To update the ViewModel name field with the name of the selected episode
+     * @param name of the episode
+     */
+    private void updateName(String name){
+        reproducerViewModel.setName(name);
+    }
+
+    private void updateLogo(String logo){
+        reproducerViewModel.setLogoURL(logo);
+    }
+
+    private void updateMediaURL(String mediaURL){
+        reproducerViewModel.setMediaURL(mediaURL);
+    }
+
+/*
+    private void updateUI(Podcast podcast){
+        setActivityTitle(podcast.getName());
+        podcastListViewModel.logEventPodcastName(podcast.getName());
+        setDescription(podcast.getDescription());
+        setLogo(podcast.getMediaURL());
+    }*/
 }
