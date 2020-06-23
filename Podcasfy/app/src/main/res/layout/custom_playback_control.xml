@@ -74,7 +74,7 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:includeFontPadding="false"
-            android:textColor="#FF00A6FF"/>
+            android:textColor="@android:color/white"/>
 
         <View android:id="@id/exo_progress_placeholder"
             android:layout_width="0dp"
@@ -89,7 +89,7 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:includeFontPadding="false"
-            android:textColor="#FF00A6FF"/>
+            android:textColor="@android:color/white"/>
 
     </LinearLayout>
 
