@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.podcasfy.R;
 import com.example.podcasfy.api.Provider;
-import com.example.podcasfy.databinding.SubscribedPodcastBinding;
+import com.example.podcasfy.databinding.SubscribedPodcastInListBinding;
 import com.example.podcasfy.model.Podcast;
 import com.squareup.picasso.Picasso;
 
@@ -38,8 +38,8 @@ public class SubscribedPodcastsListAdapter extends RecyclerView.Adapter<Subscrib
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        SubscribedPodcastBinding binding =
-                SubscribedPodcastBinding.inflate(inflater, parent, false);
+        SubscribedPodcastInListBinding binding =
+                SubscribedPodcastInListBinding.inflate(inflater, parent, false);
 
 
         return new SubscribedHolder(binding);
@@ -61,9 +61,9 @@ public class SubscribedPodcastsListAdapter extends RecyclerView.Adapter<Subscrib
 
     public class SubscribedHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private SubscribedPodcastBinding binding;
+        private SubscribedPodcastInListBinding binding;
 
-        SubscribedHolder(@NonNull SubscribedPodcastBinding binding) {
+        SubscribedHolder(@NonNull SubscribedPodcastInListBinding binding) {
             super(binding.getRoot());
 
 

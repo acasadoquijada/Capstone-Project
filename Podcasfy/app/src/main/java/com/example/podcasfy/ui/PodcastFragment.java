@@ -242,9 +242,12 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
     @Override
     public void onItemClick(int clickedItem, boolean delete) {
         Episode episode = Objects.requireNonNull(podcastListViewModel.getEpisodeList().getValue()).get(clickedItem);
-
-        Log.d("MEDIA_URL", "media in PodcastFragment " + episode.getMediaURL());
         updateReproducerViewModelInfo(episode);
+        storeEpisode(episode);
+    }
+
+    private void storeEpisode(Episode episode){
+        podcastListViewModel.storeEpisode(episode);
     }
 
     private void updateReproducerViewModelInfo(Episode episode){

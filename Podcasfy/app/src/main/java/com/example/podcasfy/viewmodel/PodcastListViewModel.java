@@ -33,7 +33,7 @@ public class PodcastListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Episode>> episodeList;
 
     // Downloaded episodes
-    private MutableLiveData<List<Episode>> episodesDownloadedList;
+    private LiveData<List<Episode>> historicalEpisodeList;
 
     // Used to triggered a search when the user sets a query
     private MutableLiveData<String> searchQuery;
@@ -74,6 +74,14 @@ public class PodcastListViewModel extends AndroidViewModel {
         }
 
         return subscribedPodcastList;
+    }
+
+    public LiveData<List<Episode>> getHistoricalEpisodeList(){
+        if(historicalEpisodeList == null){
+            historicalEpisodeList = podcastRepository.getHistoricalEpisodeList();
+        }
+
+        return historicalEpisodeList;
     }
 
     public MutableLiveData<List<Podcast>> getSpainRecommendedPodcastList(){
@@ -158,19 +166,17 @@ public class PodcastListViewModel extends AndroidViewModel {
         return episodeList;
     }
 
-    public MutableLiveData<List<Episode>> getDownloadedEspisodes(){
-        episodesDownloadedList = podcastRepository.getEpisodeList(Provider.DONWLOADS,"");
 
-        return episodesDownloadedList;
+    public void storeEpisode(Episode episode){
+        podcastRepository.storeEpisode(episode);
     }
-
 
     public MutableLiveData<String> getSearchQuery() {
         return searchQuery;
     }
 
-    public void deletePodcast(int index) {
-        episodesDownloadedList.getValue().remove(index);
+    public void deleteEpisode(int index) {
+        podcastRepository.removeEpisode(historicalEpisodeList.getValue().get(index));
     }
 
     public void subscribeToPodcast(int pos, String provider){

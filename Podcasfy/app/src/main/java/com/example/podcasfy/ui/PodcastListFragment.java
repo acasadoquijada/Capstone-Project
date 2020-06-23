@@ -42,7 +42,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
 
     private ProgressDialog progDailog;
 
-    private int visibleCount = 2;
+    private int visibleCount;
     public PodcastListFragment(){}
 
     /**
@@ -60,6 +60,7 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         binding =
                 DataBindingUtil.inflate(inflater,R.layout.podcast_list_fragment, container, false);
 
+        visibleCount = 2;
         setupProgressDialog();
 
         setupRecyclerViews();
@@ -214,7 +215,9 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
     }
 
     private void decreaseVisibleCount(){
+
         visibleCount--;
+        Log.d("VISIBLE__",""+ visibleCount);
         if(visibleCount == 0){
             setUIVisible();
         }

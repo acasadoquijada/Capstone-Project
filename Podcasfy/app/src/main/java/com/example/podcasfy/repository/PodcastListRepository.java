@@ -31,6 +31,7 @@ public class PodcastListRepository {
     private LiveData<List<Podcast>> subscribedPodcastList;
     private MutableLiveData<List<Podcast>> searchedPodcastList;
 
+    private LiveData<List<Episode>> historicalEpisodeList;
     private MutableLiveData<List<Episode>> episodeList;
 
 
@@ -47,6 +48,7 @@ public class PodcastListRepository {
         provider = new Provider();
 
         subscribedPodcastList = AppDataBase.getInstance(context).podcastDAO().getPodcasts();
+        historicalEpisodeList = AppDataBase.getInstance(context).episodeDAO().getAll();
 
     }
 
@@ -72,6 +74,10 @@ public class PodcastListRepository {
 
     public LiveData<List<Podcast>> getSubscribedPodcastList(){
         return subscribedPodcastList;
+    }
+
+    public LiveData<List<Episode>> getHistoricalEpisodeList() {
+        return historicalEpisodeList;
     }
 
     public void searchPodcast(String query){
@@ -127,10 +133,17 @@ public class PodcastListRepository {
         new AddPodcastDatabaseTask().execute(podcast);
     }
 
+    public void storeEpisode(Episode episode){
+        new AddEpisodeDatabaseTask().execute(episode);
+    }
+
     public void unsubscribeToPodcast(String id){
         new DeletePodcastDatabaseTask().execute(id);
     }
 
+    public void removeEpisode(Episode episode){
+        new DeletepisodeDatabaseTask().execute(episode);
+    }
 
     class getPodcastListTask extends AsyncTask<String, Void, List<Podcast> > {
 
@@ -176,25 +189,17 @@ public class PodcastListRepository {
 
             String podcastProvider = strings[0];
             String  url = strings[1];
-
+/*
             if (podcastProvider.equals(Provider.DONWLOADS)) {
                 return generateEpisodes();
-            }
-            else
+            }*/
+          //  else
                 return provider.getEpisodes(url);
         }
 
         @Override
         protected void onPostExecute(List<Episode> podcastsList) {
             episodeList.setValue(podcastsList);
-        }
-    }
-
-    class DeletePodcastDatabaseTask extends AsyncTask<String,Void, Void> {
-        @Override
-        protected Void doInBackground(String... strings) {
-            AppDataBase.getInstance(context).podcastDAO().delete(strings[0]);
-            return null;
         }
     }
 
@@ -208,29 +213,37 @@ public class PodcastListRepository {
         }
     }
 
-    private List<Episode> generateEpisodes(){
-        Episode episode = new Episode(
-                "Planos y Centellas 3x20 - Snowpiercer (Serie Netflix)",
-                "Subid con nosotros al tren y evitad que la glaciación os alcance. " +
-                        "Esta semana hablamos del estreno de Netflix inspirado en la película" +
-                        " homónima \"Snowpiercer\". Un misterioso asesinato amenaza con desestabilizar " +
-                        "el delicado equilibrio del tren-arca, la última esperanza de la humanidad.",
 
-                "https://static-1.ivoox.com/audios/0/7/8/7/1531591027870_MD.jpg",
-                "mediaURL",
-                "id");
+    class AddEpisodeDatabaseTask extends AsyncTask<Episode, Void, Void> {
 
-        List<Episode> epis = new ArrayList<>();
-
-        epis.add(episode);
-        epis.add(episode);
-        epis.add(episode);
-        epis.add(episode);
-        epis.add(episode);
-        epis.add(episode);
-        epis.add(episode);
-
-        return epis;
+        @Override
+        protected Void doInBackground(Episode... episodes) {
+            Episode episode = episodes[0];
+            Log.d("DATABASE__", "INSERTING EPISODE");
+            AppDataBase.getInstance(context).episodeDAO().insert(episode);
+            return null;
+        }
     }
+
+    class DeletepisodeDatabaseTask extends AsyncTask<Episode, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Episode... episodes) {
+            Episode episode = episodes[0];
+            AppDataBase.getInstance(context).episodeDAO().delete(episode);
+            return null;
+        }
+    }
+
+    class DeletePodcastDatabaseTask extends AsyncTask<String,Void, Void> {
+        @Override
+        protected Void doInBackground(String... strings) {
+            AppDataBase.getInstance(context).podcastDAO().delete(strings[0]);
+            return null;
+        }
+    }
+
+
+
 
 }
