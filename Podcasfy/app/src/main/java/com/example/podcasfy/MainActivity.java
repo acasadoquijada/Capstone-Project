@@ -2,11 +2,13 @@ package com.example.podcasfy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Intent;
 import android.media.session.PlaybackState;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +17,9 @@ import android.widget.CompoundButton;
 
 import com.example.podcasfy.databinding.ActivityMainBinding;
 
+import com.example.podcasfy.ui.SubscribedFragment;
 import com.example.podcasfy.viewmodel.ReproducerViewModel;
+import com.example.podcasfy.widget.UpdateSubscriptionsService;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -38,6 +42,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            Intent intent = getIntent();
+
+            int i = intent.getIntExtra("pepe",0);
+
+            if(i == 1){
+/*
+                FragmentManager fragmentManager = getSupportFragmentManager();
+
+                SubscribedFragment subscribedFragment = new SubscribedFragment();
+
+                fragmentManager.beginTransaction().add(R.id.nav_host_fragment,subscribedFragment).commit();*/
+            }
+
+        }
 
         setupDataBinding();
 
@@ -89,28 +109,9 @@ public class MainActivity extends AppCompatActivity {
 
         observeShowReproducer();
 
-        observePlayerPlaying();
-
+        UpdateSubscriptionsService.startActionUpdateSubscriptions(this);
     }
 
-    private void observePlayerPlaying(){
-        reproducerViewModel.getPlayerPlaying().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                final String TAG = ReproducerViewModel.class.getSimpleName();
-
-                if(aBoolean){
-                    Log.d(TAG, "onPlayerStateChanged: PLAYING");
-             //       mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setImageDrawable(getDrawable(R.drawable.ic_pause));
-                } else{
-                    Log.d(TAG, "onPlayerStateChanged: PAUSED");
-            //        mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setImageDrawable(getDrawable(R.drawable.ic_play_arrow));
-
-                }
-            }
-        });
-
-    }
     /**
      * To create the ReproducerViewModel
      */

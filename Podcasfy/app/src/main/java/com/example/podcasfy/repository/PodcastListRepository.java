@@ -47,7 +47,7 @@ public class PodcastListRepository {
 
         provider = new Provider();
 
-        subscribedPodcastList = AppDataBase.getInstance(context).podcastDAO().getPodcasts();
+        subscribedPodcastList = AppDataBase.getInstance(context).podcastDAO().getLiveDataPodcasts();
         historicalEpisodeList = AppDataBase.getInstance(context).episodeDAO().getAll();
 
     }

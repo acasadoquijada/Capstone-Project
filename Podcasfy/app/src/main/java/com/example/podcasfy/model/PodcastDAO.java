@@ -16,7 +16,10 @@ public interface PodcastDAO {
     void insertPodcast(Podcast podcast);
 
     @Query("SELECT * FROM podcast")
-    LiveData<List<Podcast>> getPodcasts();
+    LiveData<List<Podcast>> getLiveDataPodcasts();
+
+    @Query("SELECT * FROM podcast")
+    List<Podcast> getPodcasts();
 
     @Query("SELECT * FROM podcast WHERE provider = :provider")
     List<Podcast> getPodcastsByProvider(String provider);

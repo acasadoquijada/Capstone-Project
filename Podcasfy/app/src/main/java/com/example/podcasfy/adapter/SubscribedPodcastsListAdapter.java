@@ -56,7 +56,11 @@ public class SubscribedPodcastsListAdapter extends RecyclerView.Adapter<Subscrib
 
     @Override
     public int getItemCount() {
-        return subscriptions.size();
+        if(subscriptions != null){
+            return subscriptions.size();
+        }
+
+        return 0;
     }
 
     public class SubscribedHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

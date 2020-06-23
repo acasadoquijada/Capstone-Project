@@ -122,21 +122,12 @@ public class HistoricalFragment extends Fragment implements EpisodeListAdapter.I
             podcastListViewModel.deleteEpisode(clickedItem);
             adapter.notifyItemRemoved(clickedItem);
         } else {
-
             if(clickedItem != -1){
                 Episode episode = Objects.requireNonNull(podcastListViewModel.getHistoricalEpisodeList().getValue()).get(clickedItem);
                 updateReproducerViewModelInfo(episode);
                 Toast.makeText(requireContext(),"" + delete + "-" + clickedItem,Toast.LENGTH_SHORT).show();
             }
         }
-
-        /*
-                NavDirections action =
-        SubscribedFragmentDirections.actionSubscribedPodcastFragmentToPodcastFragment(clickedItem, Provider.SUBSCRIBED);
-
-        NavHostFragment.findNavController(this).navigate(action);
-         */
-
     }
 
     private void updateReproducerViewModelInfo(Episode episode){

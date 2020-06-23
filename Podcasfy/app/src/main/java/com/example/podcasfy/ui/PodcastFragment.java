@@ -26,6 +26,7 @@ import com.example.podcasfy.model.Episode;
 import com.example.podcasfy.model.Podcast;
 import com.example.podcasfy.viewmodel.PodcastListViewModel;
 import com.example.podcasfy.viewmodel.ReproducerViewModel;
+import com.example.podcasfy.widget.UpdateSubscriptionsService;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -247,7 +248,10 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
     }
 
     private void storeEpisode(Episode episode){
+
         podcastListViewModel.storeEpisode(episode);
+        UpdateSubscriptionsService.startActionUpdateSubscriptions(requireContext());
+
     }
 
     private void updateReproducerViewModelInfo(Episode episode){
