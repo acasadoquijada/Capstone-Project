@@ -4,24 +4,8 @@
     <string name="bot_nav_search_text">Search</string>
     <string name="bot_nav_subscribed_text">Subscribed</string>
     <string name="bot_nav_historical_text">Historical</string>
-    <string name="bot_nav_bot_nav_settings_text">Settings</string>
-    <string name="subscribe_button_text">Button</string>
     <string name="search_podcast_text">Search Podcast</string>
-    <string name="settings_help_text">Here you will find your settings</string>
     <string name="subscriptions_label_text">Subscriptions</string>
-
-    <!--Provider identifiers value -->
-    <string name="pref_provider_ivoox_value">ivoox</string>
-    <string name="pref_provider_digital_value">digital</string>
-
-    <!--Provider identifiers label -->
-    <string name="pref_provider_ivoox_label">Ivoox</string>
-    <string name="pref_provider_digital_label">Digital Podcast</string>
-
-    <!-- Label for the podcast provider -->
-    <string name="pref_provider_label">Podcast provider</string>
-    <!-- Key for the podcast provider -->
-    <string name="pref_provider_key" translatable="false">provider</string>
 
     <string name="episodeImageViewContentDescription">Episode\'s image</string>
     <string name="PodcastImageViewContentDescription">Podcast\'s image</string>
@@ -29,10 +13,5 @@
     <string name="slidingMediaReproducerImageContentDescription">Image representing the state (play/pause) of the media reproducer</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="historicalEpisodesLabel">Historical episodes</string>
-
-
-    <!-- Settings -->
-
-
 
 </resources>

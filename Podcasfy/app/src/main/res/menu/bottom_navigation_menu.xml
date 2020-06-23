@@ -22,11 +22,4 @@
         android:enabled="true"
         android:icon="@drawable/ic_history_white"
         android:title="@string/bot_nav_historical_text"/>
-
-    <item
-        android:id="@+id/settingsFragment"
-        android:enabled="true"
-        android:icon="@drawable/ic_settings_white"
-        android:title="@string/bot_nav_bot_nav_settings_text"/>
-
 </menu>
