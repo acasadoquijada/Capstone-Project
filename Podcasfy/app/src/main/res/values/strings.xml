@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Podcasfy</string>
+    <string name="bot_nav_home_text">home</string>
+    <string name="bot_nav_search_text">Search</string>
+    <string name="bot_nav_subscribed_text">Subscribed</string>
+    <string name="bot_nav_historical_text">Historical</string>
+    <string name="search_podcast_text">Search Podcast</string>
+    <string name="subscriptions_label_text">Subscriptions</string>
+
+    <string name="episodeImageViewContentDescription">Episode\'s image</string>
+    <string name="PodcastImageViewContentDescription">Podcast\'s image</string>
+    <string name="podcastProviderLogoContentDescription">Logo representing the provider of the podcast</string>
+    <string name="slidingMediaReproducerImageContentDescription">Image representing the state (play/pause) of the media reproducer</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="historicalEpisodesLabel">Historical episodes</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+
 </resources>

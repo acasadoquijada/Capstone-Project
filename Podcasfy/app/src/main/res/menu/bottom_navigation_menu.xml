@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/podcastListFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:title="@string/bot_nav_home_text"/>
+
+    <item
+        android:id="@+id/searchFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_search_white"
+        android:title="@string/bot_nav_search_text" />
+    <item
+        android:id="@+id/subscribedPodcastFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_bookmarks_white"
+        android:title="@string/bot_nav_subscribed_text"/>
+
+    <item
+        android:id="@+id/historicalFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_history_white"
+        android:title="@string/bot_nav_historical_text"/>
+</menu>

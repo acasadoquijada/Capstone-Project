@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ru.rambler.libs.swipe_layout.SwipeLayout
+        android:id="@+id/swipeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:left_swipe_enabled="false"
+        app:right_swipe_enabled="false">
+        <androidx.constraintlayout.widget.ConstraintLayout
+
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/podcastEpisodeImage"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/episode"
+                android:contentDescription="@string/episodeImageViewContentDescription" />
+
+            <TextView
+                android:id="@+id/podcastEpisodeName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/podcastEpisodeImage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/podcastEpisodeImage"
+                app:layout_constraintTop_toBottomOf="@+id/podcastEpisodeImage"
+                tools:text="Planos y Centellas 3x19 - El Silencio de los Corderos (1991)" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+                <!--RIGHT-->
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:text=""
+                    app:bring_to_clamp="150dp"
+                    app:clamp="self"
+                    app:gravity="right" />
+    </ru.rambler.libs.swipe_layout.SwipeLayout>
+</layout>

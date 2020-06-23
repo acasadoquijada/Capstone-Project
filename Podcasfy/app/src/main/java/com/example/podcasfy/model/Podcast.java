@@ -17,7 +17,7 @@ public class Podcast {
     private String provider;
     private Boolean subscribed = false;
 
-    public Podcast(){};
+    public Podcast(){}
 
     public Podcast(String name, String description, String url, String mediaURl, String provider){
         this.name = name;
@@ -26,6 +26,10 @@ public class Podcast {
         this.mediaURL = mediaURl;
         this.provider = provider;
 
+        generateId();
+    }
+
+    public void generateId(){
         this.id = name.toLowerCase().replaceAll("\\s","_")
                 + "-" + provider.toLowerCase().replaceAll("\\s","_");
     }
