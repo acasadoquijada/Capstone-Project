@@ -2,16 +2,23 @@ package com.example.podcasfy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.podcasfy.databinding.ActivityMainBinding;
 
 import com.example.podcasfy.viewmodel.ReproducerViewModel;
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.installations.FirebaseInstallationsRegistrar;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -20,7 +27,7 @@ import com.squareup.picasso.Picasso;
 import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity{
 
     private ActivityMainBinding mBinding;
     private ReproducerViewModel reproducerViewModel;
@@ -41,6 +48,16 @@ public class MainActivity extends AppCompatActivity  {
         setupMediaPlayer();
 
         setupSlidingUpPanel();
+
+        setupSlidingPanelPlayerControll();
+
+    }
+
+    private void setupSlidingPanelPlayerControll(){
+
+        // This button should be a toggle button.
+        // Like the subscribe button
+ //       mBinding.reproducer.reproducerSlidingPanel.slingindEpisodeImage
     }
 
     private void setupDataBinding(){
@@ -69,8 +86,28 @@ public class MainActivity extends AppCompatActivity  {
 
         observeShowReproducer();
 
+        observePlayerPlaying();
+
     }
 
+    private void observePlayerPlaying(){
+        reproducerViewModel.getPlayerPlaying().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                final String TAG = ReproducerViewModel.class.getSimpleName();
+
+                if(aBoolean){
+                    Log.d(TAG, "onPlayerStateChanged: PLAYING");
+                    mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setImageDrawable(getDrawable(R.drawable.ic_pause));
+                } else{
+                    Log.d(TAG, "onPlayerStateChanged: PAUSED");
+                    mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setImageDrawable(getDrawable(R.drawable.ic_play_arrow));
+
+                }
+            }
+        });
+
+    }
     /**
      * To create the ReproducerViewModel
      */

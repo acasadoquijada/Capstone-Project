@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,7 +58,7 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
 
         setupRecyclerView();
 
-        setupSubscriptionButton();
+
 
         return mBinding.getRoot();
     }
@@ -97,17 +96,12 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         return adapter;
     }
 
-    /**
-     * To setup the subscription button. We ensure that if we are already subscribed we set the
-     * button properly to avoid re-subscriptions
-     */
-    private void setupSubscriptionButton(){
+    private void setupSubscriptionButtonOnCheckedListener(){
         mBinding.subscriptionButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked && !susbcribed){
+            if(isChecked)
                 subscribeToPodcast();
-            } else {
-                unsubscribedToPodcast();
-            }
+             else
+                 unsubscribedToPodcast();
         });
     }
 
@@ -162,6 +156,8 @@ public class PodcastFragment extends Fragment implements EpisodeListAdapter.Item
         getBundleArguments();
 
         setupPodcastInformation();
+
+        setupSubscriptionButtonOnCheckedListener();
     }
 
     private void createViewModel(){
