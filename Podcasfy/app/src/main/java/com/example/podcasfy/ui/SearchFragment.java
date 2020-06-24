@@ -139,7 +139,6 @@ public class SearchFragment extends Fragment implements PodcastListAdapter.ItemC
     @Override
     public void onItemClick(int clickedItem, String provider) {
 
-        Log.d("ITEM CLICKED", "" + clickedItem);
         NavDirections action =
                 SearchFragmentDirections.actionSearchFragmentToPodcastFragment(clickedItem,provider);
         NavHostFragment.findNavController(this).navigate(action);

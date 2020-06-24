@@ -72,12 +72,16 @@ public class PodcastListAdapter extends  RecyclerView.Adapter<PodcastListAdapter
         PodcastHolder(@NonNull PodcastInListBinding binding) {
             super(binding.getRoot());
 
-            if(provider.equals(Provider.SUBSCRIBED)){
-                binding.providerLogo.setImageResource(R.drawable.ic_bookmark_black);
-            } else if(provider.equals(Provider.SPAIN)){
-                binding.providerLogo.setImageResource(R.drawable.spain_logo);
-            } else if(provider.equals(Provider.UK)){
-                binding.providerLogo.setImageResource(R.drawable.uk_logo);
+            switch (provider) {
+                case Provider.SUBSCRIBED:
+                    binding.providerLogo.setImageResource(R.drawable.ic_bookmark_black);
+                    break;
+                case Provider.SPAIN:
+                    binding.providerLogo.setImageResource(R.drawable.spain_logo);
+                    break;
+                case Provider.UK:
+                    binding.providerLogo.setImageResource(R.drawable.uk_logo);
+                    break;
             }
 
             this.binding = binding;

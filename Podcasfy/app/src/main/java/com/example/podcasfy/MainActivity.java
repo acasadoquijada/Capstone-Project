@@ -33,7 +33,7 @@ import com.squareup.picasso.Picasso;
 import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ExoPlayer.EventListener {
 
     private ActivityMainBinding mBinding;
     private ReproducerViewModel reproducerViewModel;
@@ -42,22 +42,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (savedInstanceState == null) {
-            Intent intent = getIntent();
-
-            int i = intent.getIntExtra("pepe",0);
-
-            if(i == 1){
-/*
-                FragmentManager fragmentManager = getSupportFragmentManager();
-
-                SubscribedFragment subscribedFragment = new SubscribedFragment();
-
-                fragmentManager.beginTransaction().add(R.id.nav_host_fragment,subscribedFragment).commit();*/
-            }
-
-        }
 
         setupDataBinding();
 
@@ -221,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setExoPlayerInPlayerView(){
         mBinding.reproducer.mainMediaReproducer.setPlayer(reproducerViewModel.getPlayer());
-     //   reproducerViewModel.getPlayer().addListener(this);
+        reproducerViewModel.getPlayer().addListener(this);
     }
 
     /**
@@ -349,28 +333,26 @@ public class MainActivity extends AppCompatActivity {
         mBinding.slidingLayout.setPanelState(state);
     }
 
-  //  @Override
+    @Override
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
 
     }
 
-   //@Override
+   @Override
     public void onLoadingChanged(boolean isLoading) {
 
     }
 
-  //  @Override
+      @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         if((playbackState == ExoPlayer.STATE_READY) && playWhenReady){
-            Log.d("TESTING__", "onPlayerStateChanged: PLAYING!!");
             mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setBackgroundDrawable(getDrawable(R.drawable.ic_pause));
         } else if((playbackState == ExoPlayer.STATE_READY)){
-            Log.d("TESTING__", "onPlayerStateChanged: PAUSED");
             mBinding.reproducer.reproducerSlidingPanel.slidingMediaReproducer.setBackgroundDrawable(getDrawable(R.drawable.ic_play_arrow));
         }
     }
 
- //   @Override
+    @Override
     public void onPlayerError(ExoPlaybackException error) {
 
     }

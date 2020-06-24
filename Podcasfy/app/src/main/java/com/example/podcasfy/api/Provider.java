@@ -19,7 +19,7 @@ public class Provider {
     public static final String SUBSCRIBED = "subscribed";
     public static final String SPAIN = "spain";
     public static final String UK = "uk";
-    public static final String DONWLOADS ="donwloads";
+    public static final String HISTORICAL ="historical";
     public static final String SEARCH = "search";
 
     // Number of podcasts/episodes per search

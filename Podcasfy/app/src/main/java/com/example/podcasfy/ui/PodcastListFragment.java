@@ -60,7 +60,8 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
         binding =
                 DataBindingUtil.inflate(inflater,R.layout.podcast_list_fragment, container, false);
 
-        visibleCount = 2;
+        setupVisibleCount();
+
         setupProgressDialog();
 
         setupRecyclerViews();
@@ -69,6 +70,10 @@ public class PodcastListFragment extends Fragment implements PodcastListAdapter.
 
         return binding.getRoot();
 
+    }
+
+    private void setupVisibleCount(){
+        visibleCount = 2;
     }
 
 

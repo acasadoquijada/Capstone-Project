@@ -16,24 +16,20 @@ import com.example.podcasfy.model.Podcast;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Singleton;
-
-
 // Follow this SO post
 // https://stackoverflow.com/questions/51601046/should-i-make-asynctask-member-of-livedata-or-repository-class-as-replacement/51631757
 @SuppressLint("StaticFieldLeak")
 
-@Singleton
 public class PodcastListRepository {
 
     private MutableLiveData<List<Podcast>> spainRecommendedPodcastList;
     private MutableLiveData<List<Podcast>> ukRecommendedPodcastList;
+
     private LiveData<List<Podcast>> subscribedPodcastList;
     private MutableLiveData<List<Podcast>> searchedPodcastList;
 
     private LiveData<List<Episode>> historicalEpisodeList;
     private MutableLiveData<List<Episode>> episodeList;
-
 
     private Provider provider;
 
@@ -126,7 +122,7 @@ public class PodcastListRepository {
     }
 
     private void getDownloadedEpisodes(){
-        new getEpisodeListTask().execute(Provider.DONWLOADS,"");
+        new getEpisodeListTask().execute(Provider.HISTORICAL,"");
     }
 
     public void subscribeToPodcast(Podcast podcast){
@@ -145,7 +141,7 @@ public class PodcastListRepository {
         new DeletepisodeDatabaseTask().execute(episode);
     }
 
-    class getPodcastListTask extends AsyncTask<String, Void, List<Podcast> > {
+        class getPodcastListTask extends AsyncTask<String, Void, List<Podcast> > {
 
         private String argument;
 
@@ -219,7 +215,6 @@ public class PodcastListRepository {
         @Override
         protected Void doInBackground(Episode... episodes) {
             Episode episode = episodes[0];
-            Log.d("DATABASE__", "INSERTING EPISODE");
             AppDataBase.getInstance(context).episodeDAO().insert(episode);
             return null;
         }

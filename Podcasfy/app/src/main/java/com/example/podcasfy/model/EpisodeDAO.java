@@ -17,9 +17,6 @@ public interface EpisodeDAO {
     @Query("SELECT * FROM Episode ORDER BY id DESC")
     LiveData<List<Episode>> getAll();
 
-    @Query("SELECT * FROM Episode WHERE podcastId = :podcastId")
-    List<Episode> get(String podcastId);
-
     @Delete
     void delete(Episode episode);
 }

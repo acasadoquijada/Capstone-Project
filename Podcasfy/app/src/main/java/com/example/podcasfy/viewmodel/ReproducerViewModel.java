@@ -29,7 +29,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
 import java.util.Objects;
 
-public class ReproducerViewModel extends AndroidViewModel implements ExoPlayer.EventListener {
+public class ReproducerViewModel extends AndroidViewModel {
 
     private static final String TAG = ReproducerViewModel.class.getSimpleName();
     private Application application;
@@ -62,8 +62,6 @@ public class ReproducerViewModel extends AndroidViewModel implements ExoPlayer.E
 
         player = ExoPlayerFactory.newSimpleInstance(this.application.getApplicationContext(),trackSelector,loadControl);
 
-       // player.addListener(this);
-
         position = 0;
 
         playerPlaying = new MutableLiveData<>();
@@ -87,10 +85,6 @@ public class ReproducerViewModel extends AndroidViewModel implements ExoPlayer.E
 
     public void setShowReproducer(boolean show){
         showReproducer.setValue(show);
-    }
-
-    public void setPostion(long pos){
-        this.position = pos;
     }
 
     public void setupAudio() {
@@ -159,31 +153,6 @@ public class ReproducerViewModel extends AndroidViewModel implements ExoPlayer.E
 
     public void resetPosition(){
         position = 0;
-    }
-    // ExoPlayer Event Listeners
-
-
-    @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-    }
-
-    @Override
-    public void onLoadingChanged(boolean isLoading) {
-    }
-
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if((playbackState == ExoPlayer.STATE_READY) && playWhenReady){
-            playerPlaying.setValue(true);
-            Log.d(TAG, "onPlayerStateChanged: PLAYING");
-        } else if((playbackState == ExoPlayer.STATE_READY)){
-            Log.d(TAG, "onPlayerStateChanged: PAUSED");
-            playerPlaying.setValue(false);
-        }
-    }
-
-    @Override
-    public void onPlayerError(ExoPlaybackException error) {
     }
 
 }
