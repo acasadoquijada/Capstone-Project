@@ -38,7 +38,7 @@
             android:layout_height="25dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            card_view:srcCompat="@drawable/spain_logo"
+            tools:src="@drawable/spain_logo"
             android:contentDescription="@string/podcastProviderLogoContentDescription" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
